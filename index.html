@@ -1,4 +1,4 @@
-
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,6 +62,274 @@
     </main>
     <footer>
         &copy; 2026 Coffee on Sugar
+
     </footer>
+</body>
+
+
+</html>
+ -->
+
+ 
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coffee on Sugar</title>
+  <style>
+    /* --- Page basics --- */
+    :root {
+      --bg: #f7f3ed;
+      --text: #2b2b2b;
+      --accent: #7c3e2d;   /* coffee */
+      --sugar: #fff6d9;    /* sugar (light beige) */
+      --cup: #e8e6e3;      /* cup body */
+      --rim: #cfcac4;      /* rim/shadow */
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    }
+
+    header, footer {
+      text-align: center;
+      padding: 16px 24px;
+    }
+
+    header h1 {
+      margin: 0 0 4px;
+    }
+    header nav a {
+      color: #5b5b5b;
+      text-decoration: none;
+      margin-right: 12px;
+      font-size: 0.95rem;
+    }
+
+    /* --- Layout for the demo area --- */
+    .demo {
+      display: grid;
+      place-items: center;
+      min-height: 60vh;
+      padding: 24px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      border: 0;
+      background: #333;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn.secondary {
+      background: #777;
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* --- Cup drawing --- */
+    .cup-wrap {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      display: grid;
+      place-items: end center;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15));
+    }
+
+    .cup {
+      position: relative;
+      width: 180px;
+      height: 160px;
+      background: var(--cup);
+      border-radius: 0 0 24px 24px;
+      overflow: hidden; /* contain the liquids */
+      border-top: 10px solid var(--rim);
+    }
+
+    /* Handle */
+    .cup::after {
+      content: "";
+      position: absolute;
+      right: -36px;
+      top: 42px;
+      width: 60px;
+      height: 60px;
+      border: 10px solid var(--cup);
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 10px var(--bg);
+      background: transparent;
+    }
+
+    /* Coffee base layer */
+    .coffee {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 55%; /* starting coffee level */
+      background: linear-gradient(180deg, #8b4b35 0%, var(--accent) 100%);
+    }
+
+    /* Sugar layer that rises */
+    .sugar {
+      position: absolute;
+      bottom: 55%; /* sits on top of coffee start level */
+      left: 0;
+      width: 100%;
+      height: 0%; /* starts empty; JS will increase this */
+      background: linear-gradient(180deg, #fffaf0 0%, var(--sugar) 100%);
+      transition: height 0.2s ease; /* smooth-ish step between JS ticks */
+    }
+
+    /* Optional: tiny sugar granules falling in (pure CSS animation for flair) */
+    .sprinkle {
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0;
+      animation: sprinkle 1.2s linear infinite;
+    }
+    .sprinkle:nth-child(2) { left: 40%; animation-delay: 0.2s; }
+    .sprinkle:nth-child(3) { left: 60%; animation-delay: 0.4s; }
+    .sprinkle:nth-child(4) { left: 45%; animation-delay: 0.6s; }
+    .sprinkle:nth-child(5) { left: 55%; animation-delay: 0.8s; }
+
+    @keyframes sprinkle {
+      0%   { transform: translateY(0) scale(1); opacity: 0; }
+      10%  { opacity: 1; }
+      100% { transform: translateY(190px) scale(0.8); opacity: 0; }
+    }
+
+    /* Helper text */
+    .caption {
+      text-align: center;
+      margin-top: 10px;
+      color: #555;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Coffee on Sugar</h1>
+    <p>Your daily dose of coffee vibes</p>
+    <nav>
+      ##Home</a>
+      ##Blog</a>
+      ##About</a>
+      ##Contact</a>
+    </nav>
+  </header>
+
+  <main class="demo">
+    <div class="cup-wrap">
+      <!-- Decorative sprinkles (optional) -->
+      <div class="sprinkle"></div>
+      <div class="sprinkle"></div>
+      <div class="sprinkle"></div>
+      <div class="sprinkle"></div>
+      <div class="sprinkle"></div>
+
+      <div class="cup" id="cup">
+        <div class="coffee" id="coffee"></div>
+        <div class="sugar" id="sugar"></div>
+      </div>
+      <div class="caption">Click “Add sugar” to see the cup slowly fill.</div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="addBtn">Add sugar</button>
+      <button class="btn secondary" id="resetBtn">Reset</button>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 Coffee on Sugar
+  </footer>
+
+  <script>
+    // --- Simple JavaScript driver for the sugar fill ---
+    (function () {
+      const sugarEl = document.getElementById('sugar');
+      const coffeeEl = document.getElementById('coffee');
+      const addBtn   = document.getElementById('addBtn');
+      const resetBtn = document.getElementById('resetBtn');
+
+      // Config: how long to fill (ms) and target sugar percentage
+      const FILL_DURATION_MS = 10_000;  // 10 seconds
+      const TARGET_SUGAR_PCT = 35;      // sugar will rise up to 35% of cup height
+      const COFFEE_START_PCT = 55;      // matches CSS starting coffee height
+
+      let startTime = null;
+      let rafId = null;
+
+      function setHeights(sugarPct) {
+        // Ensure sugar sits on top of coffee layer, and coffee stays constant
+        coffeeEl.style.height = COFFEE_START_PCT + '%';
+        sugarEl.style.bottom = COFFEE_START_PCT + '%';
+        sugarEl.style.height = Math.max(0, Math.min(100, sugarPct)) + '%';
+      }
+
+      function animateFill(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(1, elapsed / FILL_DURATION_MS);
+        const ease = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        const sugarPct = ease * TARGET_SUGAR_PCT;
+
+        setHeights(sugarPct);
+
+        if (progress < 1) {
+          rafId = requestAnimationFrame(animateFill);
+        } else {
+          addBtn.disabled = false;
+          startTime = null;
+          rafId = null;
+        }
+      }
+
+      function startFill() {
+        // Prevent double starts
+        if (rafId) return;
+        addBtn.disabled = true;
+        startTime = null;
+        rafId = requestAnimationFrame(animateFill);
+      }
+
+      function reset() {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        startTime = null;
+        setHeights(0);
+        addBtn.disabled = false;
+      }
+
+      addBtn.addEventListener('click', startFill);
+      resetBtn.addEventListener('click', reset);
+
+      // Initialize
+      setHeights(0);
+    })();
+  </script>
 </body>
 </html>
