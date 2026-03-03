@@ -1,0 +1,93 @@
+
+:root {
+  --bg: #0f1221;
+  --panel: #151935;
+  --border: #2a2f55;
+  --text: #e6e8ff;
+  --muted: #a9b1d6;
+  --primary: #6ea8fe;
+  --primary-strong: #4f93ff;
+  --danger: #ff6b6b;
+  --accent: #5eead4;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  color: var(--text);
+  background: radial-gradient(1200px 600px at 10% -20%, #1a1f47 0%, var(--bg) 60%);
+  min-height: 100vh;
+}
+
+.app-header { padding: 1.25rem 1.25rem 0.5rem; }
+.app-header h1 { margin: 0 0 0.25rem; font-weight: 700; letter-spacing: 0.3px; }
+.subtitle { margin: 0; color: var(--muted); }
+
+.layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 1rem; padding: 1rem; }
+.map-panel { position: relative; border: 1px solid var(--border); border-radius: 12px; overflow: clip; background: #0c1026; }
+#map { width: 100%; height: 70vh; min-height: 480px; }
+.map-legend { position: absolute; bottom: .75rem; left: .75rem; background: rgba(10,12,26,.85); border: 1px solid var(--border); border-radius: 10px; padding: .4rem .6rem; display: flex; gap: .9rem; font-size: .9rem; }
+.legend-item { display: inline-flex; align-items: center; gap: .4rem; color: var(--muted); }
+.dot { display:inline-block; width: 10px; height: 10px; border-radius: 50%; }
+.dot.start { background: #22c55e; }
+.dot.middle { background: #fbbf24; }
+.dot.end { background: #ef4444; }
+.arrow-demo { letter-spacing: 2px; color: var(--primary); filter: drop-shadow(0 0 2px #2b6fffaa); }
+
+.control-panel { display: flex; flex-direction: column; gap: 1rem; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; }
+.card.small { font-size: .95rem; color: var(--muted); }
+
+.controls-row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin: .5rem 0; }
+.field { display: grid; gap: .35rem; margin: .4rem 0; }
+.field.checkbox { display:flex; align-items:center; gap:.5rem; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+
+.btn { background: #1b2149; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: .5rem .8rem; cursor: pointer; }
+.btn:hover { background: #202657; }
+.btn.primary { background: var(--primary-strong); border-color: #2b6fff; color: #fff; }
+.btn.primary:hover { filter: brightness(1.05); }
+.btn.danger { background: #3b1d24; border-color: #5b2632; color: #ffd3d3; }
+.btn.file { display: inline-flex; align-items: center; gap: .35rem; }
+.btn[disabled] { opacity: .55; cursor: not-allowed; }
+
+.places-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .4rem; max-height: 240px; overflow: auto; }
+.place-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .5rem; border: 1px solid var(--border); background: #101536; border-radius: 10px; padding: .45rem .5rem; }
+.place-index { font-weight: 700; color: #9ab7ff; background: #1a2554; border: 1px solid #2a3a7a; border-radius: 6px; padding: .1rem .4rem; }
+.place-name { color: var(--text); }
+.place-coords { color: var(--muted); font-size: .85rem; }
+.item-actions { display: inline-flex; gap: .3rem; }
+.icon-btn { background: #0e1330; border: 1px solid var(--border); color: var(--text); padding: .25rem .4rem; border-radius: 6px; cursor: pointer; }
+.icon-btn:hover { background: #131945; }
+
+/* Leaflet overrides */
+.leaflet-container { background: #0c1026; }
+.leaflet-control-attribution { background: rgba(0,0,0,.35); border-radius: 6px; }
+
+/* Custom map markers */
+.marker-index {
+  background: #0b102a;
+  border: 2px solid #3849a3;
+  color: #cfe2ff;
+  font-weight: 800;
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 8px rgba(0,0,0,.5);
+}
+.marker-index > span { transform: rotate(45deg); }
+.marker-start { border-color: #179c4a; }
+.marker-end { border-color: #b42d2d; }
+
+.route-polyline { filter: drop-shadow(0 0 2px rgba(94,234,212,.35)); }
+
+.plane { font-size: 20px; filter: drop-shadow(0 2px 3px rgba(0,0,0,.5)); transform-origin: center; }
+
+.hint { color: var(--muted); font-size: .9rem; }
+
+@media (max-width: 1000px) {
+  .layout { grid-template-columns: 1fr; }
+  #map { height: 60vh; }
+}

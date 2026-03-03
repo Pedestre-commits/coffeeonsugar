@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Lisbon, Portugal",
+    "lat": 38.7223,
+    "lng": -9.1393
+  },
+  {
+    "name": "Madrid, Spain",
+    "lat": 40.4168,
+    "lng": -3.7038
+  },
+  {
+    "name": "Barcelona, Spain",
+    "lat": 41.3874,
+    "lng": 2.1686
+  },
+  {
+    "name": "Nice, France",
+    "lat": 43.7102,
+    "lng": 7.262
+  },
+  {
+    "name": "Milan, Italy",
+    "lat": 45.4642,
+    "lng": 9.19
+  },
+  {
+    "name": "Zurich, Switzerland",
+    "lat": 47.3769,
+    "lng": 8.5417
+  },
+  {
+    "name": "Paris, France",
+    "lat": 48.8566,
+    "lng": 2.3522
+  }
+]
