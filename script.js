@@ -226,7 +226,6 @@ function renderList() {
 }
 
 function onDataChanged() {
-  saveToLocal();
   renderList();
   renderMarkers();
   renderRoute();
