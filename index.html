@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>My Europe Trip Map</title>
 <link rel="stylesheet" href="style.css">
-  <!-- Leaflet -->
+  <!-- Leaflet CSS -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMYsubtitle">Click on the map to pin places you visited ✨</p>
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS>My Europe Trip Map</h1>
+    <p class="subtitle">Click on the map to pin places you visited ✨</p>
   </header>
 
   <main class="layout">
@@ -31,17 +32,21 @@
       <div class="card">
         <h2>Your Places (in order)</h2>
         <ul id="placesList" class="places-list"></ul>
+
         <div class="controls-row">
-          <button id="btnClear" class="btn danger" title="Remove all places">🗑 Clear</button>
-          <button id="btnDownload" class="btn" title="Download places.json">💾 Export</button>
+          <button id="btnClear" class="btn danger">🗑 Clear</button>
+          <button id="btnDownload" class="btn">💾 Export</button>
           <label class="btn file">
             📥 Import <input id="fileInput" type="file" accept="application/json" hidden />
           </label>
         </div>
-        <p class="hint">Tip: Click anywhere on the map to add a new pin. You can later edit the image/title/text in <code>data/places.json</code> or by exporting and re‑importing.</p>
+
+        <p class="hint">
+          Click the map to add a pin.  
+          Edit place title/image/text via Export → edit → Import.
+        </p>
       </div>
 
-      <!-- Map options -->
       <div class="card small">
         <h3>Map Options</h3>
         <label class="field checkbox">
@@ -50,26 +55,28 @@
         </label>
       </div>
 
-      <!-- How to -->
       <div class="card small">
         <details>
           <summary>How to save & publish?</summary>
           <ol>
-            <li>Click <strong>Export</strong> to download <code>places.json</code>.</li>
-            <li>Replace <code>data/places.json</code> in your repo with the exported file.</li>
-            <li>Commit & push. On GitHub, enable <em>Pages</em> in Settings to publish.</li>
+            <li>Export <code>places.json</code>.</li>
+            <li>Replace <code>data/places.json</code> in your repo.</li>
+            <li>Commit & push.</li>
           </ol>
-          <p class="hint">Add your photos to <code>images/</code>. Use the file name in each pin’s data (e.g., <code>"img": "images/lisboa-bifana.jpg"</code>).</p>
         </details>
       </div>
 
     </aside>
   </main>
 
-  <!-- Leaflet + PolylineDecorator -->
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kflet.polylineDecorator.min.js</script>
+  <!-- Leaflet JS -->
+  https://unpkg.com/leaflet@1.9.4/dist/leaflet.js
 
-  <script src="script.jsody>
+  <!-- Polyline decorator -->
+  https://unpkg.com/leaflet-polylinedecorator@1.7.0/dist/leaflet.polylineDecorator.min.js
+
+  <!-- Your application logic -->
+  script.js</script>
+
+</body>
 </html>
