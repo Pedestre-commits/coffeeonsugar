@@ -303,8 +303,6 @@ try {
     places = [];
 }
 
-  // Apply initial speed label
-  $('#speedValue').textContent = $('#speedInput').value;
 
   onDataChanged();
 });
