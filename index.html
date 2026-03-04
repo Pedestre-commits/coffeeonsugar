@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +24,14 @@
       </div>
     </section>
 
+<div class="card">
+  <h2>Trips</h2>
+  <div class="controls-row">
+    <button id="year2026" class="btn primary">2026</button>
+    <button id="year2025" class="btn">2025</button>
+  </div>
+</div>
+
       <div class="card">
         <h2>Your Places (in order)</h2>
         <ul id="placesList" class="places-list"></ul>
@@ -38,25 +45,7 @@
         </div>
       </div>
 
-      <div class="card">
-        <h3>Add a Place</h3>
-        <label class="field">
-          <span>Name</span>
-          <input id="placeName" type="text" placeholder="e.g., Lisbon, Portugal" />
-        </label>
-        <div class="grid-2">
-          <label class="field">
-            <span>Lat</span>
-            <input id="placeLat" type="number" step="0.000001" placeholder="38.7223" />
-          </label>
-          <label class="field">
-            <span>Lng</span>
-            <input id="placeLng" type="number" step="0.000001" placeholder="-9.1393" />
-          </label>
-        </div>
-        <button id="btnAdd" class="btn primary">＋ Add</button>
-        <p class="hint">Tip: Add places in the order you traveled. You can reorder later with ↑ / ↓.</p>
-      </div>
+               </div>
 
       <div class="card small">
         <details>
@@ -74,5 +63,6 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://unpkg.com/leaflet-polylinedecorator@1.7.0/dist/leaflet.polylineDecorator.min.js"></script>
   <script src="script.js"></script>
+
 </body>
 </html>
