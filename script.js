@@ -272,7 +272,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   initMap();
 
   // UI hooks
- 
+  
   $('#btnClear').onclick = () => { if (confirm('Clear all places?')) clearAll(); };
   $('#btnDownload').onclick = downloadPlaces;
   $('#fileInput').onchange = (e) => { if (e.target.files && e.target.files[0]) importFromFile(e.target.files[0]); e.target.value = ''; };
