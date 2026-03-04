@@ -1,20 +1,20 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>My Europe Trip Map</title>
-<link rel="stylesheet" href="style.css">
-  <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS>My Europe Trip Map</h1>
-    <p class="subtitle">Click on the map to pin places you visited ✨</p>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>My Europe Trip Map</h1>
+    <p class="subtitle">Show your friends where you've been and the route you took ✈️</p>
   </header>
 
   <main class="layout">
-    <!-- Map -->
     <section class="map-panel">
       <div id="map"></div>
       <div class="map-legend">
@@ -25,58 +25,54 @@
       </div>
     </section>
 
-    <!-- Sidebar -->
-    <aside class="control-panel">
-
-      <!-- Your Places -->
       <div class="card">
         <h2>Your Places (in order)</h2>
         <ul id="placesList" class="places-list"></ul>
 
         <div class="controls-row">
-          <button id="btnClear" class="btn danger">🗑 Clear</button>
-          <button id="btnDownload" class="btn">💾 Export</button>
+          <button id="btnClear" class="btn danger" title="Remove all places">🗑 Clear</button>
+          <button id="btnDownload" class="btn" title="Download places.json">💾 Export</button>
           <label class="btn file">
             📥 Import <input id="fileInput" type="file" accept="application/json" hidden />
           </label>
         </div>
-
-        <p class="hint">
-          Click the map to add a pin.  
-          Edit place title/image/text via Export → edit → Import.
-        </p>
       </div>
 
-      <div class="card small">
-        <h3>Map Options</h3>
-        <label class="field checkbox">
-          <input id="toggleArrows" type="checkbox" checked />
-          Show arrows along path
+      <div class="card">
+        <h3>Add a Place</h3>
+        <label class="field">
+          <span>Name</span>
+          <input id="placeName" type="text" placeholder="e.g., Lisbon, Portugal" />
         </label>
+        <div class="grid-2">
+          <label class="field">
+            <span>Lat</span>
+            <input id="placeLat" type="number" step="0.000001" placeholder="38.7223" />
+          </label>
+          <label class="field">
+            <span>Lng</span>
+            <input id="placeLng" type="number" step="0.000001" placeholder="-9.1393" />
+          </label>
+        </div>
+        <button id="btnAdd" class="btn primary">＋ Add</button>
+        <p class="hint">Tip: Add places in the order you traveled. You can reorder later with ↑ / ↓.</p>
       </div>
 
       <div class="card small">
         <details>
           <summary>How to save & publish?</summary>
           <ol>
-            <li>Export <code>places.json</code>.</li>
-            <li>Replace <code>data/places.json</code> in your repo.</li>
-            <li>Commit & push.</li>
+            <li>Click <strong>Export</strong> to download <code>places.json</code>.</li>
+            <li>Replace <code>data/places.json</code> in your repo with the exported file.</li>
+            <li>Commit & push. On GitHub, enable <em>Pages</em> in Settings to publish.</li>
           </ol>
         </details>
       </div>
-
     </aside>
   </main>
 
-  <!-- Leaflet JS -->
-  https://unpkg.com/leaflet@1.9.4/dist/leaflet.js
-
-  <!-- Polyline decorator -->
-  https://unpkg.com/leaflet-polylinedecorator@1.7.0/dist/leaflet.polylineDecorator.min.js
-
-  <!-- Your application logic -->
-  script.js</script>
-
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet-polylinedecorator@1.7.0/dist/leaflet.polylineDecorator.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
