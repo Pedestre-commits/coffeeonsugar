@@ -1,37 +1,32 @@
 [
   {
-    "name": "Lisbon, Portugal",
-    "lat": 38.7223,
-    "lng": -9.1393
+    "name": "Lisboa",
+    "lat": 38.72714108717798,
+    "lng": -9.355055902247509
   },
   {
-    "name": "Madrid, Spain",
-    "lat": 40.4168,
-    "lng": -3.7038
+    "name": "Madrid",
+    "lat": 40.40944591592507,
+    "lng": -3.6913972212544093
   },
   {
-    "name": "Barcelona, Spain",
-    "lat": 41.3874,
-    "lng": 2.1686
+    "name": "Paris",
+    "lat": 48.836123488004134,
+    "lng": 2.418256211883963
   },
   {
-    "name": "Nice, France",
-    "lat": 43.7102,
-    "lng": 7.262
+    "name": "London",
+    "lat": 51.53767964286324,
+    "lng": -0.15307275098362053
   },
   {
-    "name": "Milan, Italy",
-    "lat": 45.4642,
-    "lng": 9.19
+    "name": "Barcelona",
+    "lat": 41.35958320301608,
+    "lng": 2.10971244936681
   },
   {
-    "name": "Zurich, Switzerland",
-    "lat": 47.3769,
-    "lng": 8.5417
-  },
-  {
-    "name": "Paris, France",
-    "lat": 48.8566,
-    "lng": 2.3522
+    "name": "Andorra",
+    "lat": 42.52426198067259,
+    "lng": 1.5773585731938766
   }
 ]
