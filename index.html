@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <header class="app-header">
     <h1>My Europe Trip Map</h1>
@@ -24,17 +26,19 @@
       </div>
     </section>
 
-<div class="card">
+<aside class="control-panel">
+<div class="card small" id="tripsCard">
   <h2>Trips</h2>
-  <div class="controls-row">
+  <div class="controls-row" id="tripsCard">
     <button id="year2026" class="btn primary">2026</button>
     <button id="year2025" class="btn">2025</button>
   </div>
 </div>
 
-      <div class="card">
-        <h2>Your Places (in order)</h2>
-        <ul id="placesList" class="places-list"></ul>
+<div class="card small" id="placesCard">
+  <h2>Your Places</h2>
+  <ul id="placesList" class="places-list"></ul>
+
 
         <div class="controls-row">
           <button id="btnClear" class="btn danger" title="Remove all places">🗑 Clear</button>
@@ -43,21 +47,9 @@
             📥 Import <input id="fileInput" type="file" accept="application/json" hidden />
           </label>
         </div>
-      </div>
+ </div>
 
-               </div>
-
-      <div class="card small">
-        <details>
-          <summary>How to save & publish?</summary>
-          <ol>
-            <li>Click <strong>Export</strong> to download <code>places.json</code>.</li>
-            <li>Replace <code>data/places.json</code> in your repo with the exported file.</li>
-            <li>Commit & push. On GitHub, enable <em>Pages</em> in Settings to publish.</li>
-          </ol>
-        </details>
-      </div>
-    </aside>
+         </aside>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
