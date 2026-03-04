@@ -460,14 +460,17 @@ window.addEventListener('DOMContentLoaded', () => {
     e.target.value = '';
   };
 
-  $('#btnAdd').onclick = () => {
+  
+const btnAdd = $('#btnAdd');
+if (btnAdd) {
+  btnAdd.onclick = () => {
     const name = $('#placeName').value.trim();
     const lat = parseFloat($('#placeLat').value);
     const lng = parseFloat($('#placeLng').value);
 
     if (!name) { alert('Please enter a place name.'); return; }
     if (Number.isNaN(lat) || Number.isNaN(lng)) {
-      alert('Please enter valid latitude and longitude.');
+      alert('Please enter valid latitude and longitude.'); 
       return;
     }
 
@@ -477,6 +480,8 @@ window.addEventListener('DOMContentLoaded', () => {
     $('#placeLat').value = '';
     $('#placeLng').value = '';
   };
+}
+
 
   loadTripsStartup();
 });
