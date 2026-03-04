@@ -105,9 +105,12 @@ body {
 
 .hint { color: var(--muted); font-size: .9rem; }
 
-@media (max-width: 1000px) {
+
+@media (max-width: 768px) {
   .layout { grid-template-columns: 1fr; }
-  #map { height: 60vh; }
+  #map { height: 50vh; }
+}
+
 }
 
 /* --- Compact Trips card --- */
