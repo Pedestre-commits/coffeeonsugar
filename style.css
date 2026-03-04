@@ -99,3 +99,75 @@ body {
   #map { height: 60vh; }
 }
 
+/* --- Compact Trips card --- */
+#tripsCard {
+  padding: 0.6rem 0.7rem;
+  margin-bottom: 0.6rem;
+  /* Keep it visibly small */
+  max-height: 92px;           /* adjust to taste: 80–110px */
+  overflow: hidden;           /* avoid growth if long labels */
+}
+
+#tripsCard h2 {
+  font-size: 1.05rem;         /* smaller title */
+  line-height: 1.1;
+  margin: 0 0 0.45rem 0;
+}
+
+/* Tighten the row that holds the year buttons */
+#tripsCard .controls-row {
+  gap: 0.4rem;
+  margin: 0.25rem 0 0 0;      /* reduce vertical spacing */
+}
+
+#tripsCard .btn {
+  padding: 0.35rem 0.6rem;    /* smaller buttons */
+  font-size: 0.92rem;
+}
+
+/* --- Compact Places card right below Trips --- */
+#placesCard {
+  padding: 0.7rem;
+  margin-top: 0.2rem;
+}
+
+#placesCard h2 {
+  font-size: 1.05rem;
+  margin: 0 0 0.5rem 0;
+}
+
+/* Keep the places list compact but readable */
+.places-list {
+  max-height: 200px;          /* reduce overall height footprint */
+  overflow-y: auto;
+  gap: 0.3rem;                 /* slightly tighter spacing */
+}
+
+.place-item {
+  padding: 0.35rem 0.45rem;
+  grid-template-columns: auto 1fr auto; /* already in your CSS—keep compact */
+}
+
+.place-index {
+  font-size: 0.8rem;
+  padding: 0.1rem 0.35rem;
+}
+
+.place-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Optional: make right column narrower so Trips looks smaller by proportion */
+.layout {
+  grid-template-columns: 1.8fr 0.85fr;   /* left map : right sidebar */
+}
+
+/* (Nice-to-have) keep Trips/Places visible while scrolling the map */
+@supports (position: sticky) {
+  #tripsCard, #placesCard {
+    position: sticky;
+    top: 0.6rem;               /* keeps Trips pinned; Places follows underneath */
+  }
+  #placesCard { top: 6.2rem; } /* offset so it sits just below Trips */
+}
