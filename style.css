@@ -20,6 +20,13 @@ body {
   min-height: 100vh;
 }
 
+
+.btn.active-year {
+  background: var(--primary-strong);
+  border-color: #2b6fff;
+  color: white;
+}
+
 .app-header { padding: 1.25rem 1.25rem 0.5rem; }
 .app-header h1 { margin: 0 0 0.25rem; font-weight: 700; letter-spacing: 0.3px; }
 .subtitle { margin: 0; color: var(--muted); }
@@ -91,3 +98,4 @@ body {
   .layout { grid-template-columns: 1fr; }
   #map { height: 60vh; }
 }
+
