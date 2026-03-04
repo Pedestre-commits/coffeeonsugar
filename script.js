@@ -131,11 +131,13 @@ function initMap() {
 
   markersLayer = L.layerGroup().addTo(map);
 
-  map.on("click", function(e) {
+  // On Click coordinate
+  
+ /* map.on("click", function(e) {
     const name = prompt("Name this place:");
     if (!name) return;
     addPlaceToTrip(name, e.latlng.lat, e.latlng.lng);
-  });
+  });*/
 }
 
 function markerIcon(index, role) {
