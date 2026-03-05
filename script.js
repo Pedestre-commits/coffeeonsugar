@@ -131,13 +131,11 @@ function initMap() {
 
   markersLayer = L.layerGroup().addTo(map);
 
-  // On Click coordinate
-  
- /* map.on("click", function(e) {
+  map.on("click", function(e) {
     const name = prompt("Name this place:");
     if (!name) return;
     addPlaceToTrip(name, e.latlng.lat, e.latlng.lng);
-  });*/
+  });
 }
 
 function markerIcon(index, role) {
@@ -153,16 +151,69 @@ function markerIcon(index, role) {
   });
 }
 
+function escapeHtml(s) {
+  return (s ?? '').replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+  }[m]));
+}
+
+
+// Accept normal relative paths ("images/foo.jpg", "./images/foo.jpg", "../images/foo.jpg"),
+// root-relative ("/images/foo.jpg"), and http(s) URLs.
+// Only block obviously dangerous "javascript:" URLs.
+function isSafeUrl(u) {
+  if (typeof u !== 'string') return false;
+  const s = u.trim();
+  if (/^javascript:/i.test(s)) return false;      // block JS URLs
+  return /^(https?:\/\/|\/|\.{0,2}\/|[A-Za-z0-9_\-./]+$)/i.test(s);
+}
+
+
+function markerTooltipHTML(p, i) {
+  const title = escapeHtml(p.title ?? p.name ?? `Stop ${i+1}`);
+  const desc = escapeHtml(p.desc ?? '');
+  const img = (p.img && isSafeUrl(p.img)) ? p.img : null;
+
+  return `
+    <div class="tt-card">
+      ${img ? `${img}` : ''}
+      <div class="tt-body">
+        <div class="tt-title">${title}</div>
+        ${desc ? `<div class="tt-text">${desc}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+``
+
+
+
 function renderMarkers() {
   markersLayer.clearLayers();
+
   places.forEach((p, i) => {
-    const role = i === 0 ? 'start' : (i === places.length-1 ? 'end' : 'mid');
-    const m = L.marker([p.lat, p.lng], { icon: markerIcon(i+1, role) })
-              .bindTooltip(`${i+1}. ${p.name}`, { direction: 'top', offset: [0, -12] });
+    const role = i === 0 ? 'start' : (i === places.length - 1 ? 'end' : 'mid');
+    const html = markerTooltipHTML(p, i);
+
+    const m = L.marker([p.lat, p.lng], { icon: markerIcon(i + 1, role) })
+      // Hover card (tooltip)
+      .bindTooltip(html, {
+        direction: 'top',
+        offset: [0, -12],
+        sticky: true,           // follows mouse for nicer UX
+        opacity: 1,
+        className: 'place-tooltip'
+      })
+      // Tap/click card (popup) – useful on touch devices
+      .bindPopup(html, {
+        className: 'place-popup',
+        maxWidth: 280,
+        autoPan: true,
+      });
+
     markersLayer.addLayer(m);
   });
 }
-
 function renderRoute() {
   if (routeLine) { map.removeLayer(routeLine); routeLine = null; }
   if (arrowsDecorator) { map.removeLayer(arrowsDecorator); arrowsDecorator = null; }
@@ -463,6 +514,8 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   
+
+
 const btnAdd = $('#btnAdd');
 if (btnAdd) {
   btnAdd.onclick = () => {
