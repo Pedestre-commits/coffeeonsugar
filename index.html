@@ -1,60 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Europe Trip Map</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Where I've Been</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>&#x2708;</text></svg>" />
 </head>
-
 <body>
+
   <header class="app-header">
-    <h1>My Europe Trip Map</h1>
-   
+    <div class="header-brand">
+      <svg class="header-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Where I've Been">
+        <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+        <circle cx="16" cy="16" r="2" fill="currentColor"/>
+        <path d="M16 3v4M16 25v4M3 16h4M25 16h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+        <path d="M12 20 L16 10 L20 20 L16 17.5 Z" fill="currentColor" opacity="0.9"/>
+      </svg>
+      <div>
+        <div class="header-title">Where I've Been</div>
+        <div class="header-sub">My travel map</div>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-pill">
+        <span class="val" id="hdrCountries">—</span>
+        <span class="lbl">Countries</span>
+      </div>
+      <div class="stat-pill">
+        <span class="val" id="hdrStops">—</span>
+        <span class="lbl">Stops</span>
+      </div>
+      <div class="stat-pill">
+        <span class="val" id="hdrYears">—</span>
+        <span class="lbl">Trips</span>
+      </div>
+    </div>
   </header>
 
-  <main class="layout">
-    <section class="map-panel">
+  <div class="main-layout">
+
+    <div class="map-panel">
       <div id="map"></div>
-      <div class="map-legend">
-        <span class="legend-item"><span class="dot start"></span> Start</span>
-        <span class="legend-item"><span class="dot middle"></span> Stops</span>
-        <span class="legend-item"><span class="dot end"></span> End</span>
-        <span class="legend-item"><span class="arrow-demo">➤➤➤</span> Direction</span>
-      </div>
-    </section>
-
-<aside class="control-panel">
-<div class="card small" id="tripsCard">
-  <h2>Trips</h2>
-  <div class="controls-row" id="tripsCard">
-    <button id="year2026" class="btn primary">2026</button>
-    <button id="year2025" class="btn">2025</button>
-  </div>
-</div>
-
-<div class="card small" id="placesCard">
-  <h2>Your Places</h2>
-  <ul id="placesList" class="places-list"></ul>
-
-
-        <div class="controls-row">
-          <button id="btnClear" class="btn danger" title="Remove all places">🗑 Clear</button>
-          <button id="btnDownload" class="btn" title="Download places.json">💾 Export</button>
-          <label class="btn file">
-            📥 Import <input id="fileInput" type="file" accept="application/json" hidden />
-          </label>
+      <div class="map-overlay-bottom">
+        <div class="map-legend">
+          <div class="legend-item"><span class="dot start"></span> Start</div>
+          <div class="legend-item"><span class="dot middle"></span> Stop</div>
+          <div class="legend-item"><span class="dot end"></span> End</div>
+          <div class="legend-item">
+            <svg width="24" height="8" viewBox="0 0 24 8"><line x1="0" y1="4" x2="17" y2="4" stroke="#5eead4" stroke-width="2" stroke-dasharray="4 2"/><polygon points="17,1 24,4 17,7" fill="#5eead4"/></svg>
+            Route
+          </div>
         </div>
- </div>
+      </div>
+    </div>
 
-         </aside>
-  </main>
+    <aside class="sidebar">
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="https://unpkg.com/leaflet-polylinedecorator@1.7.0/dist/leaflet.polylineDecorator.min.js"></script>
+      <div class="card">
+        <div class="card-title">Trips</div>
+        <div class="year-row" id="yearRow"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">This trip</div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="s-val" id="statStops">—</div>
+            <div class="s-lbl">Stops</div>
+          </div>
+          <div class="stat-box">
+            <div class="s-val" id="statDist">—</div>
+            <div class="s-lbl">Distance</div>
+          </div>
+          <div class="stat-box" style="grid-column:span 2">
+            <div class="s-val" id="statCtry">—</div>
+            <div class="s-lbl">Countries visited</div>
+          </div>
+        </div>
+        <div class="countries-row" id="countriesRow"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Stops</div>
+        <div class="places-list" id="placesList"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Data</div>
+        <div class="export-row">
+          <button class="btn-export" onclick="exportJSON()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export JSON
+          </button>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.js"></script>
   <script src="script.js"></script>
-
 </body>
 </html>

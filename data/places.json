@@ -1,15 +1,56 @@
 {
   "2025": [
-    { "name": "Lisbon, Portugal",           "lat": 38.7223,  "lng": -9.1393 },
-    { "name": "Madrid, Spain",              "lat": 40.4168,  "lng": -3.7038 },
-    { "name": "Paris, France",               "lat": 48.8361,  "lng": 2.4182 },
-    { "name": "London, UK",               "lat": 51.3722,  "lng": -0.1724 },
-    { "name": "Barcelona, Spain",               "lat": 41.3595,  "lng": 2.10971 },
-    { "name": "Andorra, Andorra",            "lat": 42.5242,  "lng": 1.57735 }
+    {
+      "name": "Lisbon, Portugal",
+      "lat": 38.7223,
+      "lng": -9.1393
+    },
+    {
+      "name": "Madrid, Spain",
+      "lat": 40.4168,
+      "lng": -3.7038
+    },
+    {
+      "name": "Paris, France",
+      "lat": 48.8361,
+      "lng": 2.4182
+    },
+    {
+      "name": "London, UK",
+      "lat": 51.3722,
+      "lng": -0.1724
+    },
+    {
+      "name": "Barcelona, Spain",
+      "lat": 41.3595,
+      "lng": 2.1097
+    },
+    {
+      "name": "Andorra, Andorra",
+      "lat": 42.5242,
+      "lng": 1.5774
+    }
   ],
   "2026": [
-    { "name": "Lisbon, Portugal",           "lat": 38.7223,  "lng": -9.1393 },
-    { "name": "Madrid, Spain",              "lat": 40.4168,  "lng": -3.7038 },
-    { "name": "Mons, Belgium",            "lat": 50.4551,  "lng": 3.9530 }
+    {
+      "name": "Lisbon, Portugal",
+      "lat": 38.7223,
+      "lng": -9.1393
+    },
+    {
+      "name": "Madrid, Spain",
+      "lat": 40.4168,
+      "lng": -3.7038
+    },
+    {
+      "name": "Mons, Belgium",
+      "lat": 50.4551,
+      "lng": 3.953
+    },
+    {
+      "name": "Norfolk, VA, USA",
+      "lat": 36.8508,
+      "lng": -76.2859
+    }
   ]
 }
