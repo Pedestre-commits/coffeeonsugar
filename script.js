@@ -170,11 +170,9 @@ function initMap() {
 }
 
 // ===== MARKER ICON =====
-function markerIcon(num, role) {
-  const color = role === 'start' ? '#4ade80' : role === 'end' ? '#f87171' : '#fbbf24';
-  const border = role === 'start' ? '#4ade80' : role === 'end' ? '#f87171' : '#fbbf24';
+function markerIcon(num) {
   return L.divIcon({
-    html: `<div class="marker-pin" style="--mc:${color};--mb:${border}"><span>${num}</span></div>`,
+    html: `<div class="marker-pin"><span>${num}</span></div>`,
     className: '',
     iconSize: [28, 28],
     iconAnchor: [14, 28],
@@ -212,8 +210,7 @@ function renderMapData() {
 
   // Markers
   places.forEach((p, i) => {
-    const role   = i === 0 ? 'start' : i === places.length - 1 ? 'end' : 'mid';
-    const marker = L.marker([p.lat, p.lng], { icon: markerIcon(i + 1, role) });
+    const marker = L.marker([p.lat, p.lng], { icon: markerIcon(i + 1) });
     const country  = extractCountry(p.name);
     const code     = COUNTRY_ISO[country];
     const flagHtml = code
@@ -294,9 +291,8 @@ function renderPlacesList() {
     return;
   }
   ul.innerHTML = places.map((p, i) => {
-    const cls = i === 0 ? 'is-start' : i === places.length - 1 ? 'is-end' : '';
     return `<div class="place-item" onclick="flyToStop(${i})">
-      <div class="place-idx ${cls}">${i + 1}</div>
+      <div class="place-idx">${i + 1}</div>
       <div class="place-name" title="${p.name}">${p.name}</div>
     </div>`;
   }).join('');
@@ -307,7 +303,6 @@ function updateGlobalStats() {
   const stops = Object.values(TRIPS).reduce((a, t) => a + t.length, 0);
   $('#hdrCountries').textContent = all.length   || '—';
   $('#hdrStops').textContent     = stops         || '—';
-  $('#hdrYears').textContent     = Object.keys(TRIPS).length || '—';
 }
 
 // ===== YEAR MGMT =====
