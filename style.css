@@ -307,6 +307,16 @@ ul,ol{list-style:none;}
   line-height:1;
 }
 
+/* ADMIN LINK */
+.header-admin-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:var(--r-md);
+  border:1px solid var(--border);background:var(--surface-offset);
+  color:var(--text-faint);text-decoration:none;flex-shrink:0;
+  transition:background var(--t),color var(--t),border-color var(--t);
+}
+.header-admin-btn:hover{background:var(--surface-dynamic);color:var(--primary);border-color:var(--primary);}
+
 /* RESPONSIVE */
 @media(max-width:860px){
   .main-layout{grid-template-columns:1fr;height:auto;}
