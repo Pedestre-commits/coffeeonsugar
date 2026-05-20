@@ -3,54 +3,104 @@
     {
       "name": "Lisbon, Portugal",
       "lat": 38.7223,
-      "lng": -9.1393
+      "lng": -9.1393,
+      "photos": [
+        "https://loremflickr.com/900/600/lisbon,portugal?lock=1",
+        "https://loremflickr.com/900/600/lisbon,portugal?lock=2",
+        "https://loremflickr.com/900/600/lisbon,portugal?lock=3"
+      ]
     },
     {
       "name": "Madrid, Spain",
       "lat": 40.4168,
-      "lng": -3.7038
+      "lng": -3.7038,
+      "photos": [
+        "https://loremflickr.com/900/600/madrid,spain?lock=1",
+        "https://loremflickr.com/900/600/madrid,spain?lock=2",
+        "https://loremflickr.com/900/600/madrid,spain?lock=3"
+      ]
     },
     {
       "name": "Paris, France",
       "lat": 48.8361,
-      "lng": 2.4182
+      "lng": 2.4182,
+      "photos": [
+        "https://loremflickr.com/900/600/paris,france?lock=1",
+        "https://loremflickr.com/900/600/paris,france?lock=2",
+        "https://loremflickr.com/900/600/paris,france?lock=3"
+      ]
     },
     {
       "name": "London, UK",
       "lat": 51.3722,
-      "lng": -0.1724
+      "lng": -0.1724,
+      "photos": [
+        "https://loremflickr.com/900/600/london,england?lock=1",
+        "https://loremflickr.com/900/600/london,england?lock=2",
+        "https://loremflickr.com/900/600/london,england?lock=3"
+      ]
     },
     {
       "name": "Barcelona, Spain",
       "lat": 41.3595,
-      "lng": 2.1097
+      "lng": 2.1097,
+      "photos": [
+        "https://loremflickr.com/900/600/barcelona,spain?lock=1",
+        "https://loremflickr.com/900/600/barcelona,spain?lock=2",
+        "https://loremflickr.com/900/600/barcelona,spain?lock=3"
+      ]
     },
     {
       "name": "Andorra, Andorra",
       "lat": 42.5242,
-      "lng": 1.5774
+      "lng": 1.5774,
+      "photos": [
+        "https://loremflickr.com/900/600/andorra?lock=1",
+        "https://loremflickr.com/900/600/andorra?lock=2",
+        "https://loremflickr.com/900/600/andorra?lock=3"
+      ]
     }
   ],
   "2026": [
     {
       "name": "Lisbon, Portugal",
       "lat": 38.7223,
-      "lng": -9.1393
+      "lng": -9.1393,
+      "photos": [
+        "https://loremflickr.com/900/600/lisbon,portugal?lock=4",
+        "https://loremflickr.com/900/600/lisbon,portugal?lock=5",
+        "https://loremflickr.com/900/600/lisbon,portugal?lock=6"
+      ]
     },
     {
       "name": "Madrid, Spain",
       "lat": 40.4168,
-      "lng": -3.7038
+      "lng": -3.7038,
+      "photos": [
+        "https://loremflickr.com/900/600/madrid,spain?lock=4",
+        "https://loremflickr.com/900/600/madrid,spain?lock=5",
+        "https://loremflickr.com/900/600/madrid,spain?lock=6"
+      ]
     },
     {
       "name": "Mons, Belgium",
       "lat": 50.4551,
-      "lng": 3.953
+      "lng": 3.953,
+      "photos": [
+        "https://loremflickr.com/900/600/mons,belgium?lock=1",
+        "https://loremflickr.com/900/600/mons,belgium?lock=2",
+        "https://loremflickr.com/900/600/mons,belgium?lock=3"
+      ]
     },
     {
       "name": "Norfolk, VA, USA",
       "lat": 36.8508,
-      "lng": -76.2859
+      "lng": -76.2859,
+      "photos": [
+        "https://loremflickr.com/900/600/norfolk,virginia?lock=1",
+        "https://loremflickr.com/900/600/norfolk,virginia?lock=2",
+        "https://loremflickr.com/900/600/norfolk,virginia?lock=3"
+      ]
     }
   ]
 }

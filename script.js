@@ -7,6 +7,38 @@ let activeYear = null;
 let places     = [];
 let map, markersLayer, routeLine, arrowsDecorator;
 
+// ===== COUNTRY → ISO MAP =====
+const COUNTRY_ISO = {
+  'Afghanistan':'af','Albania':'al','Algeria':'dz','Andorra':'ad','Angola':'ao',
+  'Argentina':'ar','Armenia':'am','Australia':'au','Austria':'at','Azerbaijan':'az',
+  'Bahrain':'bh','Bangladesh':'bd','Belarus':'by','Belgium':'be','Bolivia':'bo',
+  'Bosnia':'ba','Brazil':'br','Bulgaria':'bg','Cambodia':'kh','Cameroon':'cm',
+  'Canada':'ca','Chile':'cl','China':'cn','Colombia':'co','Croatia':'hr',
+  'Cuba':'cu','Czech Republic':'cz','Denmark':'dk','Ecuador':'ec','Egypt':'eg',
+  'Estonia':'ee','Ethiopia':'et','Finland':'fi','France':'fr','Georgia':'ge',
+  'Germany':'de','Ghana':'gh','Greece':'gr','Guatemala':'gt','Honduras':'hn',
+  'Hungary':'hu','Iceland':'is','India':'in','Indonesia':'id','Iran':'ir',
+  'Iraq':'iq','Ireland':'ie','Israel':'il','Italy':'it','Jamaica':'jm',
+  'Japan':'jp','Jordan':'jo','Kazakhstan':'kz','Kenya':'ke','Kosovo':'xk',
+  'Kuwait':'kw','Latvia':'lv','Lebanon':'lb','Libya':'ly','Lithuania':'lt',
+  'Luxembourg':'lu','Malaysia':'my','Malta':'mt','Mexico':'mx','Moldova':'md',
+  'Monaco':'mc','Mongolia':'mn','Montenegro':'me','Morocco':'ma','Myanmar':'mm',
+  'Nepal':'np','Netherlands':'nl','New Zealand':'nz','Nicaragua':'ni',
+  'Nigeria':'ng','North Macedonia':'mk','Norway':'no','Oman':'om','Pakistan':'pk',
+  'Palestine':'ps','Panama':'pa','Paraguay':'py','Peru':'pe','Philippines':'ph',
+  'Poland':'pl','Portugal':'pt','Qatar':'qa','Romania':'ro','Russia':'ru',
+  'Saudi Arabia':'sa','Senegal':'sn','Serbia':'rs','Singapore':'sg','Slovakia':'sk',
+  'Slovenia':'si','Somalia':'so','South Africa':'za','South Korea':'kr',
+  'Spain':'es','Sri Lanka':'lk','Sudan':'sd','Sweden':'se','Switzerland':'ch',
+  'Syria':'sy','Taiwan':'tw','Tanzania':'tz','Thailand':'th','Tunisia':'tn',
+  'Turkey':'tr','Turkiye':'tr','Uganda':'ug','Ukraine':'ua',
+  'UAE':'ae','United Arab Emirates':'ae',
+  'UK':'gb','United Kingdom':'gb',
+  'USA':'us','United States':'us',
+  'Uruguay':'uy','Uzbekistan':'uz','Venezuela':'ve','Vietnam':'vn','Yemen':'ye',
+  'Zimbabwe':'zw',
+};
+
 // ===== UTILS =====
 const $ = sel => document.querySelector(sel);
 
@@ -43,6 +75,72 @@ function getYearCountries(y) {
   (TRIPS[y] || []).forEach(p => s.add(extractCountry(p.name)));
   return [...s];
 }
+
+// ===== GALLERY =====
+let galleryPlaceIdx = 0;
+let galleryPhotoIdx = 0;
+
+function openGallery(placeIdx) {
+  galleryPlaceIdx = placeIdx;
+  galleryPhotoIdx = 0;
+  renderGallery();
+  document.getElementById('galleryModal').classList.add('open');
+}
+
+function closeGallery() {
+  document.getElementById('galleryModal').classList.remove('open');
+}
+
+function galleryNav(dir) {
+  const photos = places[galleryPlaceIdx].photos || [];
+  galleryPhotoIdx = (galleryPhotoIdx + dir + photos.length) % photos.length;
+  renderGallery();
+}
+
+function renderGallery() {
+  const p       = places[galleryPlaceIdx];
+  const photos  = p.photos || [];
+  const country = extractCountry(p.name);
+  const code    = COUNTRY_ISO[country];
+
+  document.getElementById('galleryFlag').src        = code ? `https://flagcdn.com/w40/${code}.png` : '';
+  document.getElementById('galleryLocation').textContent = p.name;
+  document.getElementById('galleryImg').src         = photos[galleryPhotoIdx];
+  document.getElementById('galleryCounter').textContent  = `${galleryPhotoIdx + 1} / ${photos.length}`;
+
+  const thumbs = document.getElementById('galleryThumbs');
+  thumbs.innerHTML = photos.map((src, i) =>
+    `<img src="${src}" class="gallery-thumb${i === galleryPhotoIdx ? ' active' : ''}" onclick="galleryPhotoIdx=${i};renderGallery()" />`
+  ).join('');
+}
+
+document.addEventListener('keydown', e => {
+  const modal = document.getElementById('galleryModal');
+  if (!modal.classList.contains('open')) return;
+  if (e.key === 'ArrowLeft')  galleryNav(-1);
+  if (e.key === 'ArrowRight') galleryNav(1);
+  if (e.key === 'Escape')     closeGallery();
+});
+
+// ===== COUNTRY MODAL =====
+function openCountryModal(country) {
+  const code = COUNTRY_ISO[country];
+  const img  = document.getElementById('modalFlag');
+  img.src    = code ? `https://flagcdn.com/w320/${code}.png` : '';
+  img.alt    = country;
+  document.getElementById('modalName').textContent = country;
+  document.getElementById('countryModal').classList.add('open');
+}
+
+function closeCountryModal(e) {
+  if (e && e.target !== document.getElementById('countryModal')) return;
+  document.getElementById('countryModal').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('countryModal').classList.remove('open');
+  // Gallery keydown is handled in its own listener above
+});
 
 function toast(msg, dur = 2200) {
   const t = $('#toast');
@@ -116,7 +214,17 @@ function renderMapData() {
   places.forEach((p, i) => {
     const role   = i === 0 ? 'start' : i === places.length - 1 ? 'end' : 'mid';
     const marker = L.marker([p.lat, p.lng], { icon: markerIcon(i + 1, role) });
-    marker.bindPopup(`<strong>${p.name}</strong><br><small>${p.lat.toFixed(4)}, ${p.lng.toFixed(4)}</small>`);
+    const country  = extractCountry(p.name);
+    const code     = COUNTRY_ISO[country];
+    const flagHtml = code
+      ? `<img src="https://flagcdn.com/w40/${code}.png" style="height:14px;border-radius:2px;vertical-align:middle;margin-right:6px;">`
+      : '';
+    const hasPhotos = p.photos && p.photos.length > 0;
+    const popupHtml = `
+      <div style="display:flex;align-items:center;gap:0;margin-bottom:${hasPhotos ? '8px' : '0'}">${flagHtml}<strong>${p.name}</strong></div>
+      ${hasPhotos ? `<button onclick="openGallery(${i})" style="width:100%;padding:5px 10px;background:#5eead422;border:1px solid #5eead455;border-radius:6px;color:#5eead4;font-size:0.78rem;cursor:pointer;">&#128247; View ${p.photos.length} photos</button>` : ''}
+    `;
+    marker.bindPopup(popupHtml, { minWidth: 160 });
     marker.addTo(markersLayer);
   });
 
@@ -175,7 +283,7 @@ function renderStats() {
   $('#statCtry').textContent  = countries.length || '—';
 
   $('#countriesRow').innerHTML = countries.length
-    ? countries.map(c => `<span class="country-chip">${c}</span>`).join('')
+    ? countries.map(c => `<span class="country-chip" onclick="openCountryModal('${c}')">${c}</span>`).join('')
     : `<span style="color:var(--text-faint);font-size:0.75rem">No data</span>`;
 }
 

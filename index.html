@@ -96,6 +96,33 @@
 
   <div id="toast"></div>
 
+  <div id="galleryModal" class="gallery-overlay">
+    <div class="gallery-header">
+      <div class="gallery-title">
+        <img id="galleryFlag" class="gallery-flag-img" src="" alt="" />
+        <span id="galleryLocation"></span>
+      </div>
+      <div class="gallery-meta">
+        <span id="galleryCounter" class="gallery-counter"></span>
+        <button class="gallery-close" onclick="closeGallery()">&#x2715;</button>
+      </div>
+    </div>
+    <div class="gallery-body">
+      <button class="gallery-arrow gallery-prev" onclick="galleryNav(-1)">&#8249;</button>
+      <img id="galleryImg" class="gallery-img" src="" alt="" />
+      <button class="gallery-arrow gallery-next" onclick="galleryNav(1)">&#8250;</button>
+    </div>
+    <div class="gallery-thumbs" id="galleryThumbs"></div>
+  </div>
+
+  <div id="countryModal" class="modal-overlay" onclick="closeCountryModal(event)">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeCountryModal()">&#x2715;</button>
+      <img id="modalFlag" src="" alt="" class="modal-flag" />
+      <div id="modalName" class="modal-name"></div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.js"></script>
   <script src="script.js"></script>
