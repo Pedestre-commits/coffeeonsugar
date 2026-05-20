@@ -263,8 +263,6 @@ ul,ol{list-style:none;}
   display:grid;place-items:center;
   font-size:0.7rem;font-weight:700;color:var(--blue);flex-shrink:0;
 }
-.place-idx.is-start{border-color:var(--success);color:var(--success);}
-.place-idx.is-end{border-color:var(--danger);color:var(--danger);}
 .place-name{font-size:0.85rem;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
 .empty-state{text-align:center;padding:24px 16px;color:var(--text-faint);font-size:0.82rem;}
