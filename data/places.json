@@ -101,6 +101,12 @@
         "https://loremflickr.com/900/600/norfolk,virginia?lock=2",
         "https://loremflickr.com/900/600/norfolk,virginia?lock=3"
       ]
+    },
+    {
+      "name": "Seville, Spain",
+      "lat": 37.38863,
+      "lng": -5.99534,
+      "photos": []
     }
   ]
 }
