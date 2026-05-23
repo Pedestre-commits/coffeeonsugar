@@ -1,4 +1,4 @@
-const DATA_URL = 'data/kpop.json?v=2';
+const DATA_URL = 'data/kpop.json?v=4';
 const LASTFM_KEY = '1269f913a8f04b71e848ecf0718dbe5a';
 const LASTFM_USER = 'Pedestre95';
 
@@ -221,13 +221,103 @@ loadTopArtists('7day');
 
 // ── GROUPS I FOLLOW ──
 function renderGroups(groups) {
-  const grid = document.getElementById('groups-grid');
-  const count = document.getElementById('groups-count');
+  const grid      = document.getElementById('groups-grid');
+  const alsoEl    = document.getElementById('groups-also');
+  const alsoGrid  = document.getElementById('groups-also-grid');
+  const countEl   = document.getElementById('groups-count');
   if (!groups || !groups.length) return;
-  count.textContent = groups.length;
-  grid.innerHTML = groups
-    .map(name => `<span class="group-chip"><span>${name}</span></span>`)
-    .join('');
+
+  // Support legacy flat-string format
+  if (typeof groups[0] === 'string') {
+    countEl.textContent = groups.length;
+    grid.innerHTML = groups.map(n => `<span class="group-chip"><span>${n}</span></span>`).join('');
+    return;
+  }
+
+  const mainGroups = groups.filter(g => g.tier !== 3).sort((a, b) => b.songs - a.songs);
+  const alsoGroups = groups.filter(g => g.tier === 3).sort((a, b) => a.name.localeCompare(b.name));
+
+  countEl.textContent = groups.length;
+
+  // sqrt scale: 0.65rem (min) → 1.45rem (max)
+  const maxSongs = Math.max(...mainGroups.map(g => g.songs || 1));
+  function chipSize(songs) {
+    const s = Math.max(0, ((songs || 1) - 1) / (maxSongs - 1));
+    return (0.65 + Math.sqrt(s) * 0.80).toFixed(3) + 'rem';
+  }
+
+  grid.innerHTML = mainGroups.map(g =>
+    `<span class="group-chip" style="--chip-size:${chipSize(g.songs)}" title="${g.songs} songs in the mix">` +
+    `<span>${g.name}</span></span>`
+  ).join('');
+
+  if (alsoGroups.length) {
+    alsoEl.hidden = false;
+    alsoGrid.innerHTML = alsoGroups.map(g =>
+      `<span class="group-chip group-chip--muted" style="--chip-size:0.65rem">` +
+      `<span>${g.name}</span></span>`
+    ).join('');
+  }
+}
+
+// ── MARGIN LOGOS ──
+function slugify(name) {
+  return name.toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+}
+
+// Normalise artist names for comparison (handles æspa ↔ aespa etc.)
+function normalizeArtist(name) {
+  return name.toLowerCase().replace(/æ/g, 'ae').replace(/[^a-z0-9]/g, '');
+}
+
+function renderMarginLogos(groups, attendedArtists = new Set()) {
+  // 12 fixed viewport slots — 6 per side, staggered vertically
+  const slots = [
+    { side: 'left',  top: '8%',  px: 20, size: 60, rot: -8 },
+    { side: 'left',  top: '24%', px: 36, size: 50, rot:  6 },
+    { side: 'left',  top: '42%', px: 16, size: 64, rot: -4 },
+    { side: 'left',  top: '58%', px: 30, size: 52, rot:  7 },
+    { side: 'left',  top: '75%', px: 22, size: 56, rot: -6 },
+    { side: 'left',  top: '88%', px: 38, size: 46, rot:  5 },
+    { side: 'right', top: '14%', px: 30, size: 56, rot:  7 },
+    { side: 'right', top: '31%', px: 14, size: 64, rot: -5 },
+    { side: 'right', top: '47%', px: 38, size: 48, rot:  4 },
+    { side: 'right', top: '63%', px: 20, size: 60, rot: -7 },
+    { side: 'right', top: '79%', px: 36, size: 52, rot:  8 },
+    { side: 'right', top: '92%', px: 18, size: 58, rot: -4 },
+  ];
+
+  // Top tier-1 groups by song count fill the slots
+  // File naming: slugify(group.name) + '.png'
+  // e.g. NMIXX → nmixx.png, KISS OF LIFE → kiss-of-life.png, (G)I-DLE → gi-dle.png
+  const topGroups = groups
+    .filter(g => g.tier !== 3)
+    .sort((a, b) => b.songs - a.songs)
+    .slice(0, slots.length);
+
+  topGroups.forEach((group, i) => {
+    const s = slots[i];
+    const img = document.createElement('img');
+    img.src = `assets/logos/${slugify(group.name)}.svg`;
+    img.alt = group.name;
+    const seen = attendedArtists.has(normalizeArtist(group.name));
+    img.className = 'margin-logo' + (seen ? ' margin-logo--seen' : '');
+    img.style.top = s.top;
+    img.style[s.side] = s.px + 'px';
+    img.style.width = s.size + 'px';
+    img.style.transform = `rotate(${s.rot}deg)`;
+    img.onerror = () => {
+      if (img.src.includes('.svg')) {
+        img.src = img.src.replace('.svg', '.png');
+      } else {
+        img.style.display = 'none';
+      }
+    };
+    document.body.appendChild(img);
+  });
 }
 
 // ── CONCERTS ──
@@ -271,6 +361,8 @@ fetch(DATA_URL)
     }
 
     renderGroups(groups);
+    const attendedArtists = new Set(past.map(c => normalizeArtist(c.artist)));
+    renderMarginLogos(groups, attendedArtists);
   })
   .catch(() => {
     document.getElementById('past-grid').innerHTML =
