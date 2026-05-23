@@ -1,2 +1,5 @@
 .vs/
 .claude/settings.local.json
+.env
+.env.*
+*.local
