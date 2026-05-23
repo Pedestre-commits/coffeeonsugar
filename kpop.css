@@ -668,6 +668,19 @@ body {
   gap: 6px;
 }
 
+/* ── MARGIN LOGOS ── */
+.margin-logo {
+  position: fixed;
+  opacity: 0.11;
+  filter: grayscale(20%);
+  pointer-events: none;
+  z-index: 0;
+  display: none;
+}
+@media (min-width: 1400px) {
+  .margin-logo { display: block; }
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 600px) {
   .stats { flex-direction: column; border-radius: 12px; }

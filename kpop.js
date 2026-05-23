@@ -260,6 +260,54 @@ function renderGroups(groups) {
   }
 }
 
+// ── MARGIN LOGOS ──
+function slugify(name) {
+  return name.toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+}
+
+function renderMarginLogos(groups) {
+  // 12 fixed viewport slots — 6 per side, staggered vertically
+  const slots = [
+    { side: 'left',  top: '8%',  px: 20, size: 60, rot: -8 },
+    { side: 'left',  top: '24%', px: 36, size: 50, rot:  6 },
+    { side: 'left',  top: '42%', px: 16, size: 64, rot: -4 },
+    { side: 'left',  top: '58%', px: 30, size: 52, rot:  7 },
+    { side: 'left',  top: '75%', px: 22, size: 56, rot: -6 },
+    { side: 'left',  top: '88%', px: 38, size: 46, rot:  5 },
+    { side: 'right', top: '14%', px: 30, size: 56, rot:  7 },
+    { side: 'right', top: '31%', px: 14, size: 64, rot: -5 },
+    { side: 'right', top: '47%', px: 38, size: 48, rot:  4 },
+    { side: 'right', top: '63%', px: 20, size: 60, rot: -7 },
+    { side: 'right', top: '79%', px: 36, size: 52, rot:  8 },
+    { side: 'right', top: '92%', px: 18, size: 58, rot: -4 },
+  ];
+
+  // Top tier-1 groups by song count fill the slots
+  // File naming: slugify(group.name) + '.png'
+  // e.g. NMIXX → nmixx.png, KISS OF LIFE → kiss-of-life.png, (G)I-DLE → gi-dle.png
+  const topGroups = groups
+    .filter(g => g.tier !== 3)
+    .sort((a, b) => b.songs - a.songs)
+    .slice(0, slots.length);
+
+  topGroups.forEach((group, i) => {
+    const s = slots[i];
+    const img = document.createElement('img');
+    img.src = `assets/logos/${slugify(group.name)}.png`;
+    img.alt = group.name;
+    img.className = 'margin-logo';
+    img.style.top = s.top;
+    img.style[s.side] = s.px + 'px';
+    img.style.width = s.size + 'px';
+    img.style.transform = `rotate(${s.rot}deg)`;
+    img.onerror = () => img.style.display = 'none';
+    document.body.appendChild(img);
+  });
+}
+
 // ── CONCERTS ──
 fetch(DATA_URL)
   .then(r => r.json())
@@ -301,6 +349,7 @@ fetch(DATA_URL)
     }
 
     renderGroups(groups);
+    renderMarginLogos(groups);
   })
   .catch(() => {
     document.getElementById('past-grid').innerHTML =
