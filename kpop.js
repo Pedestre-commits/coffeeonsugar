@@ -1,6 +1,6 @@
 const DATA_URL = 'data/kpop.json';
 
-const EXACT_CASE_ARTISTS = new Set(['æspa']);
+const EXACT_CASE_ARTISTS = new Set([]);
 
 function displayArtist(name) {
   return EXACT_CASE_ARTISTS.has(name) ? name : name.toUpperCase();
