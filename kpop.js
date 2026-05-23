@@ -296,14 +296,20 @@ function renderMarginLogos(groups) {
   topGroups.forEach((group, i) => {
     const s = slots[i];
     const img = document.createElement('img');
-    img.src = `assets/logos/${slugify(group.name)}.png`;
+    img.src = `assets/logos/${slugify(group.name)}.svg`;
     img.alt = group.name;
     img.className = 'margin-logo';
     img.style.top = s.top;
     img.style[s.side] = s.px + 'px';
     img.style.width = s.size + 'px';
     img.style.transform = `rotate(${s.rot}deg)`;
-    img.onerror = () => img.style.display = 'none';
+    img.onerror = () => {
+      if (img.src.includes('.svg')) {
+        img.src = img.src.replace('.svg', '.png');
+      } else {
+        img.style.display = 'none';
+      }
+    };
     document.body.appendChild(img);
   });
 }
