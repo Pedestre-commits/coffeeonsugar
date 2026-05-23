@@ -85,7 +85,7 @@ function renderCard(concert) {
           </span>
         </div>
         <div>
-          <h2 class="artist-name">${displayArtist(concert.artist)}</h2>
+          <h2 class="artist-name${concert.artist === 'æspa' ? ' compact' : ''}">${displayArtist(concert.artist)}</h2>
           ${tourHtml}
         </div>
         <div class="details">
