@@ -250,7 +250,7 @@ body {
 .tour-name {
   font-size: 0.8rem;
   color: var(--text-muted);
-  margin-top: -8px;
+  margin-top: 6px;
   letter-spacing: 0.03em;
 }
 
