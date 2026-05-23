@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "travel-map",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "3000", "--directory", "D:\\Profiles\\Documents\\coffeeonsugar"],
+      "port": 3000
+    }
+  ]
+}
