@@ -593,6 +593,48 @@ body {
 
 .lastfm-credit a:hover { text-decoration: underline; }
 
+/* ── GROUPS I FOLLOW ── */
+.groups-count {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+.groups-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.group-chip {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.09);
+  cursor: default;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+
+.group-chip span {
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.group-chip:hover {
+  border-color: rgba(168,85,247,0.5);
+  background: rgba(168,85,247,0.07);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(168,85,247,0.18);
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 600px) {
   .stats { flex-direction: column; border-radius: 12px; }
