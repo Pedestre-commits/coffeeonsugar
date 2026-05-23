@@ -239,7 +239,7 @@ body {
 .artist-name {
   font-size: 1.9rem;
   font-weight: 900;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   line-height: 1;
   background: var(--grad);
   -webkit-background-clip: text;

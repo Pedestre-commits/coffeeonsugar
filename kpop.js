@@ -1,5 +1,11 @@
 const DATA_URL = 'data/kpop.json';
 
+const EXACT_CASE_ARTISTS = new Set(['æspa']);
+
+function displayArtist(name) {
+  return EXACT_CASE_ARTISTS.has(name) ? name : name.toUpperCase();
+}
+
 function formatDate(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -79,7 +85,7 @@ function renderCard(concert) {
           </span>
         </div>
         <div>
-          <h2 class="artist-name">${concert.artist}</h2>
+          <h2 class="artist-name">${displayArtist(concert.artist)}</h2>
           ${tourHtml}
         </div>
         <div class="details">
