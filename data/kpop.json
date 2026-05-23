@@ -1,0 +1,47 @@
+[
+  {
+    "id": "blackpink-2023-london",
+    "artist": "BLACKPINK",
+    "tour": "Born Pink World Tour",
+    "date": "2023-06-01",
+    "venue": "BST Hyde Park",
+    "city": "London, UK",
+    "went_with": ["Ana", "Miguel"],
+    "rating": 5,
+    "setlist": ["Pink Venom", "Shut Down", "How You Like That", "Kill This Love", "Lovesick Girls", "Pretty Savage", "Tally"],
+    "notes": "Unreal energy. Rosé's solo was breathtaking.",
+    "photos": [],
+    "ticket_stub": null,
+    "upcoming": false
+  },
+  {
+    "id": "stray-kids-2024-london",
+    "artist": "Stray Kids",
+    "tour": "5-STAR Dome Tour",
+    "date": "2024-02-19",
+    "venue": "The O2",
+    "city": "London, UK",
+    "went_with": ["Ana"],
+    "rating": 5,
+    "setlist": ["Miroh", "God's Menu", "Back Door", "MANIAC", "VENOM", "District 9"],
+    "notes": "Bang Chan addressed the crowd in English the whole time. Incredible production.",
+    "photos": [],
+    "ticket_stub": null,
+    "upcoming": false
+  },
+  {
+    "id": "txt-2025-london",
+    "artist": "TXT",
+    "tour": "ACT: PROMISE",
+    "date": "2025-09-20",
+    "venue": "The O2",
+    "city": "London, UK",
+    "went_with": [],
+    "rating": null,
+    "setlist": [],
+    "notes": "",
+    "photos": [],
+    "ticket_stub": null,
+    "upcoming": true
+  }
+]

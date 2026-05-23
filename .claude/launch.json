@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "travel-map",
-      "runtimeExecutable": "C:\\Program Files (x86)\\IIS Express\\iisexpress.exe",
-      "runtimeArgs": ["/path:D:\\Profiles\\Documents\\coffeeonsugar", "/port:3000"],
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "3000", "--directory", "D:\\Profiles\\Documents\\coffeeonsugar"],
       "port": 3000
     }
   ]

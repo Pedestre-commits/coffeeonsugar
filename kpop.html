@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K-Pop Concerts — coffeeonsugar</title>
+  <link rel="stylesheet" href="kpop.css">
+</head>
+<body>
+
+  <header class="hero">
+    <a href="/" class="back-link">← coffeeonsugar</a>
+    <p class="hero-eyebrow">Bruno's</p>
+    <h1 class="hero-title">K-POP CONCERTS</h1>
+    <p class="hero-sub">every show. every memory.</p>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num" id="stat-shows">–</span>
+        <span class="stat-label">Shows</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-artists">–</span>
+        <span class="stat-label">Artists</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-upcoming">–</span>
+        <span class="stat-label">Upcoming</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="upcoming-section">
+      <div class="section-header">
+        <span class="section-title">Upcoming</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="concerts-grid" id="upcoming-grid"></div>
+    </section>
+
+    <section class="section" id="past-section">
+      <div class="section-header">
+        <span class="section-title">Attended</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="concerts-grid" id="past-grid"></div>
+    </section>
+  </main>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close">&times;</button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <script src="kpop.js"></script>
+</body>
+</html>
