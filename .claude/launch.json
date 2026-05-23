@@ -4,7 +4,7 @@
     {
       "name": "travel-map",
       "runtimeExecutable": "C:\\Program Files (x86)\\IIS Express\\iisexpress.exe",
-      "runtimeArgs": ["/path:C:\\Users\\Bruno\\source\\repos\\coffeeonsugar - Copy", "/port:3000"],
+      "runtimeArgs": ["/path:D:\\Profiles\\Documents\\coffeeonsugar", "/port:3000"],
       "port": 3000
     }
   ]
