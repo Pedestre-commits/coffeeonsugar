@@ -240,15 +240,15 @@ body {
   font-size: 1.9rem;
   font-weight: 900;
   letter-spacing: 0.08em;
-}
-
-.artist-name.compact {
-  letter-spacing: 0.02em;
   line-height: 1;
   background: var(--grad);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.artist-name.compact {
+  letter-spacing: 0.02em;
 }
 
 .tour-name {
