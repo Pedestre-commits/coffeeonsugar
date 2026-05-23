@@ -268,7 +268,12 @@ function slugify(name) {
     .replace(/\s+/g, '-');
 }
 
-function renderMarginLogos(groups) {
+// Normalise artist names for comparison (handles æspa ↔ aespa etc.)
+function normalizeArtist(name) {
+  return name.toLowerCase().replace(/æ/g, 'ae').replace(/[^a-z0-9]/g, '');
+}
+
+function renderMarginLogos(groups, attendedArtists = new Set()) {
   // 12 fixed viewport slots — 6 per side, staggered vertically
   const slots = [
     { side: 'left',  top: '8%',  px: 20, size: 60, rot: -8 },
@@ -298,7 +303,8 @@ function renderMarginLogos(groups) {
     const img = document.createElement('img');
     img.src = `assets/logos/${slugify(group.name)}.svg`;
     img.alt = group.name;
-    img.className = 'margin-logo';
+    const seen = attendedArtists.has(normalizeArtist(group.name));
+    img.className = 'margin-logo' + (seen ? ' margin-logo--seen' : '');
     img.style.top = s.top;
     img.style[s.side] = s.px + 'px';
     img.style.width = s.size + 'px';
@@ -355,7 +361,8 @@ fetch(DATA_URL)
     }
 
     renderGroups(groups);
-    renderMarginLogos(groups);
+    const attendedArtists = new Set(past.map(c => normalizeArtist(c.artist)));
+    renderMarginLogos(groups, attendedArtists);
   })
   .catch(() => {
     document.getElementById('past-grid').innerHTML =

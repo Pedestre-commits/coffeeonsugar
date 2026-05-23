@@ -680,6 +680,10 @@ body {
 @media (min-width: 1400px) {
   .margin-logo { display: block; }
 }
+.margin-logo--seen {
+  filter: brightness(0) invert(1) sepia(1) saturate(4) drop-shadow(0 0 10px rgba(255, 210, 0, 0.85));
+  opacity: 0.5;
+}
 
 /* ── RESPONSIVE ── */
 @media (max-width: 600px) {
