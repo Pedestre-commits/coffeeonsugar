@@ -219,10 +219,25 @@ document.querySelectorAll('.period-btn').forEach(btn => {
 
 loadTopArtists('7day');
 
+// ── GROUPS I FOLLOW ──
+function renderGroups(groups) {
+  const grid = document.getElementById('groups-grid');
+  const count = document.getElementById('groups-count');
+  if (!groups || !groups.length) return;
+  count.textContent = groups.length;
+  grid.innerHTML = groups
+    .map(name => `<span class="group-chip"><span>${name}</span></span>`)
+    .join('');
+}
+
 // ── CONCERTS ──
 fetch(DATA_URL)
   .then(r => r.json())
-  .then(concerts => {
+  .then(data => {
+    // Support both old flat-array format and new { concerts, groups } format
+    const concerts = Array.isArray(data) ? data : (data.concerts || []);
+    const groups   = Array.isArray(data) ? []   : (data.groups   || []);
+
     const upcoming = concerts
       .filter(c => c.upcoming || daysUntil(c.date) > 0)
       .sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -236,7 +251,6 @@ fetch(DATA_URL)
     document.getElementById('stat-upcoming').textContent = upcoming.length;
 
     const upcomingSection = document.getElementById('upcoming-section');
-    const pastSection = document.getElementById('past-section');
     const upcomingGrid = document.getElementById('upcoming-grid');
     const pastGrid = document.getElementById('past-grid');
 
@@ -255,6 +269,8 @@ fetch(DATA_URL)
     } else {
       pastGrid.innerHTML = '<p class="empty-state">No concerts yet.</p>';
     }
+
+    renderGroups(groups);
   })
   .catch(() => {
     document.getElementById('past-grid').innerHTML =
