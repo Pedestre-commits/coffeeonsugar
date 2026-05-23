@@ -1,4 +1,4 @@
-const DATA_URL = 'data/kpop.json';
+const DATA_URL = 'data/kpop.json?v=2';
 const LASTFM_KEY = '1269f913a8f04b71e848ecf0718dbe5a';
 const LASTFM_USER = 'Pedestre95';
 
