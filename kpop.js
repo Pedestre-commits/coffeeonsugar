@@ -1,4 +1,6 @@
 const DATA_URL = 'data/kpop.json';
+const LASTFM_KEY = '1269f913a8f04b71e848ecf0718dbe5a';
+const LASTFM_USER = 'Pedestre95';
 
 const EXACT_CASE_ARTISTS = new Set([]);
 
@@ -131,6 +133,87 @@ document.getElementById('lightbox').addEventListener('click', e => {
   if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
 });
 
+// ── LAST.FM TOP ARTISTS ──
+const artistTracksCache = {};
+
+async function fetchArtistTracks(artistName) {
+  if (artistTracksCache[artistName]) return artistTracksCache[artistName];
+  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getTopTracks&artist=${encodeURIComponent(artistName)}&api_key=${LASTFM_KEY}&format=json&limit=5&autocorrect=1`;
+  const data = await fetch(url).then(r => r.json());
+  const tracks = data.toptracks?.track || [];
+  artistTracksCache[artistName] = tracks;
+  return tracks;
+}
+
+async function loadTopArtists(period = '7day') {
+  const list = document.getElementById('top-artists-list');
+  list.innerHTML = '<p class="empty-state">Loading…</p>';
+  try {
+    const url = `https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json&limit=15&period=${period}`;
+    const data = await fetch(url).then(r => r.json());
+    const artists = data.topartists.artist;
+    const max = parseInt(artists[0].playcount);
+    list.innerHTML = artists.map((a, i) => `
+      <div class="artist-item">
+        <div class="artist-row" data-artist="${a.name}">
+          <span class="artist-rank">${i + 1}</span>
+          <span class="artist-row-name">${a.name}</span>
+          <div class="artist-bar-wrap">
+            <div class="artist-bar" style="width:${Math.round(parseInt(a.playcount) / max * 100)}%"></div>
+          </div>
+          <span class="artist-plays">${parseInt(a.playcount).toLocaleString()} plays</span>
+          <button class="artist-tracks-toggle" aria-label="Show top tracks">▼</button>
+        </div>
+        <div class="artist-tracks-dropdown"></div>
+      </div>`).join('');
+
+    list.querySelectorAll('.artist-tracks-toggle').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const row = btn.closest('.artist-row');
+        const dropdown = row.nextElementSibling;
+        const artistName = row.dataset.artist;
+        const isOpen = dropdown.classList.contains('open');
+
+        if (isOpen) {
+          dropdown.classList.remove('open');
+          row.classList.remove('tracks-open');
+          btn.classList.remove('open');
+          return;
+        }
+
+        dropdown.classList.add('open');
+        row.classList.add('tracks-open');
+        btn.classList.add('open');
+
+        if (!dropdown.innerHTML) {
+          dropdown.innerHTML = '<p class="track-loading">Loading…</p>';
+          const tracks = await fetchArtistTracks(artistName);
+          dropdown.innerHTML = tracks.length
+            ? tracks.map((t, i) => `
+                <div class="track-item">
+                  <span class="track-num">${i + 1}</span>
+                  <span>${t.name}</span>
+                </div>`).join('')
+            : '<p class="track-loading">No tracks found.</p>';
+        }
+      });
+    });
+  } catch {
+    list.innerHTML = '<p class="empty-state">Could not load Last.fm data.</p>';
+  }
+}
+
+document.querySelectorAll('.period-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loadTopArtists(btn.dataset.period);
+  });
+});
+
+loadTopArtists('7day');
+
+// ── CONCERTS ──
 fetch(DATA_URL)
   .then(r => r.json())
   .then(concerts => {
