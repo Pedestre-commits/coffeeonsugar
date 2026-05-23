@@ -164,7 +164,7 @@ document.querySelectorAll('.period-btn').forEach(btn => {
   });
 });
 
-loadTopArtists();
+loadTopArtists('7day');
 
 // ── CONCERTS ──
 fetch(DATA_URL)
