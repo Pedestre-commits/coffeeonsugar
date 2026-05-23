@@ -151,7 +151,12 @@ async function loadTopArtists(period = '7day') {
   try {
     const url = `https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json&limit=15&period=${period}`;
     const data = await fetch(url).then(r => r.json());
-    const artists = data.topartists.artist;
+    if (data.error) throw new Error(`Last.fm: ${data.message}`);
+    const raw = data.topartists?.artist;
+    if (!raw) throw new Error('No data returned');
+    // Last.fm returns an object (not array) when there is only 1 result
+    const artists = Array.isArray(raw) ? raw : [raw];
+    if (!artists.length) { list.innerHTML = '<p class="empty-state">No listening data for this period.</p>'; return; }
     const max = parseInt(artists[0].playcount);
     list.innerHTML = artists.map((a, i) => `
       <div class="artist-item">
@@ -198,8 +203,9 @@ async function loadTopArtists(period = '7day') {
         }
       });
     });
-  } catch {
-    list.innerHTML = '<p class="empty-state">Could not load Last.fm data.</p>';
+  } catch(e) {
+    console.error('Last.fm error:', e);
+    list.innerHTML = `<p class="empty-state">Could not load Last.fm data — ${e.message}</p>`;
   }
 }
 
