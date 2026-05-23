@@ -59,3 +59,29 @@ The app fetches `data/places.json` at runtime. If you're testing admin saves loc
 - Always work on `dev`, merge to `main` when ready to deploy
 - `git push` before switching machines so the other machine can `git pull`
 - The admin panel's "Save to GitHub" button commits directly to `main` regardless of local branch
+
+## Machine paths
+| Machine | Project path |
+|---------|-------------|
+| Desktop | `D:\Profiles\Documents\coffeeonsugar` |
+| Laptop  | `C:\Users\Bruno\source\repos\coffeeonsugar` |
+
+Both use IIS Express on port 3000 for local dev.
+
+## Features built (in order — check before suggesting something)
+| Status | Feature |
+|--------|---------|
+| ✓ | Country flag popups on pins + photo gallery per stop |
+| ✓ | GitHub-powered admin panel (PAT login, saves atomic commit to `main`) |
+| ✓ | Admin lock/unlock button to prevent accidental edits |
+| ✓ | Stop reordering via drag in admin |
+| ✓ | Per-stop photo upload in admin |
+| ✗ removed | Map legend (Start/Stop/End/Route) |
+| ✗ removed | Map style picker |
+| ✗ removed | Data card |
+| ✗ removed | Import button |
+| ✗ removed | Pin colors |
+| ✗ removed | Trips count display |
+
+## Current data state
+`data/places.json` has placeholder loremflickr photo URLs. Real photos go in `photos/<slug>/<n>.<ext>` and are committed to the repo.
