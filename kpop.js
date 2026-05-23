@@ -1,4 +1,4 @@
-const DATA_URL = 'data/kpop.json?v=2';
+const DATA_URL = 'data/kpop.json?v=3';
 const LASTFM_KEY = '1269f913a8f04b71e848ecf0718dbe5a';
 const LASTFM_USER = 'Pedestre95';
 
@@ -221,13 +221,43 @@ loadTopArtists('7day');
 
 // ── GROUPS I FOLLOW ──
 function renderGroups(groups) {
-  const grid = document.getElementById('groups-grid');
-  const count = document.getElementById('groups-count');
+  const grid      = document.getElementById('groups-grid');
+  const alsoEl    = document.getElementById('groups-also');
+  const alsoGrid  = document.getElementById('groups-also-grid');
+  const countEl   = document.getElementById('groups-count');
   if (!groups || !groups.length) return;
-  count.textContent = groups.length;
-  grid.innerHTML = groups
-    .map(name => `<span class="group-chip"><span>${name}</span></span>`)
-    .join('');
+
+  // Support legacy flat-string format
+  if (typeof groups[0] === 'string') {
+    countEl.textContent = groups.length;
+    grid.innerHTML = groups.map(n => `<span class="group-chip"><span>${n}</span></span>`).join('');
+    return;
+  }
+
+  const mainGroups = groups.filter(g => g.tier !== 3).sort((a, b) => b.songs - a.songs);
+  const alsoGroups = groups.filter(g => g.tier === 3).sort((a, b) => a.name.localeCompare(b.name));
+
+  countEl.textContent = groups.length;
+
+  // sqrt scale: 0.65rem (min) → 1.45rem (max)
+  const maxSongs = Math.max(...mainGroups.map(g => g.songs || 1));
+  function chipSize(songs) {
+    const s = Math.max(0, ((songs || 1) - 1) / (maxSongs - 1));
+    return (0.65 + Math.sqrt(s) * 0.80).toFixed(3) + 'rem';
+  }
+
+  grid.innerHTML = mainGroups.map(g =>
+    `<span class="group-chip" style="--chip-size:${chipSize(g.songs)}" title="${g.songs} songs in the mix">` +
+    `<span>${g.name}</span></span>`
+  ).join('');
+
+  if (alsoGroups.length) {
+    alsoEl.hidden = false;
+    alsoGrid.innerHTML = alsoGroups.map(g =>
+      `<span class="group-chip group-chip--muted" style="--chip-size:0.65rem">` +
+      `<span>${g.name}</span></span>`
+    ).join('');
+  }
 }
 
 // ── CONCERTS ──
