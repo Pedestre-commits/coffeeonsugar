@@ -60,11 +60,11 @@
       "id": "everglow-2026-lisbon",
       "artist": "EVERGLOW",
       "tour": "2026 EVERGLOW WORLD TOUR [RE:CODE]",
-      "date": "2026-06-04",
+      "date": "2026-06-05",
       "venue": "LAV - Lisboa Ao Vivo",
       "city": "Lisbon, Portugal",
       "went_with": [], "rating": null, "setlist": [],
-      "notes": "", "photos": [], "ticket_stub": null, "upcoming": true
+      "notes": "", "photos": [], "ticket_stub": null, "upcoming": false
     },
     {
       "id": "lesserafim-2026-london",
