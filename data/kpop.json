@@ -63,7 +63,13 @@
       "date": "2026-06-05",
       "venue": "LAV - Lisboa Ao Vivo",
       "city": "Lisbon, Portugal",
-      "went_with": [], "rating": null, "setlist": [],
+      "went_with": [], "rating": null,
+      "setlist": [
+        "FOCUS", "LA DI DA", "Colourz", "Company", "ZOMBIE",
+        "CODE", "Pirate", "SLAY", "Hush", "Make Me Feel",
+        "FIRST", "Adios", "DUN DUN",
+        "Bon Bon Chocolat", "Can't Be Broken"
+      ],
       "notes": "", "photos": [], "ticket_stub": null, "upcoming": false
     },
     {

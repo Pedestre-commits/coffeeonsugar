@@ -153,6 +153,19 @@ body {
   gap: 20px;
 }
 
+/* Attended cards — compact archive style */
+#past-grid {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+#past-grid .concert-card { border-radius: 12px; }
+#past-grid .card-body { padding: 16px 16px 14px; gap: 10px; }
+#past-grid .artist-name { font-size: 1.35rem; }
+#past-grid .concert-date { font-size: 0.72rem; }
+#past-grid .tour-name { font-size: 0.72rem; margin-top: 3px; }
+#past-grid .detail { font-size: 0.76rem; }
+#past-grid .stub-placeholder { height: 4px; }
+
 /* ── CARD ── */
 .concert-card {
   background: var(--card-bg);
