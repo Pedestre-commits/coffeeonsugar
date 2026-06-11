@@ -336,8 +336,8 @@ fetch(DATA_URL)
       .filter(c => !c.upcoming && daysUntil(c.date) <= 0)
       .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    document.getElementById('stat-shows').textContent = past.length;
-    document.getElementById('stat-artists').textContent = new Set(past.map(c => c.artist)).size;
+    document.getElementById('stat-shows').textContent = concerts.length;
+    document.getElementById('stat-artists').textContent = new Set(concerts.map(c => c.artist)).size;
     document.getElementById('stat-upcoming').textContent = upcoming.length;
 
     const upcomingSection = document.getElementById('upcoming-section');
