@@ -1,3 +1,30 @@
 {
-  "ships": []
+  "ships": [
+    {
+      "name": "YuDaeng",
+      "member1": "Jaehee",
+      "group1": "NCT Wish",
+      "member2": "Yushi",
+      "group2": "NCT Wish",
+      "note": "They’re like a married couple",
+      "hearts": 5,
+      "photo_mode": "combined",
+      "photo": "photos/ships/5.jpeg",
+      "photo1": "",
+      "photo2": ""
+    },
+    {
+      "name": "JohnTen",
+      "member1": "Jhonny",
+      "group1": "NCT 127",
+      "member2": "Ten",
+      "group2": "WayV",
+      "note": "Married couple",
+      "hearts": 5,
+      "photo_mode": "combined",
+      "photo": "photos/ships/3.jpeg",
+      "photo1": "",
+      "photo2": ""
+    }
+  ]
 }
