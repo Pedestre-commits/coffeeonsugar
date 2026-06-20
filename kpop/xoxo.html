@@ -79,7 +79,7 @@
     .btn-icon{
       width:32px;height:32px;padding:0;border-radius:var(--r-md);
       border:1.5px solid var(--border);background:var(--surface);
-      color:var(--text-muted);display:flex;align-items:center;justify-content:center;
+      color:var(--text-faint);display:flex;align-items:center;justify-content:center;
       transition:background var(--t),border-color var(--t),color var(--t);
     }
     .btn-icon:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary);}
@@ -102,9 +102,7 @@
 
     /* ===== SECTION ===== */
     .section{margin-bottom:44px;}
-    .section-header{
-      display:flex;align-items:center;gap:10px;margin-bottom:16px;
-    }
+    .section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
     .section-title{
       font-size:0.7rem;font-weight:700;text-transform:uppercase;
       letter-spacing:0.12em;color:var(--primary);white-space:nowrap;
@@ -146,17 +144,14 @@
       font-size:0.72rem;font-weight:400;color:var(--text-muted);
       background:rgba(233,30,140,0.10);border-radius:99px;padding:1px 7px;
     }
-    .chip-handle{
-      cursor:grab;color:var(--text-faint);font-size:0.75rem;
-      display:none;padding:0 1px;
-    }
-    .edit-mode .chip-handle{display:inline;}
+    .chip-handle{cursor:grab;color:var(--text-faint);font-size:0.75rem;display:none;padding:0 1px;}
     .chip-edit{
       background:none;border:none;color:var(--text-faint);font-size:0.8rem;
       padding:0 1px;cursor:pointer;display:none;line-height:1;
       transition:color var(--t);
     }
     .chip-edit:hover{color:var(--primary);}
+    .edit-mode .chip-handle{display:inline;}
     .edit-mode .chip-edit{display:inline;}
 
     /* ===== BIAS WALL ===== */
@@ -191,12 +186,11 @@
       width:22px;height:22px;border-radius:50%;
       background:rgba(0,0,0,0.65);border:none;color:#fff;
       font-size:0.65rem;cursor:pointer;
-      align-items:center;justify-content:center;
-      display:none;transition:background var(--t);
+      align-items:center;justify-content:center;display:none;
+      transition:background var(--t);
     }
     .card-del:hover{background:var(--danger);}
     .edit-mode .card-del{display:flex;}
-
     .add-card{
       display:flex;flex-direction:column;align-items:center;justify-content:center;
       gap:6px;cursor:pointer;border:1.5px dashed var(--border);
@@ -206,92 +200,25 @@
     .add-card:hover{border-color:var(--primary);background:var(--primary-dim);color:var(--primary);}
     .add-card .add-icon{font-size:1.6rem;}
 
-    /* ===== LOGIN OVERLAY ===== */
-    .login-overlay{
-      position:fixed;inset:0;z-index:3000;
-      display:flex;align-items:center;justify-content:center;
-      background:var(--bg);
-      background-image:
-        radial-gradient(ellipse 900px 600px at 10% 5%,#ffd6ec 0%,transparent 60%),
-        radial-gradient(ellipse 600px 400px at 90% 90%,#ffe8f3 0%,transparent 55%);
-    }
-    .login-card{
-      background:var(--surface);border:1.5px solid var(--border);
-      border-radius:var(--r-xl);padding:40px 36px;width:100%;max-width:360px;
-      box-shadow:var(--shadow-lg);text-align:center;
-    }
-    .login-bow{font-size:2.4rem;margin-bottom:10px;}
-    .login-title{
-      font-family:var(--font-display);font-size:2rem;font-style:italic;
-      color:var(--primary);margin-bottom:4px;
-    }
-    .login-sub{font-size:0.8rem;color:var(--text-faint);margin-bottom:24px;}
-    .login-input{
-      width:100%;padding:11px 14px;margin-bottom:8px;
-      background:var(--surface-2);border:1.5px solid var(--border);
-      border-radius:var(--r-md);color:var(--text);font:inherit;
-      font-size:0.95rem;text-align:center;outline:none;
-      transition:border-color var(--t);
-    }
-    .login-input:focus{border-color:var(--primary);}
-    .login-input::placeholder{color:var(--text-faint);}
-    .login-error{font-size:0.8rem;color:var(--danger);min-height:1.3em;margin-bottom:6px;}
-    .btn-login{
-      width:100%;padding:11px;border-radius:var(--r-md);border:none;
-      background:var(--primary);color:#fff;font:inherit;
-      font-size:0.9rem;font-weight:600;cursor:pointer;
-      transition:background var(--t);margin-bottom:16px;
-    }
-    .btn-login:hover{background:#d0187c;}
-    .btn-login:disabled{opacity:0.5;cursor:not-allowed;}
-    .setup-toggle{
-      font-size:0.75rem;color:var(--text-faint);cursor:pointer;
-      text-decoration:underline;background:none;border:none;
-    }
-    .setup-toggle:hover{color:var(--primary);}
-    .setup-section{
-      margin-top:20px;padding-top:18px;border-top:1px solid var(--divider);
-      text-align:left;display:none;
-    }
-    .setup-section.open{display:block;}
-    .setup-label{
-      font-size:0.7rem;font-weight:600;text-transform:uppercase;
-      letter-spacing:0.09em;color:var(--text-faint);margin-bottom:6px;
-    }
-    .setup-help{font-size:0.76rem;color:var(--text-faint);line-height:1.6;margin-bottom:12px;}
-    .setup-help a{color:var(--primary);}
-    .btn-setup{
-      width:100%;padding:9px;border-radius:var(--r-md);
-      background:var(--primary-light);border:1.5px solid var(--border);
-      color:var(--primary);font:inherit;font-size:0.85rem;font-weight:600;
-      cursor:pointer;transition:background var(--t),border-color var(--t);
-    }
-    .btn-setup:hover{background:var(--primary-dim);border-color:var(--primary);}
-    .setup-input{
-      width:100%;padding:9px 12px;margin-bottom:10px;
-      background:var(--surface-2);border:1.5px solid var(--border);
-      border-radius:var(--r-md);color:var(--text);font:inherit;
-      font-size:0.83rem;outline:none;font-family:monospace;letter-spacing:0.04em;
-      transition:border-color var(--t);
-    }
-    .setup-input:focus{border-color:var(--primary);}
-
-    /* ===== GROUP MODAL ===== */
+    /* ===== UNLOCK MODAL ===== */
     .modal-backdrop{
       position:fixed;inset:0;z-index:2000;
-      background:rgba(26,10,18,0.30);backdrop-filter:blur(4px);
+      background:rgba(26,10,18,0.25);backdrop-filter:blur(4px);
       display:flex;align-items:center;justify-content:center;
       opacity:0;pointer-events:none;transition:opacity 180ms;
     }
     .modal-backdrop.open{opacity:1;pointer-events:auto;}
     .modal{
       background:var(--surface);border:1.5px solid var(--border);
-      border-radius:var(--r-xl);padding:26px 28px;width:100%;max-width:340px;
+      border-radius:var(--r-xl);padding:28px;width:100%;max-width:320px;
       box-shadow:var(--shadow-lg);
       transform:scale(0.93);transition:transform 200ms cubic-bezier(0.16,1,0.3,1);
     }
     .modal-backdrop.open .modal{transform:scale(1);}
-    .modal-title{font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:16px;}
+    .modal-title{
+      font-family:var(--font-display);font-size:1.1rem;font-style:italic;
+      color:var(--primary);margin-bottom:16px;text-align:center;
+    }
     .field-label{
       font-size:0.7rem;font-weight:600;text-transform:uppercase;
       letter-spacing:0.09em;color:var(--text-faint);margin:12px 0 5px;
@@ -305,14 +232,63 @@
     }
     .field-input:focus{border-color:var(--primary);}
     select.field-input{cursor:pointer;}
-    .modal-actions{display:flex;gap:8px;margin-top:18px;justify-content:flex-end;flex-wrap:wrap;}
+    .modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;flex-wrap:wrap;}
+    .modal-error{font-size:0.78rem;color:var(--danger);margin-top:8px;min-height:1.2em;}
 
-    /* ===== PHOTO MODAL ===== */
+    /* unlock password row */
+    .unlock-input{
+      width:100%;padding:10px 14px;margin-bottom:4px;
+      background:var(--surface-2);border:1.5px solid var(--border);
+      border-radius:var(--r-md);color:var(--text);font:inherit;
+      font-size:0.9rem;text-align:center;outline:none;
+      transition:border-color var(--t);
+    }
+    .unlock-input:focus{border-color:var(--primary);}
+    .unlock-input::placeholder{color:var(--text-faint);}
+    .btn-unlock{
+      width:100%;padding:10px;border-radius:var(--r-md);border:none;
+      background:var(--primary);color:#fff;font:inherit;
+      font-size:0.9rem;font-weight:600;cursor:pointer;
+      transition:background var(--t);margin-top:8px;
+    }
+    .btn-unlock:hover{background:#d0187c;}
+    .btn-unlock:disabled{opacity:0.5;cursor:not-allowed;}
+
+    /* setup sub-section */
+    .setup-section{
+      margin-top:16px;padding-top:14px;border-top:1px solid var(--divider);display:none;
+    }
+    .setup-section.open{display:block;}
+    .setup-help{font-size:0.74rem;color:var(--text-faint);line-height:1.6;margin-bottom:10px;}
+    .setup-help a{color:var(--primary);}
+    .setup-input{
+      width:100%;padding:8px 12px;margin-bottom:8px;
+      background:var(--surface-2);border:1.5px solid var(--border);
+      border-radius:var(--r-md);color:var(--text);font:inherit;
+      font-size:0.82rem;outline:none;font-family:monospace;letter-spacing:0.04em;
+      transition:border-color var(--t);
+    }
+    .setup-input:focus{border-color:var(--primary);}
+    .btn-setup{
+      width:100%;padding:8px;border-radius:var(--r-md);
+      background:var(--primary-light);border:1.5px solid var(--border);
+      color:var(--primary);font:inherit;font-size:0.84rem;font-weight:600;
+      cursor:pointer;transition:background var(--t),border-color var(--t);
+    }
+    .btn-setup:hover{background:var(--primary-dim);border-color:var(--primary);}
+    .setup-toggle{
+      display:block;text-align:center;margin-top:12px;
+      font-size:0.73rem;color:var(--text-faint);cursor:pointer;text-decoration:underline;
+      background:none;border:none;width:100%;
+    }
+    .setup-toggle:hover{color:var(--primary);}
+
+    /* ===== GROUP / PHOTO MODALS ===== */
     .photo-preview-box{
       aspect-ratio:2/3;background:var(--surface-2);border:1.5px dashed var(--border);
       border-radius:var(--r-md);overflow:hidden;display:flex;
       align-items:center;justify-content:center;margin-bottom:10px;
-      color:var(--text-faint);font-size:0.8rem;
+      color:var(--text-faint);font-size:0.8rem;cursor:pointer;
     }
     .photo-preview-box img{width:100%;height:100%;object-fit:cover;}
 
@@ -354,47 +330,41 @@
     @media(max-width:600px){
       .bias-wall{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));}
       .profile-name{font-size:2.2rem;}
-      .login-card{padding:28px 20px;}
       .app-header{padding:10px 16px;}
     }
   </style>
 </head>
 <body>
 
-<!-- ===== LOGIN OVERLAY ===== -->
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-card">
-    <div class="login-bow">🎀</div>
-    <div class="login-title">xoxo</div>
-    <div class="login-sub">enter to visit ♡</div>
-
-    <input class="login-input" id="passInput" type="password"
-      placeholder="password" autocomplete="current-password"
-      onkeydown="if(event.key==='Enter') unlock()" />
-    <div class="login-error" id="loginError"></div>
-    <button class="btn-login" id="loginBtn" onclick="unlock()">Enter ♡</button>
-
-    <button class="setup-toggle" onclick="toggleSetup()">first time setup</button>
-    <div class="setup-section" id="setupSection">
-      <div class="setup-label">GitHub Personal Access Token</div>
-      <div class="setup-help">
-        One-time setup (owner only). Generate a
-        <a href="https://github.com/settings/tokens?type=beta" target="_blank">fine-grained PAT</a>
-        with <strong>Contents: Read &amp; Write</strong> on the coffeeonsugar repo.<br>
-        It gets encrypted with your password and stored locally — never in the code.
-      </div>
-      <input class="setup-input" id="patInput" type="password"
-        placeholder="github_pat_…" autocomplete="off" />
-      <button class="btn-setup" onclick="setup()">Encrypt &amp; Save ♡</button>
-    </div>
-  </div>
-</div>
-
 <!-- ===== PROGRESS ===== -->
 <div class="progress-overlay" id="progressOverlay">
   <div class="progress-card">
     <div class="spinner"></div>
     <div class="progress-status" id="progressStatus">Working…</div>
+  </div>
+</div>
+
+<!-- ===== UNLOCK MODAL ===== -->
+<div class="modal-backdrop" id="unlockModal" onclick="if(event.target===this)closeUnlock()">
+  <div class="modal">
+    <div class="modal-title">🔒 edit mode</div>
+    <input class="unlock-input" id="unlockPass" type="password"
+      placeholder="password ♡" autocomplete="current-password"
+      onkeydown="if(event.key==='Enter')unlock()" />
+    <div class="modal-error" id="unlockError"></div>
+    <button class="btn-unlock" id="unlockBtn" onclick="unlock()">Unlock ♡</button>
+    <button class="setup-toggle" onclick="toggleSetup()">first time setup</button>
+    <div class="setup-section" id="setupSection">
+      <div class="setup-help">
+        Owner only — one time. Generate a
+        <a href="https://github.com/settings/tokens?type=beta" target="_blank">fine-grained PAT</a>
+        with <strong>Contents: Read &amp; Write</strong> on the coffeeonsugar repo. It gets
+        encrypted with your password and stored in this browser's localStorage.
+      </div>
+      <input class="setup-input" id="patInput" type="password"
+        placeholder="github_pat_…" autocomplete="off" />
+      <button class="btn-setup" onclick="setup()">Encrypt &amp; Save ♡</button>
+    </div>
   </div>
 </div>
 
@@ -457,7 +427,8 @@
   </div>
   <div class="header-actions">
     <a href="../kpop.html" class="btn" style="font-size:0.78rem">← K-pop</a>
-    <button class="btn-icon" id="editToggle" onclick="toggleEdit()"
+    <!-- edit mode controls — only visible when unlocked -->
+    <button class="btn-icon active" id="editToggle" onclick="toggleEdit()"
       title="Toggle edit mode" style="display:none">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -466,14 +437,20 @@
     </button>
     <button class="btn btn-primary" id="saveBtn" onclick="saveToGitHub()"
       style="display:none">Save ♡</button>
+    <!-- lock icon — always visible, opens unlock modal -->
+    <button class="btn-icon" id="lockBtn" onclick="openUnlock()" title="Edit">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </button>
   </div>
 </header>
 
 <!-- ===== PAGE ===== -->
 <div class="page">
-
   <div class="profile-hero">
-    <div class="profile-name" id="profileName"></div>
+    <div class="profile-name" id="profileName">xoxo</div>
     <div class="profile-bio"  id="profileBio"></div>
   </div>
 
@@ -492,7 +469,6 @@
     </div>
     <div class="bias-wall" id="biasWall"></div>
   </section>
-
 </div>
 
 <div class="toast" id="toast"></div>
@@ -507,19 +483,29 @@ const DATA_PATH = 'data/xoxo.json';
 const ENC_KEY   = 'xoxo_enc_pat';
 
 // ===== STATE =====
-let DATA         = { profile:{ name:'xoxo', bio:'kpop girlie 🎀' }, groups:[], bias_wall:[] };
+let DATA         = { profile:{ name:'xoxo', bio:'' }, groups:[], bias_wall:[] };
 let editMode     = false;
-let pendingFiles = {};          // path → File
-let editingIdx   = -1;         // for group modal
-let pendingPhoto = null;       // { file, url } for photo modal
+let unlocked     = false;  // true once password verified
+let pendingFiles = {};
+let editingIdx   = -1;
+let pendingPhoto = null;
 
-const _urlCache = new Map();   // File → object URL (reused across re-renders)
+const _urlCache = new Map();
 function cachedURL(file) {
   if (!_urlCache.has(file)) _urlCache.set(file, URL.createObjectURL(file));
   return _urlCache.get(file);
 }
 
-// ===== CRYPTO (AES-GCM + PBKDF2) =====
+// ===== PUBLIC DATA LOAD (no auth) =====
+async function loadData() {
+  try {
+    const res = await fetch('../data/xoxo.json', { cache:'no-cache' });
+    if (res.ok) DATA = await res.json();
+  } catch {}
+  render();
+}
+
+// ===== CRYPTO =====
 async function deriveKey(password, salt) {
   const km = await crypto.subtle.importKey(
     'raw', new TextEncoder().encode(password), { name:'PBKDF2' }, false, ['deriveKey']
@@ -534,65 +520,75 @@ async function encryptPAT(pat, pass) {
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const iv   = crypto.getRandomValues(new Uint8Array(12));
   const key  = await deriveKey(pass, salt);
-  const ct   = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key,
-    new TextEncoder().encode(pat));
+  const ct   = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key, new TextEncoder().encode(pat));
   const out  = new Uint8Array(28 + ct.byteLength);
-  out.set(salt, 0); out.set(iv, 16); out.set(new Uint8Array(ct), 28);
+  out.set(salt,0); out.set(iv,16); out.set(new Uint8Array(ct),28);
   return btoa(String.fromCharCode(...out));
 }
 
 async function decryptPAT(enc, pass) {
-  const buf  = Uint8Array.from(atob(enc), c => c.charCodeAt(0));
-  const key  = await deriveKey(pass, buf.slice(0, 16));
-  const dec  = await crypto.subtle.decrypt(
-    { name:'AES-GCM', iv:buf.slice(16,28) }, key, buf.slice(28));
+  const buf = Uint8Array.from(atob(enc), c => c.charCodeAt(0));
+  const key = await deriveKey(pass, buf.slice(0,16));
+  const dec = await crypto.subtle.decrypt({ name:'AES-GCM', iv:buf.slice(16,28) }, key, buf.slice(28));
   return new TextDecoder().decode(dec);
 }
 
-// ===== LOGIN =====
-function toggleSetup() {
-  document.getElementById('setupSection').classList.toggle('open');
+// ===== UNLOCK MODAL =====
+function openUnlock() {
+  if (unlocked) { toggleEdit(); return; }  // already unlocked — toggle edit directly
+  document.getElementById('unlockPass').value = '';
+  document.getElementById('unlockError').textContent = '';
+  document.getElementById('setupSection').classList.remove('open');
+  document.getElementById('unlockModal').classList.add('open');
+  setTimeout(() => document.getElementById('unlockPass').focus(), 60);
 }
+
+function closeUnlock() { document.getElementById('unlockModal').classList.remove('open'); }
+
+function toggleSetup() { document.getElementById('setupSection').classList.toggle('open'); }
 
 async function setup() {
   const pat  = document.getElementById('patInput').value.trim();
-  const pass = document.getElementById('passInput').value.trim();
-  if (!pat || !pass) { setLoginError('Enter both a PAT and a password.'); return; }
+  const pass = document.getElementById('unlockPass').value.trim();
+  if (!pat || !pass) { setUnlockError('Enter both a password and a PAT.'); return; }
   try {
     localStorage.setItem(ENC_KEY, await encryptPAT(pat, pass));
-    await loginWith(pat);
-  } catch(e) { setLoginError('Setup failed: ' + e.message); }
+    await activateEdit(pat);
+  } catch(e) { setUnlockError('Setup failed: ' + e.message); }
 }
 
 async function unlock() {
-  const pass = document.getElementById('passInput').value.trim();
+  const pass = document.getElementById('unlockPass').value.trim();
   if (!pass) return;
-  const btn  = document.getElementById('loginBtn');
+  const btn = document.getElementById('unlockBtn');
   btn.disabled = true; btn.textContent = '…';
-  setLoginError('');
+  setUnlockError('');
   const enc = localStorage.getItem(ENC_KEY);
   if (!enc) {
-    setLoginError('Not set up yet — use "first time setup" below.');
-    btn.disabled = false; btn.textContent = 'Enter ♡'; return;
+    setUnlockError('Not set up yet — use "first time setup" below.');
+    btn.disabled = false; btn.textContent = 'Unlock ♡'; return;
   }
   try {
-    await loginWith(await decryptPAT(enc, pass));
+    const pat = await decryptPAT(enc, pass);
+    await activateEdit(pat);
   } catch {
-    setLoginError('Wrong password ♡');
-    btn.disabled = false; btn.textContent = 'Enter ♡';
+    setUnlockError('Wrong password ♡');
   }
+  btn.disabled = false; btn.textContent = 'Unlock ♡';
 }
 
-async function loginWith(pat) {
+async function activateEdit(pat) {
   sessionStorage.setItem('xoxo_pat', pat);
+  unlocked = true;
+  closeUnlock();
+  // Show edit controls
+  document.getElementById('lockBtn').style.display   = 'none';
   document.getElementById('editToggle').style.display = '';
-  await loadData();
-  document.getElementById('loginOverlay').style.display = 'none';
-  document.getElementById('loginBtn').disabled = false;
-  document.getElementById('loginBtn').textContent = 'Enter ♡';
+  // Enter edit mode immediately
+  enableEditMode();
 }
 
-function setLoginError(msg) { document.getElementById('loginError').textContent = msg; }
+function setUnlockError(msg) { document.getElementById('unlockError').textContent = msg; }
 
 // ===== GITHUB API =====
 function pat() { return sessionStorage.getItem('xoxo_pat'); }
@@ -601,72 +597,56 @@ async function ghCall(url, method='GET', body=null) {
   const full = url.startsWith('http') ? url : REPO_BASE + url;
   const res  = await fetch(full, {
     method,
-    headers: {
-      'Authorization': `Bearer ${pat()}`,
-      'Accept': 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      ...(body ? { 'Content-Type':'application/json' } : {})
+    headers:{
+      'Authorization':`Bearer ${pat()}`,
+      'Accept':'application/vnd.github+json',
+      'X-GitHub-Api-Version':'2022-11-28',
+      ...(body?{'Content-Type':'application/json'}:{})
     },
-    ...(body ? { body: JSON.stringify(body) } : {})
+    ...(body?{body:JSON.stringify(body)}:{})
   });
-  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.message || `HTTP ${res.status}`); }
+  if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error(e.message||`HTTP ${res.status}`); }
   return res.json();
 }
 
-async function loadData() {
-  setProgress(true, 'Loading…');
-  try {
-    const file = await ghCall(`/contents/${DATA_PATH}`);
-    DATA = JSON.parse(atob(file.content.replace(/\n/g,'')));
-    render();
-    showToast('Loaded ✓', 'ok');
-  } catch(e) {
-    if (String(e.message).includes('404')) render();
-    else showToast('Load error: ' + e.message, 'err');
-  } finally { setProgress(false); }
-}
-
 async function saveToGitHub() {
-  // Capture editable profile text before saving
   DATA.profile.name = document.getElementById('profileName').textContent.trim() || 'xoxo';
   DATA.profile.bio  = document.getElementById('profileBio').textContent.trim();
-
-  setProgress(true, 'Getting repo state…');
+  setProgress(true,'Getting repo state…');
   try {
-    const ref      = await ghCall(`/git/refs/heads/${GH_BRANCH}`);
-    const headSha  = ref.object.sha;
-    const treeSha  = (await ghCall(`/git/commits/${headSha}`)).tree.sha;
-    const entries  = [];
-    const files    = Object.entries(pendingFiles);
+    const ref     = await ghCall(`/git/refs/heads/${GH_BRANCH}`);
+    const headSha = ref.object.sha;
+    const treeSha = (await ghCall(`/git/commits/${headSha}`)).tree.sha;
+    const entries = [];
+    const files   = Object.entries(pendingFiles);
 
-    setProgress(true, `Uploading data…`);
+    setProgress(true,'Uploading data…');
     const jBlob = await ghCall('/git/blobs','POST',{
-      content: btoa(unescape(encodeURIComponent(JSON.stringify(DATA, null, 2)))),
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(DATA,null,2)))),
       encoding:'base64'
     });
-    entries.push({ path: DATA_PATH, mode:'100644', type:'blob', sha: jBlob.sha });
+    entries.push({ path:DATA_PATH, mode:'100644', type:'blob', sha:jBlob.sha });
 
-    for (let i = 0; i < files.length; i++) {
+    for (let i=0; i<files.length; i++) {
       const [path, file] = files[i];
-      setProgress(true, `Uploading photo ${i+1}/${files.length}…`);
-      const b64  = await fileToBase64(file);
-      const blob = await ghCall('/git/blobs','POST',{ content:b64, encoding:'base64' });
-      entries.push({ path, mode:'100644', type:'blob', sha: blob.sha });
+      setProgress(true,`Uploading photo ${i+1}/${files.length}…`);
+      const blob = await ghCall('/git/blobs','POST',{ content:await fileToBase64(file), encoding:'base64' });
+      entries.push({ path, mode:'100644', type:'blob', sha:blob.sha });
     }
 
-    setProgress(true, 'Committing…');
+    setProgress(true,'Committing…');
     const tree   = await ghCall('/git/trees','POST',{ base_tree:treeSha, tree:entries });
     const commit = await ghCall('/git/commits','POST',{
-      message: `Update xoxo — ${DATA.groups.length} groups, ${(DATA.bias_wall||[]).length} bias wall entries`,
-      tree: tree.sha, parents:[headSha]
+      message:`Update xoxo — ${DATA.groups.length} groups, ${(DATA.bias_wall||[]).length} bias wall entries`,
+      tree:tree.sha, parents:[headSha]
     });
-    await ghCall(`/git/refs/heads/${GH_BRANCH}`,'PATCH',{ sha: commit.sha });
+    await ghCall(`/git/refs/heads/${GH_BRANCH}`,'PATCH',{ sha:commit.sha });
 
     pendingFiles = {};
-    showToast('Saved! Live in ~60s ✓', 'ok');
+    showToast('Saved! Live in ~60s ✓','ok');
     document.getElementById('saveBtn').style.display = 'none';
   } catch(e) {
-    showToast('Save failed: ' + e.message, 'err');
+    showToast('Save failed: '+e.message,'err');
   } finally { setProgress(false); }
 }
 
@@ -683,56 +663,59 @@ function render() {
 
 function renderTierList() {
   document.getElementById('tierList').innerHTML = TIERS.map(tier => {
-    const groups = (DATA.groups||[]).map((g,i)=>({...g,i})).filter(g => g.tier === tier);
-    const chips  = groups.map(g => `
-      <div class="group-chip${editMode?' draggable-chip':''}" data-idx="${g.i}"
-        draggable="${editMode}"
+    const groups = (DATA.groups||[]).map((g,i)=>({...g,i})).filter(g=>g.tier===tier);
+    const chips  = groups.map(g=>`
+      <div class="group-chip" data-idx="${g.i}" draggable="${editMode}"
         ondragstart="onChipDragStart(event,${g.i})"
         ondragend="onChipDragEnd()">
-        ${editMode ? `<span class="chip-handle">⠿</span>` : ''}
+        ${editMode?`<span class="chip-handle">⠿</span>`:''}
         <span>${g.name}</span>
-        ${g.bias ? `<span class="chip-bias">↳ ${g.bias}</span>` : ''}
-        ${editMode ? `<button class="chip-edit" onclick="openGroupModal(${g.i})" title="Edit">✎</button>` : ''}
+        ${g.bias?`<span class="chip-bias">↳ ${g.bias}</span>`:''}
+        ${editMode?`<button class="chip-edit" onclick="openGroupModal(${g.i})" title="Edit">✎</button>`:''}
       </div>`).join('');
-
     return `<div class="tier-block tier-${tier.toLowerCase()}">
       <div class="tier-label">${tier}</div>
       <div class="tier-row" data-tier="${tier}"
         ondragover="onTierOver(event)"
         ondrop="onTierDrop(event,'${tier}')">
-        ${chips || `<span class="tier-empty">—</span>`}
+        ${chips||`<span class="tier-empty">—</span>`}
       </div>
     </div>`;
   }).join('');
 }
 
 function renderBiasWall() {
-  const wall  = DATA.bias_wall || [];
-  const cards = wall.map((b,i) => {
-    const src = b.photo
-      ? (pendingFiles[b.photo] ? cachedURL(pendingFiles[b.photo]) : b.photo)
-      : '';
+  const wall  = DATA.bias_wall||[];
+  const cards = wall.map((b,i)=>{
+    const src = b.photo?(pendingFiles[b.photo]?cachedURL(pendingFiles[b.photo]):b.photo):'';
     return `<div class="bias-card">
-      ${src
-        ? `<img src="${src}" alt="${b.member}" loading="lazy">`
-        : `<div class="no-photo">no photo</div>`}
+      ${src?`<img src="${src}" alt="${b.member}" loading="lazy">`:`<div class="no-photo">no photo</div>`}
       <div class="bias-info">
         <div class="bias-member">${b.member}</div>
         <div class="bias-group">${b.group}</div>
-        ${b.note ? `<div class="bias-note">${b.note}</div>` : ''}
+        ${b.note?`<div class="bias-note">${b.note}</div>`:''}
       </div>
       <button class="card-del" onclick="deletePhoto(${i})" title="Remove">✕</button>
     </div>`;
   }).join('');
-
   const addBtn = editMode
-    ? `<div class="bias-card add-card" onclick="openPhotoModal()"><div class="add-icon">📸</div>Add photo</div>`
-    : '';
-
-  document.getElementById('biasWall').innerHTML = cards + addBtn;
+    ?`<div class="bias-card add-card" onclick="openPhotoModal()"><div class="add-icon">📸</div>Add photo</div>`
+    :'';
+  document.getElementById('biasWall').innerHTML = cards+addBtn;
 }
 
 // ===== EDIT MODE =====
+function enableEditMode() {
+  editMode = true;
+  document.getElementById('editToggle').classList.add('active');
+  document.body.classList.add('edit-mode');
+  document.getElementById('addGroupBtn').style.display = '';
+  document.getElementById('profileName').contentEditable = 'true';
+  document.getElementById('profileBio').contentEditable  = 'true';
+  renderTierList();
+  renderBiasWall();
+}
+
 function toggleEdit() {
   editMode = !editMode;
   document.getElementById('editToggle').classList.toggle('active', editMode);
@@ -746,34 +729,34 @@ function toggleEdit() {
 
 function markDirty() { document.getElementById('saveBtn').style.display = ''; }
 
-// ===== DRAG & DROP TIERS =====
+// ===== DRAG & DROP =====
 let dragSrcIdx = null;
 
 function onChipDragStart(e, idx) {
   dragSrcIdx = idx;
   e.dataTransfer.effectAllowed = 'move';
-  requestAnimationFrame(() => {
-    document.querySelectorAll(`.group-chip[data-idx="${idx}"]`).forEach(c => c.classList.add('dragging'));
+  requestAnimationFrame(()=>{
+    document.querySelectorAll(`.group-chip[data-idx="${idx}"]`).forEach(c=>c.classList.add('dragging'));
   });
 }
 
 function onChipDragEnd() {
   dragSrcIdx = null;
-  document.querySelectorAll('.group-chip').forEach(c => c.classList.remove('dragging'));
-  document.querySelectorAll('.tier-row').forEach(r => r.classList.remove('drag-over'));
+  document.querySelectorAll('.group-chip').forEach(c=>c.classList.remove('dragging'));
+  document.querySelectorAll('.tier-row').forEach(r=>r.classList.remove('drag-over'));
 }
 
 function onTierOver(e) {
-  if (dragSrcIdx === null) return;
+  if (dragSrcIdx===null) return;
   e.preventDefault();
-  document.querySelectorAll('.tier-row').forEach(r => r.classList.remove('drag-over'));
+  document.querySelectorAll('.tier-row').forEach(r=>r.classList.remove('drag-over'));
   e.currentTarget.classList.add('drag-over');
 }
 
 function onTierDrop(e, tier) {
   e.preventDefault();
-  document.querySelectorAll('.tier-row').forEach(r => r.classList.remove('drag-over'));
-  if (dragSrcIdx === null) return;
+  document.querySelectorAll('.tier-row').forEach(r=>r.classList.remove('drag-over'));
+  if (dragSrcIdx===null) return;
   DATA.groups[dragSrcIdx].tier = tier;
   dragSrcIdx = null;
   renderTierList();
@@ -783,23 +766,23 @@ function onTierDrop(e, tier) {
 // ===== GROUP MODAL =====
 function openGroupModal(idx) {
   editingIdx = idx;
-  const g    = idx === -1 ? {} : (DATA.groups[idx] || {});
-  document.getElementById('groupModalTitle').textContent = idx === -1 ? 'Add group' : 'Edit group';
-  document.getElementById('mgName').value  = g.name     || '';
-  document.getElementById('mgTier').value  = g.tier     || 'A';
-  document.getElementById('mgBias').value  = g.bias     || '';
-  document.getElementById('mgAlt').value   = g.alt_bias || '';
-  document.getElementById('mgNote').value  = g.note     || '';
-  document.getElementById('mgDeleteBtn').style.display = idx === -1 ? 'none' : '';
+  const g = idx===-1?{}:(DATA.groups[idx]||{});
+  document.getElementById('groupModalTitle').textContent = idx===-1?'Add group':'Edit group';
+  document.getElementById('mgName').value = g.name    ||'';
+  document.getElementById('mgTier').value = g.tier    ||'A';
+  document.getElementById('mgBias').value = g.bias    ||'';
+  document.getElementById('mgAlt').value  = g.alt_bias||'';
+  document.getElementById('mgNote').value = g.note    ||'';
+  document.getElementById('mgDeleteBtn').style.display = idx===-1?'none':'';
   document.getElementById('groupModal').classList.add('open');
-  setTimeout(() => document.getElementById('mgName').focus(), 50);
+  setTimeout(()=>document.getElementById('mgName').focus(),50);
 }
 
 function closeGroupModal() { document.getElementById('groupModal').classList.remove('open'); }
 
 function saveGroup() {
   const name = document.getElementById('mgName').value.trim();
-  if (!name) { showToast('Group name required', 'err'); return; }
+  if (!name) { showToast('Group name required','err'); return; }
   const g = {
     name,
     tier:     document.getElementById('mgTier').value,
@@ -807,7 +790,7 @@ function saveGroup() {
     alt_bias: document.getElementById('mgAlt').value.trim(),
     note:     document.getElementById('mgNote').value.trim(),
   };
-  if (editingIdx === -1) DATA.groups.push(g);
+  if (editingIdx===-1) DATA.groups.push(g);
   else DATA.groups[editingIdx] = g;
   closeGroupModal();
   renderTierList();
@@ -815,8 +798,8 @@ function saveGroup() {
 }
 
 function deleteGroup() {
-  if (editingIdx < 0) return;
-  DATA.groups.splice(editingIdx, 1);
+  if (editingIdx<0) return;
+  DATA.groups.splice(editingIdx,1);
   closeGroupModal();
   renderTierList();
   markDirty();
@@ -836,7 +819,7 @@ function openPhotoModal() {
 
 function closePhotoModal() {
   document.getElementById('photoModal').classList.remove('open');
-  if (pendingPhoto) { URL.revokeObjectURL(pendingPhoto.url); pendingPhoto = null; }
+  if (pendingPhoto) { URL.revokeObjectURL(pendingPhoto.url); pendingPhoto=null; }
 }
 
 function onPhotoChosen(file) {
@@ -844,33 +827,31 @@ function onPhotoChosen(file) {
   if (pendingPhoto) URL.revokeObjectURL(pendingPhoto.url);
   pendingPhoto = { file, url: URL.createObjectURL(file) };
   const img = document.getElementById('photoPreviewImg');
-  img.src = pendingPhoto.url; img.style.display = '';
-  document.getElementById('photoPlaceholder').style.display = 'none';
+  img.src = pendingPhoto.url; img.style.display='';
+  document.getElementById('photoPlaceholder').style.display='none';
 }
 
 function nextPhotoNum() {
-  const committed = (DATA.bias_wall||[]).filter(b => b.photo && !pendingFiles[b.photo]).length;
-  const pending   = Object.keys(pendingFiles).filter(p => p.startsWith('photos/xoxo/')).length;
-  return committed + pending + 1;
+  const committed = (DATA.bias_wall||[]).filter(b=>b.photo&&!pendingFiles[b.photo]).length;
+  const pending   = Object.keys(pendingFiles).filter(p=>p.startsWith('photos/xoxo/')).length;
+  return committed+pending+1;
 }
 
 function addBiasPhoto() {
   const member = document.getElementById('ppMember').value.trim();
   const group  = document.getElementById('ppGroup').value.trim();
-  if (!member || !group) { showToast('Member and group are required', 'err'); return; }
-  const note  = document.getElementById('ppNote').value.trim();
-
+  if (!member||!group) { showToast('Member and group are required','err'); return; }
+  const note = document.getElementById('ppNote').value.trim();
   let path = '';
   if (pendingPhoto) {
     const ext = pendingPhoto.file.name.split('.').pop().toLowerCase();
     path = `photos/xoxo/${nextPhotoNum()}.${ext}`;
     pendingFiles[path] = pendingPhoto.file;
     _urlCache.set(pendingPhoto.file, pendingPhoto.url);
-    pendingPhoto = null;  // URL now owned by _urlCache, don't revoke
+    pendingPhoto = null;
   }
-
-  DATA.bias_wall = DATA.bias_wall || [];
-  DATA.bias_wall.push({ member, group, note, photo: path });
+  DATA.bias_wall = DATA.bias_wall||[];
+  DATA.bias_wall.push({ member, group, note, photo:path });
   document.getElementById('photoModal').classList.remove('open');
   renderBiasWall();
   markDirty();
@@ -878,47 +859,55 @@ function addBiasPhoto() {
 
 function deletePhoto(i) {
   const b = DATA.bias_wall[i];
-  if (b.photo && pendingFiles[b.photo]) delete pendingFiles[b.photo];
-  DATA.bias_wall.splice(i, 1);
+  if (b.photo&&pendingFiles[b.photo]) delete pendingFiles[b.photo];
+  DATA.bias_wall.splice(i,1);
   renderBiasWall();
   markDirty();
 }
 
 // ===== UTILS =====
 function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const r = new FileReader();
-    r.onload  = () => resolve(r.result.split(',')[1]);
-    r.onerror = reject;
+  return new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onload=()=>resolve(r.result.split(',')[1]);
+    r.onerror=reject;
     r.readAsDataURL(file);
   });
 }
 
-function setProgress(v, msg='') {
-  document.getElementById('progressOverlay').classList.toggle('visible', v);
-  if (msg) document.getElementById('progressStatus').textContent = msg;
+function setProgress(v,msg='') {
+  document.getElementById('progressOverlay').classList.toggle('visible',v);
+  if (msg) document.getElementById('progressStatus').textContent=msg;
 }
 
-function showToast(msg, type='') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show' + (type ? ' '+type : '');
+function showToast(msg,type='') {
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show'+(type?' '+type:'');
   clearTimeout(t._tid);
-  t._tid = setTimeout(() => t.classList.remove('show'), 3000);
+  t._tid=setTimeout(()=>t.classList.remove('show'),3000);
 }
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
+  loadData();
+
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeGroupModal(); closePhotoModal(); }
-    if (e.key === 'Enter' && document.getElementById('groupModal').classList.contains('open')) {
+    if (e.key==='Escape') {
+      closeUnlock(); closeGroupModal(); closePhotoModal();
+    }
+    if (e.key==='Enter' && document.getElementById('groupModal').classList.contains('open')) {
       if (!['SELECT','BUTTON'].includes(document.activeElement.tagName)) saveGroup();
     }
   });
 
-  // Auto-login if PAT still in session (e.g. page refresh)
+  // Re-unlock silently if PAT already in session (page refresh while editing)
   const saved = sessionStorage.getItem('xoxo_pat');
-  if (saved) loginWith(saved);
+  if (saved) {
+    unlocked = true;
+    document.getElementById('lockBtn').style.display    = 'none';
+    document.getElementById('editToggle').style.display = '';
+  }
 });
 </script>
 </body>
