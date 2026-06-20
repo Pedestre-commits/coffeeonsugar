@@ -21,10 +21,10 @@
       "group2": "WayV",
       "note": "Married couple",
       "hearts": 5,
-      "photo_mode": "combined",
-      "photo": "photos/ships/3.jpeg",
-      "photo1": "",
-      "photo2": ""
+      "photo_mode": "split",
+      "photo": "",
+      "photo1": "photos/ships/4a.jpeg",
+      "photo2": "photos/ships/5b.jpeg"
     }
   ]
 }
