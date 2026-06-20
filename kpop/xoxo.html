@@ -111,15 +111,26 @@
 
     /* ===== TIER LIST ===== */
     .tier-block{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+    .tier-label-col{display:flex;flex-direction:column;align-items:center;gap:4px;width:50px;flex-shrink:0;}
     .tier-label{
       width:36px;height:36px;border-radius:var(--r-md);flex-shrink:0;
       display:flex;align-items:center;justify-content:center;
-      font-size:0.88rem;font-weight:800;color:#fff;margin-top:1px;
+      font-size:0.88rem;font-weight:800;color:#fff;
     }
     .tier-s .tier-label{background:var(--tier-s);}
     .tier-a .tier-label{background:var(--tier-a);}
     .tier-b .tier-label{background:var(--tier-b);}
     .tier-c .tier-label{background:var(--tier-c);color:var(--text-muted);}
+    .tier-desc{
+      font-size:0.6rem;text-align:center;color:var(--text-faint);
+      line-height:1.3;word-break:break-word;border-radius:var(--r-sm);
+      width:100%;transition:background var(--t);
+    }
+    .tier-desc:empty::before{content:'+ desc';opacity:0.3;font-style:italic;}
+    .tier-desc[contenteditable="true"]{
+      outline:1.5px dashed var(--primary);padding:2px 3px;
+      background:var(--primary-dim);cursor:text;
+    }
     .tier-row{
       flex:1;display:flex;flex-wrap:wrap;gap:7px;align-items:center;
       min-height:44px;padding:7px 10px;
@@ -373,7 +384,10 @@
   <div class="modal">
     <div class="modal-title" id="groupModalTitle">Group</div>
     <div class="field-label">Group name</div>
-    <input class="field-input" id="mgName" type="text" placeholder="e.g. BTS" />
+    <input class="field-input" id="mgName" type="text" placeholder="e.g. BTS"
+      oninput="onGroupNameInput()" />
+    <div id="mgLookupStatus" style="font-size:0.71rem;color:var(--text-faint);min-height:1.1em;margin-top:3px;"></div>
+    <datalist id="memberSuggestions"></datalist>
     <div class="field-label">Tier</div>
     <select class="field-input" id="mgTier">
       <option value="S">S — ultimate ♡♡♡</option>
@@ -382,9 +396,11 @@
       <option value="C">C — appreciate</option>
     </select>
     <div class="field-label">Bias (fave member)</div>
-    <input class="field-input" id="mgBias" type="text" placeholder="e.g. Jungkook" />
+    <input class="field-input" id="mgBias" type="text" placeholder="e.g. Jungkook"
+      list="memberSuggestions" autocomplete="off" />
     <div class="field-label">Alt-bias</div>
-    <input class="field-input" id="mgAlt" type="text" placeholder="e.g. Taehyung (optional)" />
+    <input class="field-input" id="mgAlt" type="text" placeholder="e.g. Taehyung (optional)"
+      list="memberSuggestions" autocomplete="off" />
     <div class="field-label">Note</div>
     <input class="field-input" id="mgNote" type="text" placeholder="optional ♡" />
     <div class="modal-actions">
@@ -484,7 +500,7 @@ const DATA_PATH = 'data/xoxo.json';
 const ENC_KEY   = 'xoxo_enc_pat';
 
 // ===== STATE =====
-let DATA         = { profile:{ name:'xoxo', bio:'' }, groups:[], bias_wall:[] };
+let DATA         = { profile:{ name:'xoxo', bio:'' }, groups:[], bias_wall:[], tier_labels:{} };
 let editMode     = false;
 let unlocked     = false;  // true once password verified
 let pendingFiles = {};
@@ -611,8 +627,6 @@ async function ghCall(url, method='GET', body=null) {
 }
 
 async function saveToGitHub() {
-  DATA.profile.name = document.getElementById('profileName').textContent.trim() || 'xoxo';
-  DATA.profile.bio  = document.getElementById('profileBio').textContent.trim();
   setProgress(true,'Getting repo state…');
   try {
     const ref     = await ghCall(`/git/refs/heads/${GH_BRANCH}`);
@@ -665,6 +679,7 @@ function render() {
 function renderTierList() {
   document.getElementById('tierList').innerHTML = TIERS.map(tier => {
     const groups = (DATA.groups||[]).map((g,i)=>({...g,i})).filter(g=>g.tier===tier);
+    const desc   = (DATA.tier_labels||{})[tier] || '';
     const chips  = groups.map(g=>`
       <div class="group-chip" data-idx="${g.i}" draggable="${editMode}"
         ondragstart="onChipDragStart(event,${g.i})"
@@ -675,7 +690,12 @@ function renderTierList() {
         ${editMode?`<button class="chip-edit" onclick="openGroupModal(${g.i})" title="Edit">✎</button>`:''}
       </div>`).join('');
     return `<div class="tier-block tier-${tier.toLowerCase()}">
-      <div class="tier-label">${tier}</div>
+      <div class="tier-label-col">
+        <div class="tier-label">${tier}</div>
+        <div class="tier-desc"
+          ${editMode?`contenteditable="true" oninput="onTierDescInput('${tier}',this)"`:''}
+        >${desc}</div>
+      </div>
       <div class="tier-row" data-tier="${tier}"
         ondragover="onTierOver(event)"
         ondrop="onTierDrop(event,'${tier}')">
@@ -683,6 +703,12 @@ function renderTierList() {
       </div>
     </div>`;
   }).join('');
+}
+
+function onTierDescInput(tier, el) {
+  if (!DATA.tier_labels) DATA.tier_labels = {};
+  DATA.tier_labels[tier] = el.textContent;
+  markDirty();
 }
 
 function renderBiasWall() {
@@ -711,8 +737,6 @@ function enableEditMode() {
   document.getElementById('editToggle').classList.add('active');
   document.body.classList.add('edit-mode');
   document.getElementById('addGroupBtn').style.display = '';
-  document.getElementById('profileName').contentEditable = 'true';
-  document.getElementById('profileBio').contentEditable  = 'true';
   renderTierList();
   renderBiasWall();
 }
@@ -722,8 +746,6 @@ function toggleEdit() {
   document.getElementById('editToggle').classList.toggle('active', editMode);
   document.body.classList.toggle('edit-mode', editMode);
   document.getElementById('addGroupBtn').style.display = editMode ? '' : 'none';
-  document.getElementById('profileName').contentEditable = editMode ? 'true' : 'false';
-  document.getElementById('profileBio').contentEditable  = editMode ? 'true' : 'false';
   renderTierList();
   renderBiasWall();
 }
@@ -764,6 +786,58 @@ function onTierDrop(e, tier) {
   markDirty();
 }
 
+// ===== MUSICBRAINZ LOOKUP =====
+let _lookupTimer = null;
+let _lastLookedUp = '';
+
+function onGroupNameInput() {
+  clearTimeout(_lookupTimer);
+  const name = document.getElementById('mgName').value.trim();
+  if (name.length < 2) { setLookupStatus(''); clearMemberList(); return; }
+  if (name === _lastLookedUp) return;
+  setLookupStatus('searching…');
+  _lookupTimer = setTimeout(() => lookupGroupMembers(name), 700);
+}
+
+async function lookupGroupMembers(name) {
+  _lastLookedUp = name;
+  try {
+    // Wikidata SPARQL: find musical groups with this label and their members (P527)
+    const sparql = `SELECT DISTINCT ?memberLabel WHERE {
+      ?group rdfs:label "${name.replace(/["\\\n]/g, c => '\\' + c)}"@en ;
+             wdt:P527 ?member .
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+    } LIMIT 60`;
+    const res = await fetch(
+      `https://query.wikidata.org/sparql?query=${encodeURIComponent(sparql)}&format=json`,
+      { headers: { 'Accept': 'application/sparql-results+json' } }
+    );
+    const data = await res.json();
+    const members = [...new Set(
+      (data.results?.bindings || [])
+        .map(b => b.memberLabel?.value)
+        .filter(v => v && !/^Q\d+$/.test(v))  // drop unresolved QIDs
+    )].sort();
+    setLookupStatus(members.length
+      ? `✓ ${name} · ${members.length} members`
+      : `no members found — type manually`);
+    populateMemberList(members);
+  } catch { setLookupStatus('lookup failed'); }
+}
+
+function setLookupStatus(msg) {
+  const el = document.getElementById('mgLookupStatus');
+  if (el) el.textContent = msg;
+}
+function clearMemberList() {
+  const el = document.getElementById('memberSuggestions');
+  if (el) el.innerHTML = '';
+}
+function populateMemberList(members) {
+  const el = document.getElementById('memberSuggestions');
+  if (el) el.innerHTML = members.map(m => `<option value="${m}">`).join('');
+}
+
 // ===== GROUP MODAL =====
 function openGroupModal(idx) {
   editingIdx = idx;
@@ -775,6 +849,8 @@ function openGroupModal(idx) {
   document.getElementById('mgAlt').value  = g.alt_bias||'';
   document.getElementById('mgNote').value = g.note    ||'';
   document.getElementById('mgDeleteBtn').style.display = idx===-1?'none':'';
+  setLookupStatus(''); clearMemberList(); _lastLookedUp = '';
+  if (g.name) lookupGroupMembers(g.name);
   document.getElementById('groupModal').classList.add('open');
   setTimeout(()=>document.getElementById('mgName').focus(),50);
 }
