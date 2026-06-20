@@ -148,13 +148,21 @@
     }
 
     /* combined (one photo) */
-    .ship-combined{position:relative;height:100%;}
-    .ship-combined img{width:100%;height:100%;object-fit:cover;display:block;}
     .ship-combined-placeholder{
       width:100%;height:100%;
       background:linear-gradient(160deg,#f9a8d4 0%,#e91e8c 50%,#be185d 100%);
       display:flex;align-items:center;justify-content:center;font-size:2.2rem;
     }
+
+    /* flip layers — both always rendered, css switches which is visible */
+    .ship-view-split,.ship-view-combined{
+      position:absolute;inset:0;
+      transition:opacity 260ms cubic-bezier(0.16,1,0.3,1);
+    }
+    .ship-view-combined{opacity:0;pointer-events:none;}
+    .ship-card.flipped .ship-view-split{opacity:0;pointer-events:none;}
+    .ship-card.flipped .ship-view-combined{opacity:1;pointer-events:auto;}
+    .ship-card.flippable{cursor:pointer;}
 
     /* info overlay */
     .ship-overlay{
@@ -410,12 +418,10 @@
     <div class="field-label">Note <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></div>
     <input class="field-input" id="smNote" type="text" placeholder="why you ship them ♡" />
 
-    <div class="field-label">Photos</div>
-    <div class="photo-mode-row">
-      <button class="mode-btn active" id="modeSplit"    onclick="setPhotoMode('split')">Split (2 photos)</button>
-      <button class="mode-btn"        id="modeCombined" onclick="setPhotoMode('combined')">Combined</button>
-    </div>
-    <div class="photo-upload-wrap" id="photoUploadWrap"></div>
+    <div class="field-label">Individual photos</div>
+    <div class="photo-upload-wrap" id="photoUploadSplit"></div>
+    <div class="field-label" style="margin-top:8px">Combined photo</div>
+    <div class="photo-upload-wrap" id="photoUploadCombined"></div>
 
     <div class="modal-actions">
       <button class="btn btn-danger" id="smDeleteBtn" onclick="deleteShip()" style="margin-right:auto;display:none">Delete</button>
@@ -477,7 +483,6 @@ let unlocked     = false;
 let pendingFiles = {};   // path → File, committed on Save
 let editingIdx   = -1;
 let heartsVal    = 3;
-let photoMode    = 'split';
 let pendingP     = { p1: null, p2: null, combined: null };  // modal staging
 
 const _urlCache = new Map();
@@ -669,39 +674,43 @@ function photoSrc(path) {
 function initials(name) { return (name || '?')[0].toUpperCase(); }
 
 function renderCard(s, i) {
-  const mode   = s.photo_mode || 'split';
   const label  = s.name || `${s.member1} × ${s.member2}`;
   const sub    = s.name
     ? `${s.member1}${s.group1 ? ' ('+s.group1+')' : ''} × ${s.member2}${s.group2 ? ' ('+s.group2+')' : ''}`
     : `${s.group1 || ''}${s.group1 && s.group2 ? ' × ' : ''}${s.group2 || ''}`;
   const hearts = '♥'.repeat(s.hearts || 0);
 
-  let visual;
-  if (mode === 'combined') {
-    const src = photoSrc(s.photo);
-    visual = `<div class="ship-combined">
-      ${src ? `<img src="${src}" alt="${label}" loading="lazy">`
-             : `<div class="ship-combined-placeholder">💗</div>`}
-    </div>`;
-  } else {
-    const s1 = photoSrc(s.photo1), s2 = photoSrc(s.photo2);
-    visual = `<div class="ship-split">
+  const src1 = photoSrc(s.photo1), src2 = photoSrc(s.photo2), srcC = photoSrc(s.photo);
+
+  const splitView = `<div class="ship-view-split">
+    <div class="ship-split">
       <div class="ship-half">
-        ${s1 ? `<img src="${s1}" alt="${s.member1}" loading="lazy">`
-              : `<div class="ship-half-placeholder">${initials(s.member1)}</div>`}
+        ${src1 ? `<img src="${src1}" alt="${s.member1}" loading="lazy">`
+               : `<div class="ship-half-placeholder">${initials(s.member1)}</div>`}
       </div>
       <div class="ship-half">
-        ${s2 ? `<img src="${s2}" alt="${s.member2}" loading="lazy">`
-              : `<div class="ship-half-placeholder">${initials(s.member2)}</div>`}
+        ${src2 ? `<img src="${src2}" alt="${s.member2}" loading="lazy">`
+               : `<div class="ship-half-placeholder">${initials(s.member2)}</div>`}
       </div>
       <div class="ship-seam"></div>
       <div class="ship-divider">♥</div>
-    </div>`;
-  }
+    </div>
+  </div>`;
 
-  const onclick = editMode ? `onclick="openShipModal(${i})"` : '';
-  return `<div class="ship-card" ${onclick}>
-    ${visual}
+  const combinedView = `<div class="ship-view-combined">
+    ${srcC
+      ? `<img src="${srcC}" alt="${label}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`
+      : `<div class="ship-combined-placeholder">💗</div>`}
+  </div>`;
+
+  const hasFlip = !!srcC && !editMode;
+  const onclick = editMode
+    ? `onclick="openShipModal(${i})"`
+    : (hasFlip ? `onclick="flipCard(this)"` : '');
+
+  return `<div class="ship-card${hasFlip ? ' flippable' : ''}" ${onclick}>
+    ${splitView}
+    ${combinedView}
     <div class="ship-overlay">
       <div class="ship-name">${label}</div>
       ${sub ? `<div class="ship-members-line">${sub}</div>` : ''}
@@ -747,11 +756,9 @@ function openShipModal(idx) {
   document.getElementById('smG2').value   = s.group2  || '';
   document.getElementById('smNote').value = s.note    || '';
   document.getElementById('smDeleteBtn').style.display = idx === -1 ? 'none' : '';
-  heartsVal  = s.hearts     || 3;
-  photoMode  = s.photo_mode || 'split';
+  heartsVal  = s.hearts || 3;
   pendingP   = { p1: null, p2: null, combined: null };
   updateHeartsUI();
-  updatePhotoModeUI();
   renderPhotoInputs(s);
   document.getElementById('shipModal').classList.add('open');
   setTimeout(() => document.getElementById('smM1').focus(), 50);
@@ -764,43 +771,30 @@ function updateHeartsUI() {
     b.classList.toggle('on', parseInt(b.dataset.v) <= heartsVal)
   );
 }
-function setPhotoMode(m) {
-  photoMode = m; updatePhotoModeUI();
-  const s = editingIdx >= 0 ? (DATA.ships[editingIdx] || {}) : {};
-  renderPhotoInputs(s);
-}
-function updatePhotoModeUI() {
-  document.getElementById('modeSplit').classList.toggle('active', photoMode === 'split');
-  document.getElementById('modeCombined').classList.toggle('active', photoMode === 'combined');
-}
-
 function renderPhotoInputs(s = {}) {
-  const wrap = document.getElementById('photoUploadWrap');
-  if (photoMode === 'combined') {
-    const src = pendingP.combined ? cachedURL(pendingP.combined) : photoSrc(s.photo || '');
-    wrap.innerHTML = `
-      <label class="photo-slot" style="max-width:130px;margin:0 auto;display:block">
-        <input type="file" accept="image/*" hidden onchange="onPhotoFile(this.files[0],'combined')" />
-        <div class="photo-box">${src ? `<img src="${src}">` : 'click to choose'}</div>
-        <div class="photo-slot-label">Combined photo</div>
-      </label>`;
-  } else {
-    const src1 = pendingP.p1 ? cachedURL(pendingP.p1) : photoSrc(s.photo1 || '');
-    const src2 = pendingP.p2 ? cachedURL(pendingP.p2) : photoSrc(s.photo2 || '');
-    wrap.innerHTML = `
-      <div class="photo-pair">
-        <label class="photo-slot">
-          <input type="file" accept="image/*" hidden onchange="onPhotoFile(this.files[0],'p1')" />
-          <div class="photo-box">${src1 ? `<img src="${src1}">` : 'click to choose'}</div>
-          <div class="photo-slot-label">Member 1</div>
-        </label>
-        <label class="photo-slot">
-          <input type="file" accept="image/*" hidden onchange="onPhotoFile(this.files[0],'p2')" />
-          <div class="photo-box">${src2 ? `<img src="${src2}">` : 'click to choose'}</div>
-          <div class="photo-slot-label">Member 2</div>
-        </label>
-      </div>`;
-  }
+  const src1 = pendingP.p1 ? cachedURL(pendingP.p1) : photoSrc(s.photo1 || '');
+  const src2 = pendingP.p2 ? cachedURL(pendingP.p2) : photoSrc(s.photo2 || '');
+  document.getElementById('photoUploadSplit').innerHTML = `
+    <div class="photo-pair">
+      <label class="photo-slot">
+        <input type="file" accept="image/*" hidden onchange="onPhotoFile(this.files[0],'p1')" />
+        <div class="photo-box">${src1 ? `<img src="${src1}">` : 'click to choose'}</div>
+        <div class="photo-slot-label">Member 1</div>
+      </label>
+      <label class="photo-slot">
+        <input type="file" accept="image/*" hidden onchange="onPhotoFile(this.files[0],'p2')" />
+        <div class="photo-box">${src2 ? `<img src="${src2}">` : 'click to choose'}</div>
+        <div class="photo-slot-label">Member 2</div>
+      </label>
+    </div>`;
+
+  const srcC = pendingP.combined ? cachedURL(pendingP.combined) : photoSrc(s.photo || '');
+  document.getElementById('photoUploadCombined').innerHTML = `
+    <label class="photo-slot" style="max-width:130px;margin:0 auto;display:block">
+      <input type="file" accept="image/*" hidden onchange="onPhotoFile(this.files[0],'combined')" />
+      <div class="photo-box">${srcC ? `<img src="${srcC}">` : 'click to choose'}</div>
+      <div class="photo-slot-label">Combined</div>
+    </label>`;
 }
 
 function onPhotoFile(file, slot) {
@@ -827,38 +821,32 @@ function saveShip() {
 
   const prev = editingIdx >= 0 ? DATA.ships[editingIdx] : {};
   const ship = {
-    name:       document.getElementById('smName').value.trim(),
-    member1:    m1,
-    group1:     document.getElementById('smG1').value.trim(),
-    member2:    m2,
-    group2:     document.getElementById('smG2').value.trim(),
-    note:       document.getElementById('smNote').value.trim(),
-    hearts:     heartsVal,
-    photo_mode: photoMode,
-    photo:      prev.photo  || '',
-    photo1:     prev.photo1 || '',
-    photo2:     prev.photo2 || '',
+    name:    document.getElementById('smName').value.trim(),
+    member1: m1,
+    group1:  document.getElementById('smG1').value.trim(),
+    member2: m2,
+    group2:  document.getElementById('smG2').value.trim(),
+    note:    document.getElementById('smNote').value.trim(),
+    hearts:  heartsVal,
+    photo:   prev.photo  || '',
+    photo1:  prev.photo1 || '',
+    photo2:  prev.photo2 || '',
   };
 
-  if (photoMode === 'combined') {
-    if (pendingP.combined) {
-      const path = nextPhotoPath('', pendingP.combined.name.split('.').pop().toLowerCase());
-      pendingFiles[path] = pendingP.combined;
-      ship.photo = path;
-    }
-    ship.photo1 = ''; ship.photo2 = '';
-  } else {
-    if (pendingP.p1) {
-      const path = nextPhotoPath('a', pendingP.p1.name.split('.').pop().toLowerCase());
-      pendingFiles[path] = pendingP.p1;
-      ship.photo1 = path;
-    }
-    if (pendingP.p2) {
-      const path = nextPhotoPath('b', pendingP.p2.name.split('.').pop().toLowerCase());
-      pendingFiles[path] = pendingP.p2;
-      ship.photo2 = path;
-    }
-    ship.photo = '';
+  if (pendingP.combined) {
+    const path = nextPhotoPath('', pendingP.combined.name.split('.').pop().toLowerCase());
+    pendingFiles[path] = pendingP.combined;
+    ship.photo = path;
+  }
+  if (pendingP.p1) {
+    const path = nextPhotoPath('a', pendingP.p1.name.split('.').pop().toLowerCase());
+    pendingFiles[path] = pendingP.p1;
+    ship.photo1 = path;
+  }
+  if (pendingP.p2) {
+    const path = nextPhotoPath('b', pendingP.p2.name.split('.').pop().toLowerCase());
+    pendingFiles[path] = pendingP.p2;
+    ship.photo2 = path;
   }
 
   if (editingIdx === -1) DATA.ships.push(ship);
@@ -868,6 +856,8 @@ function saveShip() {
   renderShips();
   markDirty();
 }
+
+function flipCard(el) { el.classList.toggle('flipped'); }
 
 function removeShip(i) {
   const s = DATA.ships[i];
