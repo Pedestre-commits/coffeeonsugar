@@ -3,6 +3,14 @@
     "name": "xoxo",
     "bio": "kpop girlie 🎀"
   },
-  "groups": [],
+  "groups": [
+    {
+      "name": "NCT",
+      "tier": "S",
+      "bias": "Renjun",
+      "alt_bias": "Jaehee",
+      "note": "Soulmates"
+    }
+  ],
   "bias_wall": []
 }
