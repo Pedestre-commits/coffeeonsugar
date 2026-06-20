@@ -338,10 +338,50 @@
     .toast.err{border-color:rgba(229,53,53,0.4);color:var(--danger);}
 
     /* ===== RESPONSIVE ===== */
+    /* ===== OBSESSION BANNER ===== */
+    .obsession-card{
+      position:relative;border-radius:var(--r-xl);overflow:hidden;
+      border:1.5px solid var(--primary);
+      box-shadow:0 0 0 4px rgba(233,30,140,0.07),var(--shadow-lg);
+      background:linear-gradient(135deg,#fff0f8 0%,#fde8f3 100%);
+      display:flex;min-height:130px;margin-bottom:32px;
+      transition:box-shadow var(--t),border-color var(--t);
+    }
+    .edit-mode .obsession-card{cursor:pointer;}
+    .edit-mode .obsession-card:hover{box-shadow:0 0 0 6px rgba(233,30,140,0.13),var(--shadow-lg);}
+    .obsession-photo{
+      width:110px;flex-shrink:0;background:var(--primary-light);overflow:hidden;
+    }
+    .obsession-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+    .obsession-photo-empty{
+      width:100%;height:100%;display:flex;align-items:center;
+      justify-content:center;font-size:2.2rem;
+    }
+    .obsession-body{
+      flex:1;padding:16px 20px;display:flex;flex-direction:column;
+      justify-content:center;gap:3px;
+    }
+    .obsession-label{
+      font-size:0.62rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:0.14em;color:var(--primary);margin-bottom:2px;
+    }
+    .obsession-member{
+      font-family:var(--font-display);font-size:1.55rem;font-style:italic;
+      color:var(--text);line-height:1.1;
+    }
+    .obsession-group{font-size:0.82rem;color:var(--text-muted);font-weight:500;}
+    .obsession-note{font-size:0.78rem;color:var(--text-faint);font-style:italic;margin-top:3px;}
+    .obsession-empty-hint{
+      width:100%;display:flex;align-items:center;justify-content:center;
+      color:var(--text-faint);font-size:0.8rem;padding:24px;
+    }
+
     @media(max-width:600px){
       .bias-wall{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));}
       .profile-name{font-size:2.2rem;}
       .app-header{padding:10px 16px;}
+      .obsession-photo{width:80px;}
+      .obsession-member{font-size:1.25rem;}
     }
   </style>
 </head>
@@ -436,6 +476,31 @@
   </div>
 </div>
 
+<!-- ===== OBSESSION MODAL ===== -->
+<div class="modal-backdrop" id="obsessionModal" onclick="if(event.target===this)closeObsessionModal()">
+  <div class="modal">
+    <div class="modal-title">right now ✦</div>
+    <label style="cursor:pointer;display:block">
+      <input type="file" accept="image/*" hidden id="obsPhotoInput" onchange="onObsPhotoChosen(this.files[0])" />
+      <div class="photo-preview-box" id="obsPreviewBox">
+        <span id="obsPlaceholder">click to choose photo</span>
+        <img id="obsPreviewImg" src="" alt="" style="display:none" />
+      </div>
+    </label>
+    <div class="field-label">Member</div>
+    <input class="field-input" id="obsMember" type="text" placeholder="e.g. Renjun" />
+    <div class="field-label">Group</div>
+    <input class="field-input" id="obsGroup" type="text" placeholder="e.g. NCT Dream" />
+    <div class="field-label">Note (optional)</div>
+    <input class="field-input" id="obsNote" type="text" placeholder="e.g. can't stop listening ♡" />
+    <div class="modal-actions">
+      <button class="btn btn-danger" onclick="clearObsession()" style="margin-right:auto">Clear</button>
+      <button class="btn" onclick="closeObsessionModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveObsession()">Save ♡</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== HEADER ===== -->
 <header class="app-header">
   <div class="header-brand">
@@ -471,6 +536,8 @@
     <div class="profile-bio"  id="profileBio"></div>
   </div>
 
+  <div id="obsessionBanner"></div>
+
   <section class="section">
     <div class="section-header">
       <div class="section-title">groups &amp; biases</div>
@@ -500,7 +567,7 @@ const DATA_PATH = 'data/xoxo.json';
 const ENC_KEY   = 'xoxo_enc_pat';
 
 // ===== STATE =====
-let DATA         = { profile:{ name:'xoxo', bio:'' }, groups:[], bias_wall:[], tier_labels:{} };
+let DATA         = { profile:{ name:'xoxo', bio:'' }, groups:[], bias_wall:[], tier_labels:{}, obsession:{} };
 let editMode     = false;
 let unlocked     = false;  // true once password verified
 let pendingFiles = {};
@@ -733,8 +800,96 @@ function render() {
   const p = DATA.profile || {};
   document.getElementById('profileName').textContent = p.name || 'xoxo';
   document.getElementById('profileBio').textContent  = p.bio  || '';
+  renderObsession();
   renderTierList();
   renderBiasWall();
+}
+
+function renderObsession() {
+  const obs = DATA.obsession || {};
+  const el  = document.getElementById('obsessionBanner');
+  const hasContent = obs.member || obs.group;
+
+  if (!hasContent && !editMode) { el.innerHTML = ''; return; }
+
+  const src = obs.photo
+    ? (pendingFiles[obs.photo] ? cachedURL(pendingFiles[obs.photo]) : ('../' + obs.photo))
+    : '';
+
+  const onclick = editMode ? `onclick="openObsessionModal()"` : '';
+  el.innerHTML = `<div class="obsession-card" ${onclick}>
+    <div class="obsession-photo">
+      ${src
+        ? `<img src="${src}" alt="${obs.member||''}" loading="lazy">`
+        : `<div class="obsession-photo-empty">✦</div>`}
+    </div>
+    <div class="obsession-body">
+      <div class="obsession-label">right now ✦</div>
+      ${hasContent
+        ? `<div class="obsession-member">${obs.member || ''}</div>
+           ${obs.group ? `<div class="obsession-group">${obs.group}</div>` : ''}
+           ${obs.note  ? `<div class="obsession-note">${obs.note}</div>`  : ''}`
+        : `<div class="obsession-empty-hint">tap to set your current obsession ♡</div>`}
+    </div>
+  </div>`;
+}
+
+let obsPendingPhoto = null;
+
+function openObsessionModal() {
+  const obs = DATA.obsession || {};
+  obsPendingPhoto = null;
+  document.getElementById('obsMember').value = obs.member || '';
+  document.getElementById('obsGroup').value  = obs.group  || '';
+  document.getElementById('obsNote').value   = obs.note   || '';
+  const src = obs.photo
+    ? (pendingFiles[obs.photo] ? cachedURL(pendingFiles[obs.photo]) : ('../' + obs.photo))
+    : '';
+  const img = document.getElementById('obsPreviewImg');
+  const ph  = document.getElementById('obsPlaceholder');
+  if (src) { img.src = src; img.style.display = ''; ph.style.display = 'none'; }
+  else      { img.src = '';  img.style.display = 'none'; ph.style.display = ''; }
+  document.getElementById('obsessionModal').classList.add('open');
+  setTimeout(() => document.getElementById('obsMember').focus(), 50);
+}
+function closeObsessionModal() { document.getElementById('obsessionModal').classList.remove('open'); }
+
+function onObsPhotoChosen(file) {
+  if (!file) return;
+  obsPendingPhoto = file;
+  const url = URL.createObjectURL(file);
+  const img = document.getElementById('obsPreviewImg');
+  img.src = url; img.style.display = '';
+  document.getElementById('obsPlaceholder').style.display = 'none';
+}
+
+function saveObsession() {
+  const prev = DATA.obsession || {};
+  DATA.obsession = {
+    member: document.getElementById('obsMember').value.trim(),
+    group:  document.getElementById('obsGroup').value.trim(),
+    note:   document.getElementById('obsNote').value.trim(),
+    photo:  prev.photo || '',
+  };
+  if (obsPendingPhoto) {
+    const ext  = obsPendingPhoto.name.split('.').pop().toLowerCase();
+    const used = Object.values(DATA.bias_wall||[]).map(b=>b.photo).filter(Boolean).length;
+    const path = `photos/xoxo/obs.${ext}`;
+    pendingFiles[path] = obsPendingPhoto;
+    _urlCache.set(obsPendingPhoto, URL.createObjectURL(obsPendingPhoto));
+    DATA.obsession.photo = path;
+    obsPendingPhoto = null;
+  }
+  closeObsessionModal();
+  renderObsession();
+  markDirty();
+}
+
+function clearObsession() {
+  DATA.obsession = {};
+  closeObsessionModal();
+  renderObsession();
+  markDirty();
 }
 
 function renderTierList() {
@@ -798,6 +953,7 @@ function enableEditMode() {
   document.getElementById('editToggle').classList.add('active');
   document.body.classList.add('edit-mode');
   document.getElementById('addGroupBtn').style.display = '';
+  renderObsession();
   renderTierList();
   renderBiasWall();
 }
@@ -807,6 +963,7 @@ function toggleEdit() {
   document.getElementById('editToggle').classList.toggle('active', editMode);
   document.body.classList.toggle('edit-mode', editMode);
   document.getElementById('addGroupBtn').style.display = editMode ? '' : 'none';
+  renderObsession();
   renderTierList();
   renderBiasWall();
 }
@@ -1057,7 +1214,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('keydown', e => {
     if (e.key==='Escape') {
-      closeUnlock(); closeGroupModal(); closePhotoModal();
+      closeUnlock(); closeGroupModal(); closePhotoModal(); closeObsessionModal();
     }
     if (e.key==='Enter' && document.getElementById('groupModal').classList.contains('open')) {
       if (!['SELECT','BUTTON'].includes(document.activeElement.tagName)) saveGroup();
