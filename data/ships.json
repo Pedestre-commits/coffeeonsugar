@@ -1,3 +1,17 @@
 {
-  "ships": []
+  "ships": [
+    {
+      "name": "YuDaeng",
+      "member1": "Jaehee",
+      "group1": "NCT Wish",
+      "member2": "Yushi",
+      "group2": "NCT Wish",
+      "note": "They’re like a married couple",
+      "hearts": 5,
+      "photo_mode": "split",
+      "photo": "",
+      "photo1": "photos/ships/1a.jpeg",
+      "photo2": "photos/ships/2b.jpeg"
+    }
+  ]
 }
