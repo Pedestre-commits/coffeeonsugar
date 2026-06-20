@@ -1,27 +1,37 @@
-# coffeeonsugar — Travel Map
+# coffeeonsugar — Personal Site
 
-Personal travel map website. Hosted on GitHub Pages at the domain in `CNAME`.
+Two sub-projects sharing one GitHub Pages repo (`Pedestre-commits/coffeeonsugar`, domain in `CNAME`).
 
-## What it is
-An interactive map showing trip stops by year. Has a public map view and a password-protected admin panel for adding/editing stops.
+---
 
-## Tech stack
+## Sub-project 1: Travel Map (`/`)
+
+Interactive map showing trip stops by year. Public map view + PAT-protected admin panel.
+
+**See also:** `kpop-context.md` for the K-pop sub-project.
+
+## Tech stack (shared)
 - Pure HTML/CSS/JS — no build step, no framework
-- **Leaflet.js** for the map (OpenStreetMap tiles)
-- **Leaflet.PolylineDecorator** for route arrows
-- **JSZip** for local export fallback
-- **GitHub API** (via PAT) for reading/writing data
 - **GitHub Pages** for hosting (deploys from `main` branch)
+- **GitHub API** (via PAT) for reading/writing data from the admin
 
-## Key files
+## Key files — Travel Map
 | File | Purpose |
 |------|---------|
 | `index.html` + `script.js` + `style.css` | Public map page |
 | `admin.html` | Admin panel (inline script, no separate file) |
+| `data/places.json` | Trip data — source of truth |
+| `photos/<slug>/<n>.<ext>` | Stop photos committed to repo |
 | `index_1.html` + `styles_1.css` + `app.js` | Coffee/sugar animation page (separate mini-project) |
-| `data/places.json` | Trip data — source of truth, committed to repo |
-| `photos/<slug>/<n>.<ext>` | Stop photos, committed to repo |
-| `CNAME` | Custom domain for GitHub Pages |
+| `CNAME` | Custom domain |
+
+## Key files — K-pop Tracker (`/kpop`)
+| File | Purpose |
+|------|---------|
+| `kpop.html` + `kpop.js` + `kpop.css` | K-pop concert tracker page |
+| `data/kpop.json` | Concerts + groups data — source of truth |
+| `assets/logos/*.svg/png` | Group logo files for margin decoration |
+| `kpop-context.md` | Full context doc for the K-pop sub-project |
 
 ## Data structure (`data/places.json`)
 ```json
