@@ -688,7 +688,7 @@ function renderTierList() {
 function renderBiasWall() {
   const wall  = DATA.bias_wall||[];
   const cards = wall.map((b,i)=>{
-    const src = b.photo?(pendingFiles[b.photo]?cachedURL(pendingFiles[b.photo]):b.photo):'';
+    const src = b.photo?(pendingFiles[b.photo]?cachedURL(pendingFiles[b.photo]):('../'+b.photo)):'';
     return `<div class="bias-card">
       ${src?`<img src="${src}" alt="${b.member}" loading="lazy">`:`<div class="no-photo">no photo</div>`}
       <div class="bias-info">
