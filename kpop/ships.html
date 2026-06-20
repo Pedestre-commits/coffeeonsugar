@@ -373,7 +373,7 @@
       onkeydown="if(event.key==='Enter')unlock()" />
     <div class="modal-error" id="unlockError"></div>
     <button class="btn-unlock" id="unlockBtn" onclick="unlock()">Unlock ♡</button>
-    <button class="setup-toggle" onclick="toggleSetup()">first time setup</button>
+    <button class="setup-toggle" onclick="toggleSetup()">add a login</button>
     <div class="setup-section" id="setupSection">
       <div class="setup-help">
         Owner only — one time. Generate a
@@ -546,7 +546,6 @@ async function setup() {
     setUnlockError('Saving…');
     const enc = await encryptPAT(rawPat, pass);
     await saveConfigToRepo(enc, rawPat);
-    localStorage.setItem(ENC_KEY, enc);
     await activateEdit(rawPat);
   } catch(e) { setUnlockError('Setup failed: ' + e.message); }
 }
@@ -557,26 +556,42 @@ async function unlock() {
   btn.disabled = true; btn.textContent = '…';
   setUnlockError('');
 
-  let enc = localStorage.getItem(ENC_KEY);
-  if (!enc) {
+  let keys = getLocalKeys();
+  if (!keys.length) {
     setUnlockError('Fetching config…');
     try {
       const res = await fetch('../data/xoxo-config.json', { cache: 'no-cache' });
       if (res.ok) {
         const cfg = await res.json();
-        if (cfg.enc) { enc = cfg.enc; localStorage.setItem(ENC_KEY, enc); }
+        keys = cfg.keys || (cfg.enc ? [cfg.enc] : []);
+        if (keys.length) localStorage.setItem(ENC_KEY, JSON.stringify({ keys }));
       }
     } catch {}
   }
 
-  if (!enc) {
-    setUnlockError('Not set up — use "first time setup" below.');
+  if (!keys.length) {
+    setUnlockError('Not set up — use "add a login" below.');
     btn.disabled = false; btn.textContent = 'Unlock ♡'; return;
   }
-  setUnlockError('');
-  try { await activateEdit(await decryptPAT(enc, pass)); }
-  catch { setUnlockError('Wrong password ♡'); }
+
+  let rawPat = null;
+  for (const enc of keys) {
+    try { rawPat = await decryptPAT(enc, pass); break; } catch {}
+  }
+
+  if (!rawPat) { setUnlockError('Wrong password ♡'); btn.disabled = false; btn.textContent = 'Unlock ♡'; return; }
+  await activateEdit(rawPat);
   btn.disabled = false; btn.textContent = 'Unlock ♡';
+}
+function getLocalKeys() {
+  const raw = localStorage.getItem(ENC_KEY);
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed.keys || (parsed.enc ? [parsed.enc] : []);
+  } catch {
+    return [raw];
+  }
 }
 async function saveConfigToRepo(enc, rawPat) {
   const CONFIG_PATH = 'data/xoxo-config.json';
@@ -586,19 +601,26 @@ async function saveConfigToRepo(enc, rawPat) {
     'X-GitHub-Api-Version': '2022-11-28',
     'Content-Type': 'application/json'
   };
-  let sha;
+  let sha, existingKeys = [];
   const check = await fetch(`${REPO_BASE}/contents/${CONFIG_PATH}`, { headers });
-  if (check.ok) sha = (await check.json()).sha;
+  if (check.ok) {
+    const data = await check.json();
+    sha = data.sha;
+    const existing = JSON.parse(atob(data.content.replace(/\n/g, '')));
+    existingKeys = existing.keys || (existing.enc ? [existing.enc] : []);
+  }
+  if (!existingKeys.includes(enc)) existingKeys.push(enc);
   const res = await fetch(`${REPO_BASE}/contents/${CONFIG_PATH}`, {
     method: 'PUT', headers,
     body: JSON.stringify({
-      message: 'Store encrypted access config',
-      content: btoa(JSON.stringify({ enc }, null, 2)),
+      message: `Update access config (${existingKeys.length} login${existingKeys.length !== 1 ? 's' : ''})`,
+      content: btoa(JSON.stringify({ keys: existingKeys }, null, 2)),
       branch: GH_BRANCH,
       ...(sha ? { sha } : {})
     })
   });
   if (!res.ok) throw new Error((await res.json().catch(()=>({}))).message || `HTTP ${res.status}`);
+  localStorage.setItem(ENC_KEY, JSON.stringify({ keys: existingKeys }));
 }
 async function activateEdit(pat) {
   sessionStorage.setItem('xoxo_pat', pat);
