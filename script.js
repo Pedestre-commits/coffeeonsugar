@@ -344,12 +344,26 @@ async function init() {
 
 document.addEventListener('DOMContentLoaded', init);
 
-// Secret: type "kpop" anywhere on the page
+// Secret: type "kpop" OR click the title 5 times
 (function() {
+  const dest = '/kpop.html';
+  // keyboard
   const seq = 'kpop'; let buf = '';
   document.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;
     buf = (buf + e.key.toLowerCase()).slice(-seq.length);
-    if (buf === seq) window.location.href = '/kpop.html';
+    if (buf === seq) window.location.href = dest;
+  });
+  // tap/click title 5×
+  let clicks = 0, timer;
+  document.addEventListener('DOMContentLoaded', () => {
+    const title = document.querySelector('.header-title');
+    if (!title) return;
+    title.addEventListener('click', () => {
+      clicks++;
+      clearTimeout(timer);
+      if (clicks >= 5) { window.location.href = dest; return; }
+      timer = setTimeout(() => { clicks = 0; }, 2000);
+    });
   });
 })();

@@ -1,12 +1,26 @@
 const DATA_URL = 'data/kpop.json?v=6';
 
-// Secret: type "xoxo" anywhere on the page
+// Secret: type "xoxo" OR click the title 5 times
 (function() {
+  const dest = '/kpop/xoxo.html';
+  // keyboard
   const seq = 'xoxo'; let buf = '';
   document.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;
     buf = (buf + e.key.toLowerCase()).slice(-seq.length);
-    if (buf === seq) window.location.href = '/kpop/xoxo.html';
+    if (buf === seq) window.location.href = dest;
+  });
+  // tap/click title 5×
+  let clicks = 0, timer;
+  document.addEventListener('DOMContentLoaded', () => {
+    const title = document.querySelector('.hero-title');
+    if (!title) return;
+    title.addEventListener('click', () => {
+      clicks++;
+      clearTimeout(timer);
+      if (clicks >= 5) { window.location.href = dest; return; }
+      timer = setTimeout(() => { clicks = 0; }, 2000);
+    });
   });
 })();
 const LASTFM_KEY = '1269f913a8f04b71e848ecf0718dbe5a';
