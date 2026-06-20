@@ -8,10 +8,10 @@
       "group2": "NCT Wish",
       "note": "They’re like a married couple",
       "hearts": 5,
-      "photo_mode": "combined",
-      "photo": "photos/ships/5.jpeg",
-      "photo1": "",
-      "photo2": ""
+      "photo_mode": "split",
+      "photo": "",
+      "photo1": "photos/ships/3a.jpeg",
+      "photo2": "photos/ships/4b.jpeg"
     },
     {
       "name": "JohnTen",
@@ -21,10 +21,10 @@
       "group2": "WayV",
       "note": "Married couple",
       "hearts": 5,
-      "photo_mode": "combined",
-      "photo": "photos/ships/3.jpeg",
-      "photo1": "",
-      "photo2": ""
+      "photo_mode": "split",
+      "photo": "",
+      "photo1": "photos/ships/6a.jpeg",
+      "photo2": "photos/ships/7b.jpeg"
     }
   ]
 }
