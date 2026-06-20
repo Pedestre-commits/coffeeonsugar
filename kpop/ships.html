@@ -621,7 +621,7 @@ function render() { renderShips(); }
 
 function photoSrc(path) {
   if (!path) return '';
-  return pendingFiles[path] ? cachedURL(pendingFiles[path]) : path;
+  return pendingFiles[path] ? cachedURL(pendingFiles[path]) : ('../' + path);
 }
 function initials(name) { return (name || '?')[0].toUpperCase(); }
 
