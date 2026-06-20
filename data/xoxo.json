@@ -54,7 +54,7 @@
       "note": "Boyfie"
     },
     {
-      "name": "Riize",
+      "name": "RIIZE",
       "tier": "B",
       "bias": "Shotaro",
       "alt_bias": "Anton",
@@ -91,6 +91,24 @@
       "group": "NCT Wish",
       "note": "Boyfie",
       "photo": "photos/xoxo/5.jpeg"
+    },
+    {
+      "member": "Mark",
+      "group": "GOT7",
+      "note": "Boyfie",
+      "photo": "photos/xoxo/6.jpeg"
+    },
+    {
+      "member": "Soobin",
+      "group": "TxT",
+      "note": "Boyfie",
+      "photo": "photos/xoxo/7.jpeg"
+    },
+    {
+      "member": "Shotaro",
+      "group": "RIIZE",
+      "note": "Boyfie",
+      "photo": "photos/xoxo/8.jpeg"
     }
   ]
 }
