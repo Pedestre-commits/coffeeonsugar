@@ -1,4 +1,14 @@
 const DATA_URL = 'data/kpop.json?v=6';
+
+// Secret: type "xoxo" anywhere on the page
+(function() {
+  const seq = 'xoxo'; let buf = '';
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;
+    buf = (buf + e.key.toLowerCase()).slice(-seq.length);
+    if (buf === seq) window.location.href = '/kpop/xoxo.html';
+  });
+})();
 const LASTFM_KEY = '1269f913a8f04b71e848ecf0718dbe5a';
 const LASTFM_USER = 'Pedestre95';
 
