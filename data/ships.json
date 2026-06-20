@@ -12,6 +12,19 @@
       "photo": "",
       "photo1": "photos/ships/1a.jpeg",
       "photo2": "photos/ships/2b.jpeg"
+    },
+    {
+      "name": "JohnTen",
+      "member1": "Jhonny",
+      "group1": "NCT 127",
+      "member2": "Ten",
+      "group2": "WayV",
+      "note": "Married couple",
+      "hearts": 5,
+      "photo_mode": "combined",
+      "photo": "photos/ships/3.jpeg",
+      "photo1": "",
+      "photo2": ""
     }
   ]
 }
