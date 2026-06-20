@@ -802,25 +802,50 @@ function onGroupNameInput() {
 async function lookupGroupMembers(name) {
   _lastLookedUp = name;
   try {
-    // Wikidata SPARQL: find musical groups with this label and their members (P527)
-    const sparql = `SELECT DISTINCT ?memberLabel WHERE {
-      ?group rdfs:label "${name.replace(/["\\\n]/g, c => '\\' + c)}"@en ;
-             wdt:P527 ?member .
+    // Step 1: entity search — handles aliases ("TXT"), case variations ("MONSTA X"), short names
+    const sr = await fetch(
+      `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(name)}&language=en&type=item&limit=8&format=json&origin=*`
+    );
+    const { search = [] } = await sr.json();
+    if (!search.length) { setLookupStatus('not found'); clearMemberList(); return; }
+
+    // Step 2: SPARQL with all candidate QIDs, checking both directions:
+    //   P527 = group "has part" → member
+    //   P463 = member "member of" → group  (how most K-pop groups are stored)
+    const vals = search.map(c => `wd:${c.id}`).join(' ');
+    const sparql = `SELECT DISTINCT ?group ?groupLabel ?memberLabel WHERE {
+      VALUES ?group { ${vals} }
+      { ?group wdt:P527 ?member . ?member wdt:P31 wd:Q5 . }
+      UNION
+      { ?member wdt:P463 ?group . ?member wdt:P31 wd:Q5 . }
       SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
-    } LIMIT 60`;
-    const res = await fetch(
+    } LIMIT 120`;
+    const mr = await fetch(
       `https://query.wikidata.org/sparql?query=${encodeURIComponent(sparql)}&format=json`,
       { headers: { 'Accept': 'application/sparql-results+json' } }
     );
-    const data = await res.json();
+    const { results: { bindings = [] } = {} } = await mr.json();
+
+    if (!bindings.length) { setLookupStatus('no members found — type manually'); clearMemberList(); return; }
+
+    // pick entity with the most members
+    const counts = {}, labels = {};
+    bindings.forEach(b => {
+      const g = b.group.value;
+      counts[g] = (counts[g] || 0) + 1;
+      labels[g] = b.groupLabel?.value || g;
+    });
+    const best = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
     const members = [...new Set(
-      (data.results?.bindings || [])
+      bindings
+        .filter(b => b.group.value === best)
         .map(b => b.memberLabel?.value)
-        .filter(v => v && !/^Q\d+$/.test(v))  // drop unresolved QIDs
+        .filter(v => v && !/^Q\d+$/.test(v))
     )].sort();
+
     setLookupStatus(members.length
-      ? `✓ ${name} · ${members.length} members`
-      : `no members found — type manually`);
+      ? `✓ ${labels[best]} · ${members.length} members`
+      : 'no members found — type manually');
     populateMemberList(members);
   } catch { setLookupStatus('lookup failed'); }
 }
