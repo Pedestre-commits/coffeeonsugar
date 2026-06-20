@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dramas ♡</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>🎬</text></svg>" />
+  <style>
+    :root {
+      --bg:            #fff5f9;
+      --surface:       #ffffff;
+      --surface-2:     #fef2f7;
+      --border:        #f5c6df;
+      --divider:       #fde8f3;
+      --text:          #1a0a12;
+      --text-muted:    #7b4063;
+      --text-faint:    #c090aa;
+      --primary:       #e91e8c;
+      --primary-dim:   rgba(233,30,140,0.10);
+      --primary-light: #fde8f3;
+      --accent:        #ff79b0;
+      --tier-s:        #e91e8c;
+      --tier-a:        #ff6eb4;
+      --tier-b:        #ff9ecb;
+      --tier-c:        #ffc3dd;
+      --danger:        #e53535;
+      --shadow:        0 2px 16px rgba(233,30,140,0.10);
+      --shadow-lg:     0 8px 36px rgba(233,30,140,0.18);
+      --r-sm:6px; --r-md:10px; --r-lg:14px; --r-xl:20px;
+      --t:160ms cubic-bezier(0.16,1,0.3,1);
+      --font:'Inter','Segoe UI',system-ui,sans-serif;
+      --font-display:'Playfair Display',Georgia,serif;
+    }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{-webkit-font-smoothing:antialiased;}
+    body{
+      font-family:var(--font);font-size:14px;line-height:1.5;
+      color:var(--text);background:var(--bg);min-height:100dvh;
+      background-image:
+        radial-gradient(ellipse 800px 500px at 0% 0%,#ffd6ec 0%,transparent 60%),
+        radial-gradient(ellipse 600px 400px at 100% 100%,#ffe8f3 0%,transparent 55%);
+    }
+    button{cursor:pointer;font:inherit;}
+    :focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:var(--r-sm);}
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
+
+    /* ===== HEADER ===== */
+    .app-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 24px;border-bottom:1px solid var(--border);
+      background:rgba(255,245,249,0.88);backdrop-filter:blur(12px);
+      position:sticky;top:0;z-index:200;height:56px;
+    }
+    .header-brand{
+      font-family:var(--font-display);font-size:1.2rem;font-style:italic;
+      color:var(--primary);display:flex;align-items:center;gap:8px;
+    }
+    .header-actions{display:flex;align-items:center;gap:8px;}
+
+    /* ===== BUTTONS ===== */
+    .btn{
+      padding:6px 13px;border-radius:var(--r-md);border:1.5px solid var(--border);
+      background:var(--surface);color:var(--text-muted);font:inherit;
+      font-size:0.81rem;font-weight:500;cursor:pointer;white-space:nowrap;
+      transition:background var(--t),border-color var(--t),color var(--t);
+      text-decoration:none;display:inline-flex;align-items:center;
+    }
+    .btn:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary);}
+    .btn-primary{background:var(--primary);border-color:var(--primary);color:#fff;}
+    .btn-primary:hover{background:#d0187c;border-color:#d0187c;color:#fff;}
+    .btn-danger{color:var(--danger);border-color:rgba(229,53,53,0.3);}
+    .btn-danger:hover{background:rgba(229,53,53,0.08);border-color:var(--danger);color:var(--danger);}
+    .btn-icon{
+      width:32px;height:32px;padding:0;border-radius:var(--r-md);
+      border:1.5px solid var(--border);background:var(--surface);
+      color:var(--text-faint);display:flex;align-items:center;justify-content:center;
+      transition:background var(--t),border-color var(--t),color var(--t);
+    }
+    .btn-icon:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary);}
+    .btn-icon.active{background:var(--primary);border-color:var(--primary);color:#fff;}
+
+    /* ===== PAGE ===== */
+    .page{max-width:900px;margin:0 auto;padding:28px 20px 60px;}
+
+    /* ===== HERO ===== */
+    .page-hero{text-align:center;padding:32px 16px 36px;}
+    .page-title{
+      font-family:var(--font-display);font-size:3rem;font-style:italic;
+      color:var(--primary);line-height:1;margin-bottom:6px;
+    }
+    .page-sub{font-size:0.9rem;color:var(--text-faint);}
+
+    /* ===== SECTION ===== */
+    .section{margin-bottom:32px;}
+    .section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+    .section-title{font-size:0.7rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:0.12em;color:var(--primary);white-space:nowrap;}
+    .section-header::after{content:'';flex:1;height:1px;background:var(--border);}
+
+    /* ===== TIER LIST ===== */
+    .tier-block{
+      display:flex;align-items:stretch;gap:0;
+      border-radius:var(--r-lg);overflow:hidden;
+      border:1.5px solid var(--border);background:var(--surface);
+      margin-bottom:8px;min-height:52px;
+    }
+    .tier-label-col{
+      width:60px;flex-shrink:0;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;padding:10px 4px;
+      gap:2px;
+    }
+    .tier-s .tier-label-col{background:var(--tier-s);}
+    .tier-a .tier-label-col{background:var(--tier-a);}
+    .tier-b .tier-label-col{background:var(--tier-b);}
+    .tier-c .tier-label-col{background:var(--tier-c);}
+    .tier-label{font-size:1.05rem;font-weight:800;color:#fff;line-height:1;}
+    .tier-desc{
+      font-size:0.58rem;color:rgba(255,255,255,0.8);text-align:center;
+      line-height:1.2;word-break:break-word;max-width:52px;
+      outline:none;
+    }
+    .tier-desc:empty::before{content:attr(data-ph);opacity:0.5;}
+    .tier-row{
+      flex:1;display:flex;flex-wrap:wrap;align-items:center;
+      gap:6px;padding:8px 10px;
+      border-left:1.5px solid var(--border);
+    }
+    .tier-empty{color:var(--text-faint);font-size:0.82rem;padding:2px;}
+
+    /* ===== SHOW CHIPS ===== */
+    .show-chip{
+      display:inline-flex;align-items:center;gap:6px;
+      background:var(--surface-2);border:1.5px solid var(--border);
+      border-radius:var(--r-md);padding:5px 10px;
+      font-size:0.82rem;font-weight:500;color:var(--text);
+      transition:border-color var(--t);user-select:none;
+    }
+    .show-chip:hover{border-color:var(--primary);}
+    .status-badge{
+      font-size:0.62rem;font-weight:600;padding:1px 5px;border-radius:99px;
+      text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap;
+    }
+    .status-watching{ background:rgba(233,30,140,0.12);color:var(--primary); }
+    .status-finished{ background:rgba(80,180,100,0.12);color:#3a9e5a; }
+    .status-dropped{  background:rgba(0,0,0,0.06);color:var(--text-faint); }
+    .chip-note{font-size:0.7rem;color:var(--text-faint);font-style:italic;}
+    .chip-edit{
+      background:none;border:none;color:var(--text-faint);cursor:pointer;
+      font-size:0.8rem;padding:0 2px;display:none;
+      transition:color var(--t);
+    }
+    .chip-edit:hover{color:var(--primary);}
+    .edit-mode .chip-edit{display:inline;}
+
+    /* ===== STATUS FILTER ===== */
+    .filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+    .filter-btn{
+      padding:4px 12px;border-radius:99px;border:1.5px solid var(--border);
+      background:var(--surface);color:var(--text-muted);font:inherit;
+      font-size:0.76rem;font-weight:500;cursor:pointer;
+      transition:all var(--t);
+    }
+    .filter-btn:hover,.filter-btn.active{
+      border-color:var(--primary);background:var(--primary-dim);color:var(--primary);
+    }
+
+    /* ===== MODAL ===== */
+    .modal-backdrop{
+      position:fixed;inset:0;z-index:2000;
+      background:rgba(26,10,18,0.25);backdrop-filter:blur(4px);
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;pointer-events:none;transition:opacity 180ms;
+    }
+    .modal-backdrop.open{opacity:1;pointer-events:auto;}
+    .modal{
+      background:var(--surface);border:1.5px solid var(--border);
+      border-radius:var(--r-xl);padding:28px;width:100%;max-width:340px;
+      box-shadow:var(--shadow-lg);max-height:90dvh;overflow-y:auto;
+      transform:scale(0.93);transition:transform 200ms cubic-bezier(0.16,1,0.3,1);
+    }
+    .modal-backdrop.open .modal{transform:scale(1);}
+    .modal-title{
+      font-family:var(--font-display);font-size:1.1rem;font-style:italic;
+      color:var(--primary);margin-bottom:16px;text-align:center;
+    }
+    .field-label{
+      font-size:0.7rem;font-weight:600;text-transform:uppercase;
+      letter-spacing:0.09em;color:var(--text-faint);margin:12px 0 5px;
+    }
+    .field-input{
+      width:100%;padding:8px 12px;
+      background:var(--surface-2);border:1.5px solid var(--border);
+      border-radius:var(--r-md);color:var(--text);font:inherit;
+      font-size:0.86rem;outline:none;transition:border-color var(--t);
+    }
+    .field-input:focus{border-color:var(--primary);}
+    .modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;flex-wrap:wrap;}
+    .modal-error{font-size:0.78rem;color:var(--danger);margin-top:6px;min-height:1.2em;}
+
+    /* tier picker */
+    .tier-picker{display:flex;gap:6px;margin-top:6px;}
+    .tier-opt{
+      flex:1;padding:7px;border-radius:var(--r-md);border:1.5px solid var(--border);
+      background:var(--surface-2);color:var(--text-muted);font:inherit;
+      font-size:0.85rem;font-weight:700;cursor:pointer;text-align:center;
+      transition:all var(--t);
+    }
+    .tier-opt.active-S{border-color:var(--tier-s);background:rgba(233,30,140,0.12);color:var(--tier-s);}
+    .tier-opt.active-A{border-color:var(--tier-a);background:rgba(255,110,180,0.12);color:var(--tier-a);}
+    .tier-opt.active-B{border-color:var(--tier-b);background:rgba(255,158,203,0.12);color:var(--tier-b);}
+    .tier-opt.active-C{border-color:var(--tier-c);background:rgba(255,195,221,0.2); color:#d4678a;}
+
+    /* status picker */
+    .status-picker{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
+    .status-opt{
+      flex:1;padding:7px;border-radius:var(--r-md);border:1.5px solid var(--border);
+      background:var(--surface-2);color:var(--text-muted);font:inherit;
+      font-size:0.78rem;font-weight:500;cursor:pointer;text-align:center;
+      transition:all var(--t);white-space:nowrap;
+    }
+    .status-opt.active-watching{border-color:var(--primary);background:var(--primary-dim);color:var(--primary);}
+    .status-opt.active-finished{border-color:#3a9e5a;background:rgba(80,180,100,0.10);color:#3a9e5a;}
+    .status-opt.active-dropped{ border-color:#aaa;background:rgba(0,0,0,0.05);color:#888;}
+
+    /* unlock styles */
+    .unlock-input{
+      width:100%;padding:10px 14px;margin-bottom:4px;
+      background:var(--surface-2);border:1.5px solid var(--border);
+      border-radius:var(--r-md);color:var(--text);font:inherit;
+      font-size:0.9rem;text-align:center;outline:none;
+      transition:border-color var(--t);
+    }
+    .unlock-input:focus{border-color:var(--primary);}
+    .unlock-input::placeholder{color:var(--text-faint);}
+    .btn-unlock{
+      width:100%;padding:10px;border-radius:var(--r-md);border:none;
+      background:var(--primary);color:#fff;font:inherit;
+      font-size:0.9rem;font-weight:600;cursor:pointer;
+      transition:background var(--t);margin-top:8px;
+    }
+    .btn-unlock:hover{background:#d0187c;}
+    .btn-unlock:disabled{opacity:0.5;cursor:not-allowed;}
+    .setup-section{margin-top:16px;padding-top:14px;border-top:1px solid var(--divider);display:none;}
+    .setup-section.open{display:block;}
+    .setup-help{font-size:0.74rem;color:var(--text-faint);line-height:1.6;margin-bottom:10px;}
+    .setup-help a{color:var(--primary);}
+    .setup-input{
+      width:100%;padding:8px 12px;margin-bottom:8px;
+      background:var(--surface-2);border:1.5px solid var(--border);
+      border-radius:var(--r-md);color:var(--text);font:inherit;
+      font-size:0.82rem;outline:none;font-family:monospace;
+      transition:border-color var(--t);
+    }
+    .setup-input:focus{border-color:var(--primary);}
+    .btn-setup{
+      width:100%;padding:8px;border-radius:var(--r-md);
+      background:var(--primary-light);border:1.5px solid var(--border);
+      color:var(--primary);font:inherit;font-size:0.84rem;font-weight:600;
+      cursor:pointer;transition:background var(--t),border-color var(--t);
+    }
+    .btn-setup:hover{background:var(--primary-dim);border-color:var(--primary);}
+    .setup-toggle{
+      display:block;text-align:center;margin-top:12px;
+      font-size:0.73rem;color:var(--text-faint);cursor:pointer;text-decoration:underline;
+      background:none;border:none;width:100%;
+    }
+    .setup-toggle:hover{color:var(--primary);}
+
+    /* ===== PROGRESS ===== */
+    .progress-overlay{
+      position:fixed;inset:0;z-index:4000;
+      background:rgba(255,245,249,0.9);backdrop-filter:blur(6px);
+      display:none;align-items:center;justify-content:center;
+    }
+    .progress-overlay.visible{display:flex;}
+    .progress-card{
+      background:var(--surface);border:1.5px solid var(--border);
+      border-radius:var(--r-xl);padding:32px 44px;text-align:center;
+      box-shadow:var(--shadow-lg);min-width:240px;
+    }
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .spinner{width:32px;height:32px;border-radius:50%;border:3px solid var(--border);
+      border-top-color:var(--primary);animation:spin 0.8s linear infinite;margin:0 auto 14px;}
+    .progress-status{font-size:0.85rem;color:var(--text-muted);}
+
+    /* ===== TOAST ===== */
+    .toast{
+      position:fixed;bottom:20px;left:50%;
+      transform:translateX(-50%) translateY(60px);
+      background:var(--surface);border:1.5px solid var(--border);
+      border-radius:var(--r-md);padding:8px 18px;font-size:0.82rem;
+      color:var(--text);z-index:9999;white-space:nowrap;box-shadow:var(--shadow);
+      transition:transform 280ms cubic-bezier(0.16,1,0.3,1),opacity 280ms;
+      opacity:0;pointer-events:none;
+    }
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+    .toast.ok{border-color:rgba(233,30,140,0.4);color:var(--primary);}
+    .toast.err{border-color:rgba(229,53,53,0.4);color:var(--danger);}
+
+    /* ===== ADD BUTTON ===== */
+    .add-show-btn{
+      display:none;margin-top:12px;font-size:0.8rem;
+    }
+    .edit-mode .add-show-btn{display:inline-flex;}
+
+    @media(max-width:600px){
+      .page-title{font-size:2.2rem;}
+      .app-header{padding:10px 16px;}
+      .tier-label-col{width:48px;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== PROGRESS ===== -->
+<div class="progress-overlay" id="progressOverlay">
+  <div class="progress-card">
+    <div class="spinner"></div>
+    <div class="progress-status" id="progressStatus">Working…</div>
+  </div>
+</div>
+
+<!-- ===== UNLOCK MODAL ===== -->
+<div class="modal-backdrop" id="unlockModal" onclick="if(event.target===this)closeUnlock()">
+  <div class="modal">
+    <div class="modal-title">🔒 edit mode</div>
+    <input class="unlock-input" id="unlockPass" type="password"
+      placeholder="password ♡" autocomplete="current-password"
+      onkeydown="if(event.key==='Enter')unlock()" />
+    <div class="modal-error" id="unlockError"></div>
+    <button class="btn-unlock" id="unlockBtn" onclick="unlock()">Unlock ♡</button>
+    <button class="setup-toggle" onclick="toggleSetup()">add a login</button>
+    <div class="setup-section" id="setupSection">
+      <div class="setup-help">
+        Owner only. Generate a
+        <a href="https://github.com/settings/tokens?type=beta" target="_blank">fine-grained PAT</a>
+        with <strong>Contents: Read &amp; Write</strong> on the coffeeonsugar repo.
+      </div>
+      <input class="setup-input" id="patInput" type="password" placeholder="github_pat_…" autocomplete="off" />
+      <button class="btn-setup" onclick="setup()">Encrypt &amp; Save ♡</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SHOW MODAL ===== -->
+<div class="modal-backdrop" id="showModal" onclick="if(event.target===this)closeShowModal()">
+  <div class="modal">
+    <div class="modal-title" id="showModalTitle">Add drama ♡</div>
+
+    <div class="field-label">Title</div>
+    <input class="field-input" id="smTitle" type="text" placeholder="e.g. Crash Landing on You" />
+
+    <div class="field-label">Rating</div>
+    <div class="tier-picker">
+      <button class="tier-opt" data-t="S" onclick="setTier('S')">S</button>
+      <button class="tier-opt" data-t="A" onclick="setTier('A')">A</button>
+      <button class="tier-opt" data-t="B" onclick="setTier('B')">B</button>
+      <button class="tier-opt" data-t="C" onclick="setTier('C')">C</button>
+    </div>
+
+    <div class="field-label">Status</div>
+    <div class="status-picker">
+      <button class="status-opt" data-s="watching"  onclick="setStatus('watching')">▶ Watching</button>
+      <button class="status-opt" data-s="finished"  onclick="setStatus('finished')">✓ Finished</button>
+      <button class="status-opt" data-s="dropped"   onclick="setStatus('dropped')">✕ Dropped</button>
+    </div>
+
+    <div class="field-label">Note <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></div>
+    <input class="field-input" id="smNote" type="text" placeholder="e.g. absolutely obsessed ♡" />
+
+    <div class="modal-actions">
+      <button class="btn btn-danger" id="smDeleteBtn" onclick="deleteShow()" style="margin-right:auto;display:none">Delete</button>
+      <button class="btn" onclick="closeShowModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveShow()">Save ♡</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header class="app-header">
+  <div class="header-brand">🎬 dramas</div>
+  <div class="header-actions">
+    <a href="../kpop.html" class="btn" style="font-size:0.78rem">← K-pop</a>
+    <a href="xoxo.html"   class="btn" style="font-size:0.78rem">xoxo 🎀</a>
+    <button class="btn-icon active" id="editToggle" onclick="toggleEdit()"
+      title="Toggle edit mode" style="display:none">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+    </button>
+    <button class="btn btn-primary" id="saveBtn" onclick="saveToGitHub()" style="display:none">Save ♡</button>
+    <button class="btn-icon" id="lockBtn" onclick="openUnlock()" title="Edit">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- ===== PAGE ===== -->
+<div class="page">
+  <div class="page-hero">
+    <div class="page-title">dramas ♡</div>
+    <div class="page-sub">the ones that wrecked her</div>
+  </div>
+
+  <div class="filter-row" id="filterRow">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('watching',this)">▶ Watching</button>
+    <button class="filter-btn" onclick="setFilter('finished',this)">✓ Finished</button>
+    <button class="filter-btn" onclick="setFilter('dropped',this)">✕ Dropped</button>
+  </div>
+
+  <section class="section">
+    <div class="section-header"><div class="section-title">tier list</div></div>
+    <div id="tierList"></div>
+    <button class="btn add-show-btn" onclick="openShowModal(-1)">+ Add drama</button>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== CONFIG =====
+const GH_OWNER  = 'Pedestre-commits';
+const GH_REPO   = 'coffeeonsugar';
+const GH_BRANCH = 'main';
+const REPO_BASE = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}`;
+const DATA_PATH = 'data/dramas.json';
+const ENC_KEY   = 'xoxo_enc_pat';
+const TIERS     = ['S','A','B','C'];
+const STATUSES  = { watching:'▶', finished:'✓', dropped:'✕' };
+
+// ===== STATE =====
+let DATA      = { shows: [] };
+let editMode  = false;
+let unlocked  = false;
+let activeFilter = 'all';
+let editingIdx   = -1;
+let tierVal      = 'S';
+let statusVal    = 'finished';
+
+// ===== DATA LOAD =====
+async function loadData() {
+  try {
+    const res = await fetch('../data/dramas.json', { cache: 'no-cache' });
+    if (res.ok) { DATA = await res.json(); if (!DATA.shows) DATA.shows = []; }
+  } catch {}
+  render();
+}
+
+// ===== CRYPTO =====
+async function deriveKey(password, salt) {
+  const km = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(password), { name:'PBKDF2' }, false, ['deriveKey']
+  );
+  return crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt, iterations:200000, hash:'SHA-256' },
+    km, { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']
+  );
+}
+async function encryptPAT(pat, pass) {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv   = crypto.getRandomValues(new Uint8Array(12));
+  const key  = await deriveKey(pass, salt);
+  const ct   = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key, new TextEncoder().encode(pat));
+  const out  = new Uint8Array(28 + ct.byteLength);
+  out.set(salt,0); out.set(iv,16); out.set(new Uint8Array(ct),28);
+  return btoa(String.fromCharCode(...out));
+}
+async function decryptPAT(enc, pass) {
+  const buf = Uint8Array.from(atob(enc), c => c.charCodeAt(0));
+  const key = await deriveKey(pass, buf.slice(0,16));
+  const dec = await crypto.subtle.decrypt({ name:'AES-GCM', iv:buf.slice(16,28) }, key, buf.slice(28));
+  return new TextDecoder().decode(dec);
+}
+
+// ===== UNLOCK =====
+function openUnlock() {
+  if (unlocked) { toggleEdit(); return; }
+  document.getElementById('unlockPass').value = '';
+  document.getElementById('unlockError').textContent = '';
+  document.getElementById('setupSection').classList.remove('open');
+  document.getElementById('unlockModal').classList.add('open');
+  setTimeout(() => document.getElementById('unlockPass').focus(), 60);
+}
+function closeUnlock() { document.getElementById('unlockModal').classList.remove('open'); }
+function toggleSetup() { document.getElementById('setupSection').classList.toggle('open'); }
+function setUnlockError(msg) { document.getElementById('unlockError').textContent = msg; }
+
+async function setup() {
+  const rawPat = document.getElementById('patInput').value.trim();
+  const pass   = document.getElementById('unlockPass').value.trim();
+  if (!rawPat || !pass) { setUnlockError('Enter both a password and a PAT.'); return; }
+  try {
+    setUnlockError('Saving…');
+    const enc = await encryptPAT(rawPat, pass);
+    await saveConfigToRepo(enc, rawPat);
+    await activateEdit(rawPat);
+  } catch(e) { setUnlockError('Setup failed: ' + e.message); }
+}
+
+async function unlock() {
+  const pass = document.getElementById('unlockPass').value.trim();
+  if (!pass) return;
+  const btn = document.getElementById('unlockBtn');
+  btn.disabled = true; btn.textContent = '…';
+  setUnlockError('');
+
+  let keys = getLocalKeys();
+  if (!keys.length) {
+    setUnlockError('Fetching config…');
+    try {
+      const res = await fetch('../data/xoxo-config.json', { cache: 'no-cache' });
+      if (res.ok) {
+        const cfg = await res.json();
+        keys = cfg.keys || (cfg.enc ? [cfg.enc] : []);
+        if (keys.length) localStorage.setItem(ENC_KEY, JSON.stringify({ keys }));
+      }
+    } catch {}
+  }
+
+  if (!keys.length) {
+    setUnlockError('Not set up — use "add a login" below.');
+    btn.disabled = false; btn.textContent = 'Unlock ♡'; return;
+  }
+
+  let rawPat = null;
+  for (const enc of keys) {
+    try { rawPat = await decryptPAT(enc, pass); break; } catch {}
+  }
+
+  if (!rawPat) { setUnlockError('Wrong password ♡'); btn.disabled = false; btn.textContent = 'Unlock ♡'; return; }
+  await activateEdit(rawPat);
+  btn.disabled = false; btn.textContent = 'Unlock ♡';
+}
+
+function getLocalKeys() {
+  const raw = localStorage.getItem(ENC_KEY);
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed.keys || (parsed.enc ? [parsed.enc] : []);
+  } catch { return [raw]; }
+}
+
+async function saveConfigToRepo(enc, rawPat) {
+  const CONFIG_PATH = 'data/xoxo-config.json';
+  const headers = {
+    'Authorization': `Bearer ${rawPat}`,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'Content-Type': 'application/json'
+  };
+  let sha, existingKeys = [];
+  const check = await fetch(`${REPO_BASE}/contents/${CONFIG_PATH}`, { headers });
+  if (check.ok) {
+    const data = await check.json();
+    sha = data.sha;
+    const existing = JSON.parse(atob(data.content.replace(/\n/g, '')));
+    existingKeys = existing.keys || (existing.enc ? [existing.enc] : []);
+  }
+  if (!existingKeys.includes(enc)) existingKeys.push(enc);
+  const res = await fetch(`${REPO_BASE}/contents/${CONFIG_PATH}`, {
+    method: 'PUT', headers,
+    body: JSON.stringify({
+      message: `Update access config (${existingKeys.length} login${existingKeys.length !== 1 ? 's' : ''})`,
+      content: btoa(JSON.stringify({ keys: existingKeys }, null, 2)),
+      branch: GH_BRANCH,
+      ...(sha ? { sha } : {})
+    })
+  });
+  if (!res.ok) throw new Error((await res.json().catch(()=>({}))).message || `HTTP ${res.status}`);
+  localStorage.setItem(ENC_KEY, JSON.stringify({ keys: existingKeys }));
+}
+
+async function activateEdit(pat) {
+  sessionStorage.setItem('xoxo_pat', pat);
+  unlocked = true;
+  closeUnlock();
+  document.getElementById('lockBtn').style.display    = 'none';
+  document.getElementById('editToggle').style.display = '';
+  enableEditMode();
+}
+
+// ===== GITHUB API =====
+function pat() { return sessionStorage.getItem('xoxo_pat'); }
+async function ghCall(url, method = 'GET', body = null) {
+  const res = await fetch(url.startsWith('http') ? url : REPO_BASE + url, {
+    method,
+    headers: {
+      'Authorization': `Bearer ${pat()}`,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      ...(body ? { 'Content-Type': 'application/json' } : {})
+    },
+    ...(body ? { body: JSON.stringify(body) } : {})
+  });
+  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.message || `HTTP ${res.status}`); }
+  return res.json();
+}
+
+async function saveToGitHub() {
+  setProgress(true, 'Saving…');
+  try {
+    const ref     = await ghCall(`/git/refs/heads/${GH_BRANCH}`);
+    const headSha = ref.object.sha;
+    const treeSha = (await ghCall(`/git/commits/${headSha}`)).tree.sha;
+    const jBlob   = await ghCall('/git/blobs', 'POST', {
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(DATA, null, 2)))),
+      encoding: 'base64'
+    });
+    const tree   = await ghCall('/git/trees', 'POST', {
+      base_tree: treeSha,
+      tree: [{ path: DATA_PATH, mode: '100644', type: 'blob', sha: jBlob.sha }]
+    });
+    const commit = await ghCall('/git/commits', 'POST', {
+      message: `Update dramas — ${DATA.shows.length} show${DATA.shows.length !== 1 ? 's' : ''}`,
+      tree: tree.sha, parents: [headSha]
+    });
+    await ghCall(`/git/refs/heads/${GH_BRANCH}`, 'PATCH', { sha: commit.sha });
+    showToast('Saved! Live in ~60s ✓', 'ok');
+    document.getElementById('saveBtn').style.display = 'none';
+  } catch(e) { showToast('Save failed: ' + e.message, 'err'); }
+  finally { setProgress(false); }
+}
+
+// ===== FILTER =====
+function setFilter(val, btn) {
+  activeFilter = val;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTierList();
+}
+
+// ===== RENDER =====
+function render() { renderTierList(); }
+
+function renderTierList() {
+  const shows = DATA.shows || [];
+  document.getElementById('tierList').innerHTML = TIERS.map(tier => {
+    let group = shows.map((s,i) => ({...s,i})).filter(s => s.tier === tier);
+    if (activeFilter !== 'all') group = group.filter(s => s.status === activeFilter);
+
+    const chips = group.map(s => `
+      <div class="show-chip">
+        <span>${s.title}</span>
+        ${s.status ? `<span class="status-badge status-${s.status}">${STATUSES[s.status]||''} ${s.status}</span>` : ''}
+        ${s.note ? `<span class="chip-note">— ${s.note}</span>` : ''}
+        <button class="chip-edit" onclick="openShowModal(${s.i})" title="Edit">✎</button>
+      </div>`).join('');
+
+    return `<div class="tier-block tier-${tier.toLowerCase()}">
+      <div class="tier-label-col">
+        <div class="tier-label">${tier}</div>
+      </div>
+      <div class="tier-row">
+        ${chips || `<span class="tier-empty">—</span>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===== EDIT MODE =====
+function enableEditMode() {
+  editMode = true;
+  document.getElementById('editToggle').classList.add('active');
+  document.body.classList.add('edit-mode');
+  renderTierList();
+}
+function toggleEdit() {
+  editMode = !editMode;
+  document.getElementById('editToggle').classList.toggle('active', editMode);
+  document.body.classList.toggle('edit-mode', editMode);
+  renderTierList();
+}
+function markDirty() { document.getElementById('saveBtn').style.display = ''; }
+
+// ===== SHOW MODAL =====
+function openShowModal(idx) {
+  editingIdx = idx;
+  const s = idx === -1 ? {} : (DATA.shows[idx] || {});
+  document.getElementById('showModalTitle').textContent = idx === -1 ? 'Add drama ♡' : 'Edit drama ♡';
+  document.getElementById('smTitle').value = s.title || '';
+  document.getElementById('smNote').value  = s.note  || '';
+  document.getElementById('smDeleteBtn').style.display = idx === -1 ? 'none' : '';
+  tierVal   = s.tier   || 'S';
+  statusVal = s.status || 'finished';
+  updateTierUI();
+  updateStatusUI();
+  document.getElementById('showModal').classList.add('open');
+  setTimeout(() => document.getElementById('smTitle').focus(), 50);
+}
+function closeShowModal() { document.getElementById('showModal').classList.remove('open'); }
+
+function setTier(t)   { tierVal   = t; updateTierUI(); }
+function setStatus(s) { statusVal = s; updateStatusUI(); }
+
+function updateTierUI() {
+  document.querySelectorAll('.tier-opt').forEach(b => {
+    b.className = 'tier-opt' + (b.dataset.t === tierVal ? ` active-${tierVal}` : '');
+  });
+}
+function updateStatusUI() {
+  document.querySelectorAll('.status-opt').forEach(b => {
+    b.className = 'status-opt' + (b.dataset.s === statusVal ? ` active-${statusVal}` : '');
+  });
+}
+
+function saveShow() {
+  const title = document.getElementById('smTitle').value.trim();
+  if (!title) { showToast('Title is required', 'err'); return; }
+  const show = {
+    title,
+    tier:   tierVal,
+    status: statusVal,
+    note:   document.getElementById('smNote').value.trim(),
+  };
+  if (editingIdx === -1) DATA.shows.push(show);
+  else DATA.shows[editingIdx] = show;
+  closeShowModal();
+  renderTierList();
+  markDirty();
+}
+
+function deleteShow() {
+  if (editingIdx < 0) return;
+  DATA.shows.splice(editingIdx, 1);
+  closeShowModal();
+  renderTierList();
+  markDirty();
+}
+
+// ===== UTILS =====
+function setProgress(v, msg='') {
+  document.getElementById('progressOverlay').classList.toggle('visible', v);
+  if (msg) document.getElementById('progressStatus').textContent = msg;
+}
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeUnlock(); closeShowModal(); }
+    if (e.key === 'Enter' && document.getElementById('showModal').classList.contains('open')) {
+      if (!['SELECT','BUTTON'].includes(document.activeElement.tagName)) saveShow();
+    }
+  });
+  const saved = sessionStorage.getItem('xoxo_pat');
+  if (saved) {
+    unlocked = true;
+    document.getElementById('lockBtn').style.display    = 'none';
+    document.getElementById('editToggle').style.display = '';
+  }
+});
+</script>
+</body>
+</html>
