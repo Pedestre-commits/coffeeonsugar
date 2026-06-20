@@ -534,11 +534,16 @@ function closeUnlock() { document.getElementById('unlockModal').classList.remove
 function toggleSetup() { document.getElementById('setupSection').classList.toggle('open'); }
 
 async function setup() {
-  const pat  = document.getElementById('patInput').value.trim();
-  const pass = document.getElementById('unlockPass').value.trim();
-  if (!pat || !pass) { setUnlockError('Enter both a password and a PAT.'); return; }
-  try { localStorage.setItem(ENC_KEY, await encryptPAT(pat, pass)); await activateEdit(pat); }
-  catch (e) { setUnlockError('Setup failed: ' + e.message); }
+  const rawPat = document.getElementById('patInput').value.trim();
+  const pass   = document.getElementById('unlockPass').value.trim();
+  if (!rawPat || !pass) { setUnlockError('Enter both a password and a PAT.'); return; }
+  try {
+    setUnlockError('Saving…');
+    const enc = await encryptPAT(rawPat, pass);
+    await saveConfigToRepo(enc, rawPat);
+    localStorage.setItem(ENC_KEY, enc);
+    await activateEdit(rawPat);
+  } catch(e) { setUnlockError('Setup failed: ' + e.message); }
 }
 async function unlock() {
   const pass = document.getElementById('unlockPass').value.trim();
@@ -546,11 +551,49 @@ async function unlock() {
   const btn = document.getElementById('unlockBtn');
   btn.disabled = true; btn.textContent = '…';
   setUnlockError('');
-  const enc = localStorage.getItem(ENC_KEY);
-  if (!enc) { setUnlockError('Not set up — use "first time setup" below.'); btn.disabled = false; btn.textContent = 'Unlock ♡'; return; }
+
+  let enc = localStorage.getItem(ENC_KEY);
+  if (!enc) {
+    setUnlockError('Fetching config…');
+    try {
+      const res = await fetch('../data/xoxo-config.json', { cache: 'no-cache' });
+      if (res.ok) {
+        const cfg = await res.json();
+        if (cfg.enc) { enc = cfg.enc; localStorage.setItem(ENC_KEY, enc); }
+      }
+    } catch {}
+  }
+
+  if (!enc) {
+    setUnlockError('Not set up — use "first time setup" below.');
+    btn.disabled = false; btn.textContent = 'Unlock ♡'; return;
+  }
+  setUnlockError('');
   try { await activateEdit(await decryptPAT(enc, pass)); }
-  catch  { setUnlockError('Wrong password ♡'); }
+  catch { setUnlockError('Wrong password ♡'); }
   btn.disabled = false; btn.textContent = 'Unlock ♡';
+}
+async function saveConfigToRepo(enc, rawPat) {
+  const CONFIG_PATH = 'data/xoxo-config.json';
+  const headers = {
+    'Authorization': `Bearer ${rawPat}`,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'Content-Type': 'application/json'
+  };
+  let sha;
+  const check = await fetch(`${REPO_BASE}/contents/${CONFIG_PATH}`, { headers });
+  if (check.ok) sha = (await check.json()).sha;
+  const res = await fetch(`${REPO_BASE}/contents/${CONFIG_PATH}`, {
+    method: 'PUT', headers,
+    body: JSON.stringify({
+      message: 'Store encrypted access config',
+      content: btoa(JSON.stringify({ enc }, null, 2)),
+      branch: GH_BRANCH,
+      ...(sha ? { sha } : {})
+    })
+  });
+  if (!res.ok) throw new Error((await res.json().catch(()=>({}))).message || `HTTP ${res.status}`);
 }
 async function activateEdit(pat) {
   sessionStorage.setItem('xoxo_pat', pat);
