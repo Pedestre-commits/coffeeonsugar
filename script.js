@@ -343,3 +343,13 @@ async function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+// Secret: type "kpop" anywhere on the page
+(function() {
+  const seq = 'kpop'; let buf = '';
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;
+    buf = (buf + e.key.toLowerCase()).slice(-seq.length);
+    if (buf === seq) window.location.href = '/kpop.html';
+  });
+})();
