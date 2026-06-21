@@ -468,8 +468,9 @@
 
 <script>
 // ===== CONFIG =====
-const GH_OWNER  = 'Pedestre-commits';
-const GH_REPO   = 'coffeeonsugar';
+const GH_OWNER      = 'Pedestre-commits';
+const GH_REPO       = 'coffeeonsugar';
+const DISCOGS_TOKEN = 'OorCiNSbpEHfjJzIzcNXTJWsBLYWSaGgJGHgoVwy';
 const GH_BRANCH = 'main';
 const REPO_BASE = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}`;
 const DATA_PATH = 'data/albums.json';
@@ -769,7 +770,9 @@ async function searchDiscogsCovers() {
   results.innerHTML  = '';
   _itunesResults = [];
   try {
-    const res  = await fetch(`https://api.discogs.com/database/search?q=${encodeURIComponent(q)}&type=release&per_page=12`);
+    const res  = await fetch(`https://api.discogs.com/database/search?q=${encodeURIComponent(q)}&type=release&per_page=12`, {
+      headers: { 'Authorization': `Discogs token=${DISCOGS_TOKEN}` }
+    });
     const data = await res.json();
     const hits = (data.results || []).filter(r => r.cover_image && !r.cover_image.includes('spacer'));
     _itunesResults = hits;
