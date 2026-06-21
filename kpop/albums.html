@@ -323,11 +323,17 @@
     .itunes-thumb{
       aspect-ratio:1;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;
       border:2px solid transparent;transition:border-color var(--t),transform var(--t);
-      background:var(--surface-2);
+      background:var(--surface-2);position:relative;
     }
     .itunes-thumb:hover{border-color:var(--primary);transform:scale(1.04);}
     .itunes-thumb.selected{border-color:var(--primary);}
     .itunes-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+    .itunes-thumb-label{
+      position:absolute;bottom:0;left:0;right:0;
+      font-size:0.58rem;padding:2px 5px;line-height:1.4;
+      background:rgba(0,0,0,0.55);color:#fff;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
     .itunes-msg{font-size:0.75rem;color:var(--text-faint);text-align:center;padding:8px 0;grid-column:1/-1;}
     .field-divider{
       font-size:0.7rem;color:var(--text-faint);text-align:center;
@@ -477,6 +483,7 @@ let activeTab  = 'ronnie';
 let editingIdx = -1;
 let ownerVal   = 'ronnie';
 let pendingCoverFile = null;
+let _itunesResults = [];
 
 // ===== DATA LOAD =====
 async function loadData() {
@@ -760,20 +767,23 @@ async function searchItunesCovers() {
   const results = document.getElementById('itunesResults');
   status.textContent = 'searching…';
   results.innerHTML  = '';
+  _itunesResults = [];
   try {
-    const res  = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=album&limit=9&media=music`);
+    const res  = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=album&limit=12&media=music`);
     const data = await res.json();
-    status.textContent = data.resultCount ? `${data.resultCount} results` : '';
-    if (!data.resultCount) {
+    _itunesResults = data.results || [];
+    status.textContent = _itunesResults.length ? `${_itunesResults.length} results` : '';
+    if (!_itunesResults.length) {
       results.innerHTML = '<div class="itunes-msg">No results — try a different search</div>';
       return;
     }
-    results.innerHTML = data.results.map((r,i) => {
-      const art600 = r.artworkUrl100.replace('100x100bb','600x600bb');
+    results.innerHTML = _itunesResults.map((r,i) => {
+      const label = r.collectionName.replace(/"/g,'&quot;');
       return `<button class="itunes-thumb" id="ithumb${i}"
-        onclick="selectItCover('${art600}','ithumb${i}')"
+        onclick="selectItCover(${i},'ithumb${i}')"
         title="${r.artistName} — ${r.collectionName}">
-        <img src="${r.artworkUrl100}" alt="${r.collectionName}" loading="lazy">
+        <img src="${r.artworkUrl100}" alt="${label}" loading="lazy">
+        <div class="itunes-thumb-label">${label}</div>
       </button>`;
     }).join('');
   } catch {
@@ -782,10 +792,14 @@ async function searchItunesCovers() {
   }
 }
 
-function selectItCover(url, thumbId) {
+function selectItCover(idx, thumbId) {
+  const r   = _itunesResults[idx];
+  const url = r.artworkUrl100.replace('100x100bb','600x600bb');
   pendingCoverFile = null;
   document.getElementById('coverFilePicker').value = '';
   document.getElementById('amCoverUrl').value = url;
+  document.getElementById('amArtist').value = r.artistName;
+  document.getElementById('amTitle').value  = r.collectionName;
   const prev = document.getElementById('coverPreview');
   prev.src = url; prev.classList.add('visible');
   document.querySelectorAll('.itunes-thumb').forEach(t => t.classList.remove('selected'));
