@@ -385,8 +385,8 @@
     </div>
     <div class="itunes-search-row">
       <input class="field-input" id="amSearch" type="text" placeholder="Artist — Album…"
-        onkeydown="if(event.key==='Enter')searchItunesCovers()">
-      <button class="btn" onclick="searchItunesCovers()" style="padding:6px 10px">🔍</button>
+        onkeydown="if(event.key==='Enter')searchDiscogsCovers()">
+      <button class="btn" onclick="searchDiscogsCovers()" style="padding:6px 10px">🔍</button>
     </div>
     <div id="itunesResults"></div>
 
@@ -753,8 +753,8 @@ function toggleEdit() {
 }
 function markDirty() { document.getElementById('saveBtn').style.display = ''; }
 
-// ===== ITUNES COVER SEARCH =====
-async function searchItunesCovers() {
+// ===== DISCOGS COVER SEARCH =====
+async function searchDiscogsCovers() {
   let q = document.getElementById('amSearch').value.trim();
   if (!q) {
     const artist = document.getElementById('amArtist').value.trim();
@@ -769,39 +769,44 @@ async function searchItunesCovers() {
   results.innerHTML  = '';
   _itunesResults = [];
   try {
-    const res  = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=album&limit=12&media=music`);
+    const res  = await fetch(`https://api.discogs.com/database/search?q=${encodeURIComponent(q)}&type=release&per_page=12`);
     const data = await res.json();
-    _itunesResults = data.results || [];
-    status.textContent = _itunesResults.length ? `${_itunesResults.length} results` : '';
-    if (!_itunesResults.length) {
+    const hits = (data.results || []).filter(r => r.cover_image && !r.cover_image.includes('spacer'));
+    _itunesResults = hits;
+    status.textContent = hits.length ? `${hits.length} results` : '';
+    if (!hits.length) {
       results.innerHTML = '<div class="itunes-msg">No results — try a different search</div>';
       return;
     }
-    results.innerHTML = _itunesResults.map((r,i) => {
-      const label = r.collectionName.replace(/"/g,'&quot;');
+    results.innerHTML = hits.map((r,i) => {
+      const fmt   = (r.format||[]).slice(0,2).join(', ');
+      const badge = [fmt, r.year].filter(Boolean).join(' · ');
+      const title = r.title.replace(/"/g,'&quot;');
       return `<button class="itunes-thumb" id="ithumb${i}"
-        onclick="selectItCover(${i},'ithumb${i}')"
-        title="${r.artistName} — ${r.collectionName}">
-        <img src="${r.artworkUrl100}" alt="${label}" loading="lazy">
-        <div class="itunes-thumb-label">${label}</div>
+        onclick="selectDiscogsCover(${i},'ithumb${i}')"
+        title="${title}${badge ? ' — ' + badge : ''}">
+        <img src="${r.thumb||r.cover_image}" alt="${title}" loading="lazy">
+        <div class="itunes-thumb-label">${badge || title}</div>
       </button>`;
     }).join('');
-  } catch {
+  } catch(e) {
     status.textContent = '';
     results.innerHTML = '<div class="itunes-msg">Search failed — check connection</div>';
   }
 }
 
-function selectItCover(idx, thumbId) {
-  const r   = _itunesResults[idx];
-  const url = r.artworkUrl100.replace('100x100bb','600x600bb');
+function selectDiscogsCover(idx, thumbId) {
+  const r = _itunesResults[idx];
+  const parts = r.title.split(' - ');
+  const artist = parts[0].trim();
+  const album  = parts.slice(1).join(' - ').trim() || r.title;
   pendingCoverFile = null;
   document.getElementById('coverFilePicker').value = '';
-  document.getElementById('amCoverUrl').value = url;
-  document.getElementById('amArtist').value = r.artistName;
-  document.getElementById('amTitle').value  = r.collectionName;
+  document.getElementById('amCoverUrl').value = r.cover_image;
+  document.getElementById('amArtist').value   = artist;
+  document.getElementById('amTitle').value    = album;
   const prev = document.getElementById('coverPreview');
-  prev.src = url; prev.classList.add('visible');
+  prev.src = r.cover_image; prev.classList.add('visible');
   document.querySelectorAll('.itunes-thumb').forEach(t => t.classList.remove('selected'));
   document.getElementById(thumbId).classList.add('selected');
 }
