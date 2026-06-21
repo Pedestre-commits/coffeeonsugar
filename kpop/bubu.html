@@ -433,9 +433,11 @@
     <div class="field-label">Bias (fave member)</div>
     <input class="field-input" id="mgBias" type="text" placeholder="e.g. Jungkook"
       list="memberSuggestions" autocomplete="off" />
-    <div class="field-label">Alt-bias</div>
-    <input class="field-input" id="mgAlt" type="text" placeholder="e.g. Taehyung (optional)"
-      list="memberSuggestions" autocomplete="off" />
+    <div class="field-label" style="display:flex;align-items:center;justify-content:space-between">
+      <span>Bias wrecker(s)</span>
+      <button type="button" class="btn" onclick="addWreckerField()" style="font-size:0.65rem;padding:2px 8px;line-height:1.4">+ add</button>
+    </div>
+    <div id="mgWreckers"></div>
     <div class="field-label">Note</div>
     <input class="field-input" id="mgNote" type="text" placeholder="optional 💙" />
     <div class="modal-actions">
@@ -527,7 +529,7 @@
 <!-- ===== PAGE ===== -->
 <div class="page">
   <div class="profile-hero">
-    <div class="profile-name" id="profileName">Bubu</div>
+    <div class="profile-name" id="profileName">bubu</div>
     <div class="profile-bio"  id="profileBio">Kpop McManly Man 💙❄️🌊</div>
   </div>
 
@@ -562,7 +564,7 @@ const DATA_PATH = 'data/bubu.json';
 const ENC_KEY   = 'xoxo_enc_pat';
 
 // ===== STATE =====
-let DATA         = { profile:{ name:'Bubu', bio:'Kpop McManly Man 💙❄️🌊' }, groups:[], bias_wall:[], tier_labels:{}, obsession:{} };
+let DATA         = { profile:{ name:'bubu', bio:'Kpop McManly Man 💙❄️🌊' }, groups:[], bias_wall:[], tier_labels:{}, obsession:{} };
 let editMode     = false;
 let unlocked     = false;
 let pendingFiles = {};
@@ -785,7 +787,7 @@ const TIERS = ['S','A','B','C'];
 
 function render() {
   const p = DATA.profile || {};
-  document.getElementById('profileName').textContent = p.name || 'Bubu';
+  document.getElementById('profileName').textContent = p.name || 'bubu';
   document.getElementById('profileBio').textContent  = p.bio  || 'Kpop McManly Man 💙❄️🌊';
   renderObsession();
   renderTierList();
@@ -886,6 +888,7 @@ function renderTierList() {
         ${editMode?`<span class="chip-handle">⠿</span>`:''}
         <span>${g.name}</span>
         ${g.bias?`<span class="chip-bias">↳ ${g.bias}</span>`:''}
+        ${(g.bias_wreckers?.length?g.bias_wreckers:(g.alt_bias?[g.alt_bias]:[])).map(w=>`<span class="chip-bias">⚡ ${w}</span>`).join('')}
         ${editMode?`<button class="chip-edit" onclick="openGroupModal(${g.i})" title="Edit">✎</button>`:''}
       </div>`).join('');
     return `<div class="tier-block tier-${tier.toLowerCase()}">
@@ -1036,6 +1039,29 @@ function populateMemberList(members) {
 }
 
 // ===== GROUP MODAL =====
+function renderWreckerFields(arr) {
+  const c = document.getElementById('mgWreckers');
+  const rows = arr.length ? arr : [''];
+  c.innerHTML = rows.map((w,i)=>`
+    <div style="display:flex;gap:4px;margin-top:6px">
+      <input class="field-input" value="${w.replace(/"/g,'&quot;')}"
+        placeholder="e.g. Taehyung" list="memberSuggestions" autocomplete="off"
+        style="flex:1" data-wrecker />
+      ${rows.length>1?`<button type="button" class="btn btn-danger" onclick="removeWreckerField(${i})" style="padding:4px 8px;font-size:0.75rem;flex-shrink:0">✕</button>`:''}
+    </div>`).join('');
+}
+function addWreckerField() {
+  const vals=[...document.querySelectorAll('#mgWreckers [data-wrecker]')].map(e=>e.value);
+  vals.push(''); renderWreckerFields(vals);
+}
+function removeWreckerField(i) {
+  const vals=[...document.querySelectorAll('#mgWreckers [data-wrecker]')].map(e=>e.value);
+  vals.splice(i,1); renderWreckerFields(vals.length?vals:['']);
+}
+function getWreckerValues() {
+  return [...document.querySelectorAll('#mgWreckers [data-wrecker]')].map(e=>e.value.trim()).filter(Boolean);
+}
+
 function openGroupModal(idx) {
   editingIdx = idx;
   const g = idx===-1?{}:(DATA.groups[idx]||{});
@@ -1043,7 +1069,7 @@ function openGroupModal(idx) {
   document.getElementById('mgName').value = g.name    ||'';
   document.getElementById('mgTier').value = g.tier    ||'A';
   document.getElementById('mgBias').value = g.bias    ||'';
-  document.getElementById('mgAlt').value  = g.alt_bias||'';
+  renderWreckerFields(g.bias_wreckers||(g.alt_bias?[g.alt_bias]:[]) );
   document.getElementById('mgNote').value = g.note    ||'';
   document.getElementById('mgDeleteBtn').style.display = idx===-1?'none':'';
   setLookupStatus(''); clearMemberList(); _lastLookedUp = '';
@@ -1059,7 +1085,7 @@ function saveGroup() {
     name,
     tier:     document.getElementById('mgTier').value,
     bias:     document.getElementById('mgBias').value.trim(),
-    alt_bias: document.getElementById('mgAlt').value.trim(),
+    bias_wreckers: getWreckerValues(),
     note:     document.getElementById('mgNote').value.trim(),
   };
   if (editingIdx===-1) DATA.groups.push(g);
