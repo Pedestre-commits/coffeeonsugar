@@ -2,9 +2,33 @@
   "albums": [
     {
       "artist": "Le Sserafim",
-      "title": "Pureflow Pt.1",
+      "title": "Pureflow Pt. 1",
       "owner": "bubu",
-      "cover": "photos/albums/1782055493662.jpeg"
+      "cover": "https://i.discogs.com/7J13nuJmlzl9GHC9P-erYxxxxxzpk2NRNAJE4fx9iHw/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM3NDQ0/NDI1LTE3ODE3MjY3/NTItMjA2Mi5wbmc.jpeg"
+    },
+    {
+      "artist": "aespa",
+      "title": "Drama",
+      "owner": "bubu",
+      "cover": "https://i.discogs.com/L3WmbUN2dqkjZxG5MOcQOh6aHr3wmrLzgywN2gU6kgI/rs:fit/g:sm/q:90/h:798/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTU0/Nzg3LTE3MDIxNDI3/MTYtMzk1MC5wbmc.jpeg"
+    },
+    {
+      "artist": "Le Sserafim",
+      "title": "Unforgiven",
+      "owner": "bubu",
+      "cover": "https://i.discogs.com/RzaZevy8S2QnALWE2CUNe6wAW2aFN9eWpW6Ja9s_PXA/rs:fit/g:sm/q:90/h:545/w:416/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI3NDA5/MzA4LTE3NDY2MTUw/OTUtNDkwNi5qcGVn.jpeg"
+    },
+    {
+      "artist": "aespa",
+      "title": "Armageddon",
+      "owner": "bubu",
+      "cover": "https://i.discogs.com/FfqulnlMhAp1cN2Wu_KQPbNU1TCuGU4dOGzG6vp8e7Y/rs:fit/g:sm/q:90/h:873/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMwNzk3/ODA1LTE3MjI0NTQy/MjEtNjIyMC5qcGVn.jpeg"
+    },
+    {
+      "artist": "Le Sserafim",
+      "title": "Hot",
+      "owner": "bubu",
+      "cover": "https://i.discogs.com/ou7k9J2Kmss--11bwbRMQajayO1Lu7hkJgAbqKpiEpE/rs:fit/g:sm/q:90/h:437/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMzNDU2/Njg5LTE3NDI0MDk0/NzctMTY3OS5qcGVn.jpeg"
     }
   ]
 }
