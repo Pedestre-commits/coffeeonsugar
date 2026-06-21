@@ -2,27 +2,9 @@
   "albums": [
     {
       "artist": "Le Sserafim",
-      "title": "HOT",
+      "title": "Pureflow Pt.1",
       "owner": "bubu",
-      "cover": "photos/albums/1782055391196.jpeg"
-    },
-    {
-      "artist": "Le Sserafim",
-      "title": "Unforgiven",
-      "owner": "bubu",
-      "cover": "photos/albums/1782055414644.jpg"
-    },
-    {
-      "artist": "Aespa",
-      "title": "Drama",
-      "owner": "bubu",
-      "cover": "photos/albums/1782055433251.jpeg"
-    },
-    {
-      "artist": "Aespa",
-      "title": "Armageddon",
-      "owner": "bubu",
-      "cover": "photos/albums/1782055445401.jpeg"
+      "cover": "photos/albums/1782055493662.jpeg"
     }
   ]
 }
