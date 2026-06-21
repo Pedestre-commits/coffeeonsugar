@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>albums ♡</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>💿</text></svg>" />
+  <style>
+    :root {
+      --bg:            #fff5f9;
+      --surface:       #ffffff;
+      --surface-2:     #fef2f7;
+      --border:        #f5c6df;
+      --divider:       #fde8f3;
+      --text:          #1a0a12;
+      --text-muted:    #7b4063;
+      --text-faint:    #c090aa;
+      --primary:       #e91e8c;
+      --primary-dim:   rgba(233,30,140,0.10);
+      --primary-light: #fde8f3;
+      --accent:        #ff79b0;
+      --danger:        #e53535;
+      --shadow:        0 2px 16px rgba(233,30,140,0.10);
+      --shadow-lg:     0 8px 36px rgba(233,30,140,0.18);
+      --r-sm:6px; --r-md:10px; --r-lg:14px; --r-xl:20px;
+      --t:160ms cubic-bezier(0.16,1,0.3,1);
+      --font:'Inter','Segoe UI',system-ui,sans-serif;
+      --font-display:'Playfair Display',Georgia,serif;
+    }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{-webkit-font-smoothing:antialiased;}
+    body{
+      font-family:var(--font);font-size:14px;line-height:1.5;
+      color:var(--text);background:var(--bg);min-height:100dvh;
+      background-image:
+        radial-gradient(ellipse 800px 500px at 0% 0%,#ffd6ec 0%,transparent 60%),
+        radial-gradient(ellipse 600px 400px at 100% 100%,#ffe8f3 0%,transparent 55%);
+    }
+    button{cursor:pointer;font:inherit;}
+    :focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:var(--r-sm);}
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
+
+    /* ===== HEADER ===== */
+    .app-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 24px;border-bottom:1px solid var(--border);
+      background:rgba(255,245,249,0.88);backdrop-filter:blur(12px);
+      position:sticky;top:0;z-index:200;height:56px;
+    }
+    .header-brand{
+      font-family:var(--font-display);font-size:1.2rem;font-style:italic;
+      color:var(--primary);display:flex;align-items:center;gap:8px;
+    }
+    .header-actions{display:flex;align-items:center;gap:8px;}
+
+    /* ===== BUTTONS ===== */
+    .btn{
+      padding:6px 13px;border-radius:var(--r-md);border:1.5px solid var(--border);
+      background:var(--surface);color:var(--text-muted);font:inherit;
+      font-size:0.81rem;font-weight:500;cursor:pointer;white-space:nowrap;
+      transition:background var(--t),border-color var(--t),color var(--t);
+      text-decoration:none;display:inline-flex;align-items:center;
+    }
+    .btn:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary);}
+    .btn-primary{background:var(--primary);border-color:var(--primary);color:#fff;}
+    .btn-primary:hover{background:#d0187c;border-color:#d0187c;color:#fff;}
+    .btn-danger{color:var(--danger);border-color:rgba(229,53,53,0.3);}
+    .btn-danger:hover{background:rgba(229,53,53,0.08);border-color:var(--danger);color:var(--danger);}
+    .btn-icon{
+      width:32px;height:32px;padding:0;border-radius:var(--r-md);
+      border:1.5px solid var(--border);background:var(--surface);
+      color:var(--text-faint);display:flex;align-items:center;justify-content:center;
+      transition:background var(--t),border-color var(--t),color var(--t);
+    }
+    .btn-icon:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary);}
+    .btn-icon.active{background:var(--primary);border-color:var(--primary);color:#fff;}
+
+    /* ===== TABS ===== */
+    .tabs{
+      display:flex;gap:0;border-bottom:1.5px solid var(--border);
+      padding:0 24px;background:rgba(255,245,249,0.6);
+    }
+    .tab{
+      padding:12px 20px;font-size:0.85rem;font-weight:600;
+      color:var(--text-faint);border:none;background:none;
+      border-bottom:2.5px solid transparent;margin-bottom:-1.5px;
+      cursor:pointer;transition:color var(--t),border-color var(--t);
+      white-space:nowrap;
+    }
+    .tab:hover{color:var(--text-muted);}
+    .tab.active{color:var(--primary);border-bottom-color:var(--primary);}
+    .tab-count{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:18px;height:18px;border-radius:99px;margin-left:6px;
+      font-size:0.65rem;font-weight:700;
+      background:var(--primary-dim);color:var(--primary);
+    }
+    .tab.active .tab-count{background:var(--primary);color:#fff;}
+
+    /* ===== PAGE ===== */
+    .page{max-width:1080px;margin:0 auto;padding:28px 20px 80px;}
+
+    /* ===== HERO ===== */
+    .page-hero{text-align:center;padding:28px 16px 32px;}
+    .page-title{
+      font-family:var(--font-display);font-size:3rem;font-style:italic;
+      color:var(--primary);line-height:1;margin-bottom:6px;
+    }
+    .page-sub{font-size:0.9rem;color:var(--text-faint);}
+
+    /* ===== ALBUM GRID ===== */
+    .album-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+      gap:16px;
+    }
+    @media(min-width:600px){.album-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;}}
+
+    .album-card{
+      display:flex;flex-direction:column;gap:0;
+      border-radius:var(--r-lg);overflow:hidden;
+      background:var(--surface);border:1.5px solid var(--border);
+      box-shadow:var(--shadow);
+      transition:transform var(--t),box-shadow var(--t);
+      position:relative;
+    }
+    .album-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+
+    .album-cover{
+      aspect-ratio:1;width:100%;object-fit:cover;
+      background:var(--surface-2);display:block;
+    }
+    .album-cover-placeholder{
+      aspect-ratio:1;width:100%;
+      background:var(--surface-2);
+      display:flex;align-items:center;justify-content:center;
+      font-size:2.5rem;color:var(--text-faint);
+    }
+    .album-info{
+      padding:10px 11px 12px;
+      display:flex;flex-direction:column;gap:2px;
+    }
+    .album-title{
+      font-size:0.78rem;font-weight:600;color:var(--text);
+      line-height:1.3;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    }
+    .album-artist{
+      font-size:0.7rem;color:var(--text-faint);
+      display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
+    }
+    .album-edit-btn{
+      position:absolute;top:6px;right:6px;
+      width:26px;height:26px;border-radius:var(--r-sm);
+      background:rgba(255,255,255,0.9);border:1.5px solid var(--border);
+      color:var(--text-muted);font-size:0.75rem;
+      display:none;align-items:center;justify-content:center;
+      cursor:pointer;transition:background var(--t),color var(--t);
+      backdrop-filter:blur(4px);
+    }
+    .album-edit-btn:hover{background:var(--primary);border-color:var(--primary);color:#fff;}
+    .edit-mode .album-edit-btn{display:flex;}
+
+    .add-album-card{
+      aspect-ratio:1;border-radius:var(--r-lg);
+      border:2px dashed var(--border);
+      background:none;color:var(--text-faint);
+      display:none;flex-direction:column;align-items:center;justify-content:center;
+      gap:6px;font-size:0.78rem;cursor:pointer;
+      transition:border-color var(--t),color var(--t),background var(--t);
+    }
+    .add-album-card:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-dim);}
+    .add-album-card-plus{font-size:1.8rem;line-height:1;}
+    .edit-mode .add-album-card{display:flex;}
+
+    /* ===== EMPTY ===== */
+    .empty-state{
+      text-align:center;padding:60px 20px;
+      color:var(--text-faint);font-size:0.9rem;
+    }
+    .empty-state-icon{font-size:2.5rem;margin-bottom:12px;}
+
+    /* ===== MODAL ===== */
+    .modal-backdrop{
+      position:fixed;inset:0;z-index:2000;
+      background:rgba(26,10,18,0.25);backdrop-filter:blur(4px);
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;pointer-events:none;transition:opacity 180ms;
+    }
+    .modal-backdrop.open{opacity:1;pointer-events:auto;}
+    .modal{
+      background:var(--surface);border:1.5px solid var(--border);
+      border-radius:var(--r-xl);padding:28px;width:100%;max-width:360px;
+      box-shadow:var(--shadow-lg);max-height:90dvh;overflow-y:auto;
+      transform:scale(0.93);transition:transform 200ms cubic-bezier(0.16,1,0.3,1);
+    }
+    .modal-backdrop.open .modal{transform:scale(1);}
+    .modal-title{
+      font-family:var(--font-display);font-size:1.1rem;font-style:italic;
+      color:var(--primary);margin-bottom:16px;text-align:center;
+    }
+    .field-label{
+      font-size:0.7rem;font-weight:600;text-transform:uppercase;
+      letter-spacing:0.09em;color:var(--text-faint);margin:12px 0 5px;
+    }
+    .field-input{
+      width:100%;padding:8px 12px;
+      background:var(--surface-2);border:1.5px solid var(--border);
+      border-radius:var(--r-md);color:var(--text);font:inherit;
+      font-size:0.86rem;outline:none;transition:border-color var(--t);
+    }
+    .field-input:focus{border-color:var(--primary);}
+    .field-input::placeholder{color:var(--text-faint);}
+    .modal-actions{display:flex;gap:8px;margin-top:20px;}
+    .modal-actions .btn{flex:1;justify-content:center;}
+    .error-msg{font-size:0.75rem;color:var(--danger);text-align:center;min-height:1em;margin-top:6px;}
+
+    /* ===== OWNER PICKER ===== */
+    .owner-opts{display:flex;gap:6px;margin-top:2px;}
+    .owner-opt{
+      flex:1;padding:7px 10px;border-radius:var(--r-md);
+      border:1.5px solid var(--border);background:var(--surface);
+      color:var(--text-muted);font:inherit;font-size:0.82rem;font-weight:500;
+      cursor:pointer;text-align:center;transition:all var(--t);
+    }
+    .owner-opt.active-me{background:var(--primary);border-color:var(--primary);color:#fff;}
+    .owner-opt.active-her{background:#ff79b0;border-color:#ff79b0;color:#fff;}
+
+    /* ===== COVER PREVIEW ===== */
+    .cover-preview{
+      width:100%;aspect-ratio:1;object-fit:cover;
+      border-radius:var(--r-md);border:1.5px solid var(--border);
+      margin-bottom:4px;background:var(--surface-2);
+      display:none;
+    }
+    .cover-preview.visible{display:block;}
+    .cover-upload-row{display:flex;gap:6px;align-items:center;}
+    .cover-upload-row .field-input{flex:1;}
+    .btn-upload{
+      padding:7px 10px;font-size:0.78rem;white-space:nowrap;flex-shrink:0;
+    }
+    input[type=file]{display:none;}
+
+    /* ===== SETUP SECTION ===== */
+    .setup-toggle{
+      background:none;border:none;color:var(--text-faint);
+      font-size:0.75rem;text-decoration:underline;cursor:pointer;
+      margin-top:10px;display:block;width:100%;text-align:center;
+    }
+    .setup-toggle:hover{color:var(--primary);}
+    .setup-section{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--divider);}
+    .setup-section.open{display:block;}
+
+    /* ===== PROGRESS ===== */
+    .progress-overlay{
+      position:fixed;inset:0;z-index:3000;
+      background:rgba(26,10,18,0.2);backdrop-filter:blur(2px);
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;pointer-events:none;transition:opacity 160ms;
+    }
+    .progress-overlay.visible{opacity:1;pointer-events:auto;}
+    .progress-box{
+      background:var(--surface);border:1.5px solid var(--border);
+      border-radius:var(--r-xl);padding:28px 36px;
+      box-shadow:var(--shadow-lg);text-align:center;
+      font-size:0.88rem;color:var(--text-muted);
+    }
+    .progress-spinner{
+      width:28px;height:28px;border:3px solid var(--border);
+      border-top-color:var(--primary);border-radius:50%;
+      animation:spin 0.7s linear infinite;margin:0 auto 12px;
+    }
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* ===== TOAST ===== */
+    .toast{
+      position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);
+      background:var(--text);color:#fff;padding:9px 18px;border-radius:99px;
+      font-size:0.8rem;opacity:0;pointer-events:none;
+      transition:opacity 220ms,transform 220ms;z-index:4000;white-space:nowrap;
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    .toast.ok{background:#2e7d32;}
+    .toast.err{background:var(--danger);}
+  </style>
+</head>
+<body>
+
+<!-- ===== PROGRESS ===== -->
+<div class="progress-overlay" id="progressOverlay">
+  <div class="progress-box">
+    <div class="progress-spinner"></div>
+    <div id="progressStatus">Saving…</div>
+  </div>
+</div>
+
+<!-- ===== UNLOCK MODAL ===== -->
+<div class="modal-backdrop" id="unlockModal" onclick="if(e=>e.target===e.currentTarget)(event)&&closeUnlock()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title">🔒 edit mode</div>
+    <input class="field-input" id="unlockPass" type="password" placeholder="password ♡"
+      onkeydown="if(event.key==='Enter')unlock()">
+    <div class="error-msg" id="unlockError"></div>
+    <div class="modal-actions" style="margin-top:12px;">
+      <button class="btn btn-primary" id="unlockBtn" onclick="unlock()">Unlock ♡</button>
+    </div>
+    <button class="setup-toggle" onclick="toggleSetup()">add a login</button>
+    <div class="setup-section" id="setupSection">
+      <div class="field-label">GitHub PAT</div>
+      <input class="field-input" id="patInput" type="password" placeholder="ghp_…">
+      <div class="modal-actions" style="margin-top:10px;">
+        <button class="btn btn-primary" onclick="setup()">Save login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ALBUM MODAL ===== -->
+<div class="modal-backdrop" id="albumModal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title" id="albumModalTitle">Add album ♡</div>
+
+    <img class="cover-preview" id="coverPreview" src="" alt="">
+
+    <div class="field-label">Cover</div>
+    <div class="cover-upload-row">
+      <input class="field-input" id="amCoverUrl" type="url" placeholder="Paste image URL…"
+        oninput="previewCoverUrl(this.value)">
+      <button class="btn btn-upload" onclick="document.getElementById('coverFilePicker').click()">Upload</button>
+      <input type="file" id="coverFilePicker" accept="image/*" onchange="onCoverFile(this)">
+    </div>
+
+    <div class="field-label">Artist</div>
+    <input class="field-input" id="amArtist" type="text" placeholder="e.g. aespa">
+
+    <div class="field-label">Album title</div>
+    <input class="field-input" id="amTitle" type="text" placeholder="e.g. Armageddon">
+
+    <div class="field-label">Owner</div>
+    <div class="owner-opts">
+      <button class="owner-opt" data-o="me" onclick="setOwner('me')">mine</button>
+      <button class="owner-opt" data-o="her" onclick="setOwner('her')">hers</button>
+    </div>
+
+    <div class="error-msg" id="albumError"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeAlbumModal()">Cancel</button>
+      <button class="btn btn-danger" id="amDeleteBtn" onclick="deleteAlbum()" style="display:none">Delete</button>
+      <button class="btn btn-primary" onclick="saveAlbum()">Save ♡</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header class="app-header">
+  <div class="header-brand">💿 albums</div>
+  <div class="header-actions">
+    <a href="../kpop.html" class="btn" style="font-size:0.78rem">← K-pop</a>
+    <a href="xoxo.html"   class="btn" style="font-size:0.78rem">xoxo 🎀</a>
+    <button class="btn-icon active" id="editToggle" onclick="toggleEdit()"
+      title="Toggle edit mode" style="display:none">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+    </button>
+    <button class="btn btn-primary" id="saveBtn" onclick="saveToGitHub()" style="display:none">Save ♡</button>
+    <button class="btn-icon" id="lockBtn" onclick="openUnlock()" title="Edit">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- ===== TABS ===== -->
+<div class="tabs">
+  <button class="tab active" id="tabMe" onclick="switchTab('me')">
+    mine <span class="tab-count" id="countMe">0</span>
+  </button>
+  <button class="tab" id="tabHer" onclick="switchTab('her')">
+    hers <span class="tab-count" id="countHer">0</span>
+  </button>
+</div>
+
+<!-- ===== PAGE ===== -->
+<div class="page">
+  <div class="page-hero">
+    <div class="page-title">album shelf 💿</div>
+    <div class="page-sub">our physical collection</div>
+  </div>
+
+  <div class="album-grid" id="albumGrid"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== CONFIG =====
+const GH_OWNER  = 'Pedestre-commits';
+const GH_REPO   = 'coffeeonsugar';
+const GH_BRANCH = 'main';
+const REPO_BASE = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}`;
+const DATA_PATH = 'data/albums.json';
+const ENC_KEY   = 'xoxo_enc_pat';
+
+// ===== STATE =====
+let DATA       = { albums: [] };
+let editMode   = false;
+let unlocked   = false;
+let activeTab  = 'me';
+let editingIdx = -1;
+let ownerVal   = 'me';
+let pendingCoverFile = null; // { file, dataUrl }
+
+// ===== DATA LOAD =====
+async function loadData() {
+  try {
+    const res = await fetch('../data/albums.json', { cache: 'no-cache' });
+    if (res.ok) { DATA = await res.json(); if (!DATA.albums) DATA.albums = []; }
+  } catch {}
+  render();
+}
+
+// ===== CRYPTO =====
+async function deriveKey(password, salt) {
+  const km = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(password), { name:'PBKDF2' }, false, ['deriveKey']
+  );
+  return crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt, iterations:200000, hash:'SHA-256' },
+    km, { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']
+  );
+}
+async function encryptPAT(pat, pass) {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv   = crypto.getRandomValues(new Uint8Array(12));
+  const key  = await deriveKey(pass, salt);
+  const ct   = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key, new TextEncoder().encode(pat));
+  const out  = new Uint8Array(28 + ct.byteLength);
+  out.set(salt,0); out.set(iv,16); out.set(new Uint8Array(ct),28);
+  return btoa(String.fromCharCode(...out));
+}
+async function decryptPAT(enc, pass) {
+  const buf = Uint8Array.from(atob(enc), c => c.charCodeAt(0));
+  const key = await deriveKey(pass, buf.slice(0,16));
+  const dec = await crypto.subtle.decrypt({ name:'AES-GCM', iv:buf.slice(16,28) }, key, buf.slice(28));
+  return new TextDecoder().decode(dec);
+}
+
+// ===== UNLOCK =====
+function openUnlock() {
+  if (unlocked) { toggleEdit(); return; }
+  document.getElementById('unlockPass').value = '';
+  document.getElementById('unlockError').textContent = '';
+  document.getElementById('setupSection').classList.remove('open');
+  document.getElementById('unlockModal').classList.add('open');
+  setTimeout(() => document.getElementById('unlockPass').focus(), 60);
+}
+function closeUnlock() { document.getElementById('unlockModal').classList.remove('open'); }
+function toggleSetup() { document.getElementById('setupSection').classList.toggle('open'); }
+function setUnlockError(msg) { document.getElementById('unlockError').textContent = msg; }
+
+async function setup() {
+  const rawPat = document.getElementById('patInput').value.trim();
+  const pass   = document.getElementById('unlockPass').value.trim();
+  if (!rawPat || !pass) { setUnlockError('Enter both a password and a PAT.'); return; }
+  try {
+    setUnlockError('Saving…');
+    const enc = await encryptPAT(rawPat, pass);
+    await saveConfigToRepo(enc, rawPat);
+    await activateEdit(rawPat);
+  } catch(e) { setUnlockError('Setup failed: ' + e.message); }
+}
+
+async function unlock() {
+  const pass = document.getElementById('unlockPass').value.trim();
+  if (!pass) return;
+  if ((location.hostname === 'localhost' || location.hostname === '127.0.0.1') && pass === 'dev') {
+    await activateEdit('DEV_BYPASS'); return;
+  }
+  const btn = document.getElementById('unlockBtn');
+  btn.disabled = true; btn.textContent = '…';
+  setUnlockError('');
+
+  let keys = getLocalKeys();
+  if (!keys.length) {
+    setUnlockError('Fetching config…');
+    try {
+      const res = await fetch('../data/xoxo-config.json', { cache: 'no-cache' });
+      if (res.ok) {
+        const cfg = await res.json();
+        keys = cfg.keys || (cfg.enc ? [cfg.enc] : []);
+        if (keys.length) localStorage.setItem(ENC_KEY, JSON.stringify({ keys }));
+      }
+    } catch {}
+  }
+
+  if (!keys.length) {
+    setUnlockError('Not set up — use "add a login" below.');
+    btn.disabled = false; btn.textContent = 'Unlock ♡'; return;
+  }
+
+  let rawPat = null;
+  for (const enc of keys) {
+    try { rawPat = await decryptPAT(enc, pass); break; } catch {}
+  }
+
+  if (!rawPat) { setUnlockError('Wrong password ♡'); btn.disabled = false; btn.textContent = 'Unlock ♡'; return; }
+  await activateEdit(rawPat);
+  btn.disabled = false; btn.textContent = 'Unlock ♡';
+}
+
+function getLocalKeys() {
+  const raw = localStorage.getItem(ENC_KEY);
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed.keys || (parsed.enc ? [parsed.enc] : []);
+  } catch { return [raw]; }
+}
+
+async function saveConfigToRepo(enc, rawPat) {
+  const CONFIG_PATH = 'data/xoxo-config.json';
+  const headers = {
+    'Authorization': `Bearer ${rawPat}`,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'Content-Type': 'application/json'
+  };
+  let sha, existingKeys = [];
+  const check = await fetch(`${REPO_BASE}/contents/${CONFIG_PATH}`, { headers });
+  if (check.ok) {
+    const data = await check.json();
+    sha = data.sha;
+    const existing = JSON.parse(atob(data.content.replace(/\n/g, '')));
+    existingKeys = existing.keys || (existing.enc ? [existing.enc] : []);
+  }
+  if (!existingKeys.includes(enc)) existingKeys.push(enc);
+  const res = await fetch(`${REPO_BASE}/contents/${CONFIG_PATH}`, {
+    method: 'PUT', headers,
+    body: JSON.stringify({
+      message: `Update access config (${existingKeys.length} login${existingKeys.length !== 1 ? 's' : ''})`,
+      content: btoa(JSON.stringify({ keys: existingKeys }, null, 2)),
+      branch: GH_BRANCH,
+      ...(sha ? { sha } : {})
+    })
+  });
+  if (!res.ok) throw new Error((await res.json().catch(()=>({}))).message || `HTTP ${res.status}`);
+  localStorage.setItem(ENC_KEY, JSON.stringify({ keys: existingKeys }));
+}
+
+async function activateEdit(pat) {
+  sessionStorage.setItem('xoxo_pat', pat);
+  unlocked = true;
+  closeUnlock();
+  document.getElementById('lockBtn').style.display    = 'none';
+  document.getElementById('editToggle').style.display = '';
+  enableEditMode();
+}
+
+// ===== GITHUB API =====
+function pat() { return sessionStorage.getItem('xoxo_pat'); }
+async function ghCall(url, method = 'GET', body = null) {
+  const res = await fetch(url.startsWith('http') ? url : REPO_BASE + url, {
+    method,
+    headers: {
+      'Authorization': `Bearer ${pat()}`,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      ...(body ? { 'Content-Type': 'application/json' } : {})
+    },
+    ...(body ? { body: JSON.stringify(body) } : {})
+  });
+  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.message || `HTTP ${res.status}`); }
+  return res.json();
+}
+
+async function uploadImageBlob(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const b64 = reader.result.split(',')[1];
+        const ext = file.name.split('.').pop().toLowerCase();
+        const ts  = Date.now();
+        const path = `photos/albums/${ts}.${ext}`;
+        const blob = await ghCall('/git/blobs', 'POST', { content: b64, encoding: 'base64' });
+        resolve({ blobSha: blob.sha, path });
+      } catch(e) { reject(e); }
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function saveToGitHub() {
+  if (pat() === 'DEV_BYPASS') { showToast('Dev mode — save skipped', 'ok'); document.getElementById('saveBtn').style.display = 'none'; return; }
+  setProgress(true, 'Saving…');
+  try {
+    const ref     = await ghCall(`/git/refs/heads/${GH_BRANCH}`);
+    const headSha = ref.object.sha;
+    const treeSha = (await ghCall(`/git/commits/${headSha}`)).tree.sha;
+
+    const treeItems = [];
+
+    // Upload any pending cover image blobs
+    for (const album of DATA.albums) {
+      if (album._pendingFile) {
+        setProgress(true, `Uploading cover…`);
+        const blob = await ghCall('/git/blobs', 'POST', { content: album._pendingFile, encoding: 'base64' });
+        treeItems.push({ path: album._pendingPath, mode: '100644', type: 'blob', sha: blob.sha });
+        delete album._pendingFile;
+        delete album._pendingPath;
+      }
+    }
+
+    const jBlob = await ghCall('/git/blobs', 'POST', {
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(DATA, null, 2)))),
+      encoding: 'base64'
+    });
+    treeItems.push({ path: DATA_PATH, mode: '100644', type: 'blob', sha: jBlob.sha });
+
+    const tree   = await ghCall('/git/trees', 'POST', { base_tree: treeSha, tree: treeItems });
+    const n = DATA.albums.length;
+    const commit = await ghCall('/git/commits', 'POST', {
+      message: `Update albums — ${n} album${n !== 1 ? 's' : ''}`,
+      tree: tree.sha, parents: [headSha]
+    });
+    await ghCall(`/git/refs/heads/${GH_BRANCH}`, 'PATCH', { sha: commit.sha });
+    showToast('Saved! Live in ~60s ✓', 'ok');
+    document.getElementById('saveBtn').style.display = 'none';
+  } catch(e) { showToast('Save failed: ' + e.message, 'err'); }
+  finally { setProgress(false); }
+}
+
+// ===== TABS =====
+function switchTab(tab) {
+  activeTab = tab;
+  document.getElementById('tabMe').classList.toggle('active', tab === 'me');
+  document.getElementById('tabHer').classList.toggle('active', tab === 'her');
+  renderGrid();
+}
+
+// ===== RENDER =====
+function render() {
+  const mine = DATA.albums.filter(a => a.owner === 'me').length;
+  const hers = DATA.albums.filter(a => a.owner === 'her').length;
+  document.getElementById('countMe').textContent  = mine;
+  document.getElementById('countHer').textContent = hers;
+  renderGrid();
+}
+
+function renderGrid() {
+  const albums = DATA.albums.map((a,i) => ({...a,i})).filter(a => a.owner === activeTab);
+  const grid = document.getElementById('albumGrid');
+
+  if (!albums.length && !editMode) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <div class="empty-state-icon">💿</div>
+      No albums here yet
+    </div>`;
+    return;
+  }
+
+  const cards = albums.map(a => {
+    const coverHtml = a.cover
+      ? `<img class="album-cover" src="${a.cover}" alt="${a.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      + `<div class="album-cover-placeholder" style="display:none">💿</div>`
+      : `<div class="album-cover-placeholder">💿</div>`;
+    return `<div class="album-card">
+      ${coverHtml}
+      <div class="album-info">
+        <div class="album-title">${a.title}</div>
+        <div class="album-artist">${a.artist}</div>
+      </div>
+      <button class="album-edit-btn" onclick="openAlbumModal(${a.i})" title="Edit">✎</button>
+    </div>`;
+  }).join('');
+
+  const addCard = `<button class="add-album-card" onclick="openAlbumModal(-1)">
+    <div class="add-album-card-plus">+</div>
+    <div>add album</div>
+  </button>`;
+
+  grid.innerHTML = cards + addCard;
+}
+
+// ===== EDIT MODE =====
+function enableEditMode() {
+  editMode = true;
+  document.getElementById('editToggle').classList.add('active');
+  document.body.classList.add('edit-mode');
+  renderGrid();
+}
+function toggleEdit() {
+  editMode = !editMode;
+  document.getElementById('editToggle').classList.toggle('active', editMode);
+  document.body.classList.toggle('edit-mode', editMode);
+  renderGrid();
+}
+function markDirty() { document.getElementById('saveBtn').style.display = ''; }
+
+// ===== ALBUM MODAL =====
+function openAlbumModal(idx) {
+  editingIdx = idx;
+  pendingCoverFile = null;
+  const a = idx === -1 ? {} : (DATA.albums[idx] || {});
+  document.getElementById('albumModalTitle').textContent = idx === -1 ? 'Add album ♡' : 'Edit album ♡';
+  document.getElementById('amArtist').value   = a.artist || '';
+  document.getElementById('amTitle').value    = a.title  || '';
+  document.getElementById('amCoverUrl').value = a.cover  || '';
+  document.getElementById('albumError').textContent = '';
+  document.getElementById('amDeleteBtn').style.display = idx === -1 ? 'none' : '';
+  document.getElementById('coverFilePicker').value = '';
+  ownerVal = a.owner || activeTab;
+  updateOwnerUI();
+  const prev = document.getElementById('coverPreview');
+  if (a.cover) { prev.src = a.cover; prev.classList.add('visible'); }
+  else { prev.src = ''; prev.classList.remove('visible'); }
+  document.getElementById('albumModal').classList.add('open');
+  setTimeout(() => document.getElementById('amArtist').focus(), 50);
+}
+function closeAlbumModal() {
+  document.getElementById('albumModal').classList.remove('open');
+  pendingCoverFile = null;
+}
+
+function setOwner(o) { ownerVal = o; updateOwnerUI(); }
+function updateOwnerUI() {
+  document.querySelectorAll('.owner-opt').forEach(b => {
+    b.className = 'owner-opt' + (b.dataset.o === ownerVal ? ` active-${ownerVal}` : '');
+  });
+}
+
+function previewCoverUrl(url) {
+  pendingCoverFile = null;
+  const prev = document.getElementById('coverPreview');
+  if (url) { prev.src = url; prev.classList.add('visible'); }
+  else { prev.src = ''; prev.classList.remove('visible'); }
+}
+
+function onCoverFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    const b64 = dataUrl.split(',')[1];
+    const ext = file.name.split('.').pop().toLowerCase();
+    const ts  = Date.now();
+    pendingCoverFile = { b64, path: `photos/albums/${ts}.${ext}` };
+    document.getElementById('amCoverUrl').value = '';
+    const prev = document.getElementById('coverPreview');
+    prev.src = dataUrl;
+    prev.classList.add('visible');
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveAlbum() {
+  const artist = document.getElementById('amArtist').value.trim();
+  const title  = document.getElementById('amTitle').value.trim();
+  if (!artist || !title) {
+    document.getElementById('albumError').textContent = 'Artist and title are required.';
+    return;
+  }
+  const cover = pendingCoverFile
+    ? `photos/albums/${pendingCoverFile.path.split('/').pop()}`
+    : document.getElementById('amCoverUrl').value.trim();
+
+  const album = { artist, title, cover, owner: ownerVal };
+  if (pendingCoverFile) {
+    album._pendingFile = pendingCoverFile.b64;
+    album._pendingPath = pendingCoverFile.path;
+    album.cover = pendingCoverFile.path;
+  }
+
+  if (editingIdx === -1) DATA.albums.push(album);
+  else DATA.albums[editingIdx] = album;
+  closeAlbumModal();
+  render();
+  markDirty();
+}
+
+function deleteAlbum() {
+  if (editingIdx < 0) return;
+  DATA.albums.splice(editingIdx, 1);
+  closeAlbumModal();
+  render();
+  markDirty();
+}
+
+// ===== UTILS =====
+function setProgress(v, msg='') {
+  document.getElementById('progressOverlay').classList.toggle('visible', v);
+  if (msg) document.getElementById('progressStatus').textContent = msg;
+}
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeUnlock(); closeAlbumModal(); }
+  });
+  const saved = sessionStorage.getItem('xoxo_pat');
+  if (saved) {
+    unlocked = true;
+    document.getElementById('lockBtn').style.display    = 'none';
+    document.getElementById('editToggle').style.display = '';
+  }
+});
+</script>
+</body>
+</html>
