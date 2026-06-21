@@ -1,0 +1,38 @@
+{
+  "profile": {
+    "name": "Bubu",
+    "bio": "Kpop McManly Man 💙❄️🌊"
+  },
+  "groups": [
+    {
+      "name": "Aespa",
+      "tier": "S",
+      "bias": "Ningning",
+      "alt_bias": "Winter",
+      "note": ""
+    },
+    {
+      "name": "NMIXX",
+      "tier": "S",
+      "bias": "Lily",
+      "alt_bias": "Sullyoon",
+      "note": ""
+    }
+  ],
+  "bias_wall": [
+    {
+      "member": "Ningning",
+      "group": "Aespa",
+      "note": "Prologue era",
+      "photo": "photos/bubu/1.jpeg"
+    },
+    {
+      "member": "Winter",
+      "group": "Aespa",
+      "note": "I NEED THIS ONE",
+      "photo": "photos/bubu/2.jpg"
+    }
+  ],
+  "tier_labels": {},
+  "obsession": {}
+}
