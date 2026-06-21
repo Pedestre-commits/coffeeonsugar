@@ -8,14 +8,81 @@
       "name": "Aespa",
       "tier": "S",
       "bias": "Ningning",
-      "alt_bias": "Winter",
+      "bias_wreckers": [
+        "Winter",
+        "Karina"
+      ],
       "note": ""
     },
     {
       "name": "NMIXX",
       "tier": "S",
       "bias": "Lily",
-      "alt_bias": "Sullyoon",
+      "bias_wreckers": [
+        "Sullyoon",
+        "Kyujin"
+      ],
+      "note": ""
+    },
+    {
+      "name": "ILLIT",
+      "tier": "A",
+      "bias": "Wonhee",
+      "bias_wreckers": [
+        "Moka"
+      ],
+      "note": ""
+    },
+    {
+      "name": "Babymonster",
+      "tier": "S",
+      "bias": "Asa",
+      "bias_wreckers": [
+        "Rora",
+        "Chiquita"
+      ],
+      "note": ""
+    },
+    {
+      "name": "MEOVV",
+      "tier": "A",
+      "bias": "Narin",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "Kiss Of Life",
+      "tier": "S",
+      "bias": "Julie",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "Le Sserafim",
+      "tier": "A",
+      "bias": "Kim Chaewon",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "Twice",
+      "tier": "B",
+      "bias": "Minatozaki Sana",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "Everglow",
+      "tier": "B",
+      "bias": "",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "Blackpink",
+      "tier": "B",
+      "bias": "Rosé",
+      "bias_wreckers": [],
       "note": ""
     }
   ],
@@ -31,6 +98,30 @@
       "group": "Aespa",
       "note": "I NEED THIS ONE",
       "photo": "photos/bubu/2.jpg"
+    },
+    {
+      "member": "Wonhee",
+      "group": "ILLIT",
+      "note": "Too many good photocard to choose from",
+      "photo": "photos/bubu/3.jpg"
+    },
+    {
+      "member": "Julie",
+      "group": "Kiss Of Life",
+      "note": "Cute Kitty",
+      "photo": "photos/bubu/4.jpeg"
+    },
+    {
+      "member": "Lily",
+      "group": "NMIXX",
+      "note": "Cutest 🐨",
+      "photo": "photos/bubu/5.jpeg"
+    },
+    {
+      "member": "Kim Chaewon",
+      "group": "Le Sserafim",
+      "note": "One of the longest bias",
+      "photo": "photos/bubu/6.webp"
     }
   ],
   "tier_labels": {},
