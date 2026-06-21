@@ -38,6 +38,7 @@
       background-image:
         radial-gradient(ellipse 800px 500px at 0% 0%,#ffd6ec 0%,transparent 60%),
         radial-gradient(ellipse 600px 400px at 100% 100%,#ffe8f3 0%,transparent 55%);
+      transition:background-color 300ms,color 300ms;
     }
     button{cursor:pointer;font:inherit;}
     :focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:var(--r-sm);}
@@ -45,16 +46,38 @@
     ::-webkit-scrollbar-track{background:var(--bg);}
     ::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
 
+    /* ===== BUBU (sky blue) THEME ===== */
+    body.theme-bubu {
+      --bg:            #f0f9ff;
+      --surface-2:     #e0f2fe;
+      --border:        #bae6fd;
+      --divider:       #e0f2fe;
+      --text-muted:    #0369a1;
+      --text-faint:    #7dd3fc;
+      --primary:       #0ea5e9;
+      --primary-dim:   rgba(14,165,233,0.10);
+      --primary-light: #e0f2fe;
+      --accent:        #38bdf8;
+      --shadow:        0 2px 16px rgba(14,165,233,0.10);
+      --shadow-lg:     0 8px 36px rgba(14,165,233,0.18);
+      background-image:
+        radial-gradient(ellipse 800px 500px at 0% 0%,#bae6fd 0%,transparent 60%),
+        radial-gradient(ellipse 600px 400px at 100% 100%,#e0f2fe 0%,transparent 55%);
+    }
+
     /* ===== HEADER ===== */
     .app-header{
       display:flex;align-items:center;justify-content:space-between;
       padding:12px 24px;border-bottom:1px solid var(--border);
       background:rgba(255,245,249,0.88);backdrop-filter:blur(12px);
       position:sticky;top:0;z-index:200;height:56px;
+      transition:background 300ms,border-color 300ms;
     }
+    body.theme-bubu .app-header{background:rgba(240,249,255,0.88);}
     .header-brand{
       font-family:var(--font-display);font-size:1.2rem;font-style:italic;
       color:var(--primary);display:flex;align-items:center;gap:8px;
+      transition:color 300ms;
     }
     .header-actions{display:flex;align-items:center;gap:8px;}
 
@@ -68,7 +91,7 @@
     }
     .btn:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary);}
     .btn-primary{background:var(--primary);border-color:var(--primary);color:#fff;}
-    .btn-primary:hover{background:#d0187c;border-color:#d0187c;color:#fff;}
+    .btn-primary:hover{opacity:0.88;}
     .btn-danger{color:var(--danger);border-color:rgba(229,53,53,0.3);}
     .btn-danger:hover{background:rgba(229,53,53,0.08);border-color:var(--danger);color:var(--danger);}
     .btn-icon{
@@ -83,8 +106,11 @@
     /* ===== TABS ===== */
     .tabs{
       display:flex;gap:0;border-bottom:1.5px solid var(--border);
-      padding:0 24px;background:rgba(255,245,249,0.6);
+      padding:0 24px;
+      background:rgba(255,245,249,0.6);
+      transition:background 300ms,border-color 300ms;
     }
+    body.theme-bubu .tabs{background:rgba(240,249,255,0.6);}
     .tab{
       padding:12px 20px;font-size:0.85rem;font-weight:600;
       color:var(--text-faint);border:none;background:none;
@@ -99,6 +125,7 @@
       width:18px;height:18px;border-radius:99px;margin-left:6px;
       font-size:0.65rem;font-weight:700;
       background:var(--primary-dim);color:var(--primary);
+      transition:background 300ms,color 300ms;
     }
     .tab.active .tab-count{background:var(--primary);color:#fff;}
 
@@ -110,6 +137,7 @@
     .page-title{
       font-family:var(--font-display);font-size:3rem;font-style:italic;
       color:var(--primary);line-height:1;margin-bottom:6px;
+      transition:color 300ms;
     }
     .page-sub{font-size:0.9rem;color:var(--text-faint);}
 
@@ -122,11 +150,11 @@
     @media(min-width:600px){.album-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;}}
 
     .album-card{
-      display:flex;flex-direction:column;gap:0;
+      display:flex;flex-direction:column;
       border-radius:var(--r-lg);overflow:hidden;
       background:var(--surface);border:1.5px solid var(--border);
       box-shadow:var(--shadow);
-      transition:transform var(--t),box-shadow var(--t);
+      transition:transform var(--t),box-shadow var(--t),border-color 300ms;
       position:relative;
     }
     .album-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
@@ -228,8 +256,8 @@
       color:var(--text-muted);font:inherit;font-size:0.82rem;font-weight:500;
       cursor:pointer;text-align:center;transition:all var(--t);
     }
-    .owner-opt.active-me{background:var(--primary);border-color:var(--primary);color:#fff;}
-    .owner-opt.active-her{background:#ff79b0;border-color:#ff79b0;color:#fff;}
+    .owner-opt.active-ronnie{background:#e91e8c;border-color:#e91e8c;color:#fff;}
+    .owner-opt.active-bubu{background:#0ea5e9;border-color:#0ea5e9;color:#fff;}
 
     /* ===== COVER PREVIEW ===== */
     .cover-preview{
@@ -300,7 +328,7 @@
 </div>
 
 <!-- ===== UNLOCK MODAL ===== -->
-<div class="modal-backdrop" id="unlockModal" onclick="if(e=>e.target===e.currentTarget)(event)&&closeUnlock()">
+<div class="modal-backdrop" id="unlockModal">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-title">🔒 edit mode</div>
     <input class="field-input" id="unlockPass" type="password" placeholder="password ♡"
@@ -343,8 +371,8 @@
 
     <div class="field-label">Owner</div>
     <div class="owner-opts">
-      <button class="owner-opt" data-o="me" onclick="setOwner('me')">mine</button>
-      <button class="owner-opt" data-o="her" onclick="setOwner('her')">hers</button>
+      <button class="owner-opt" data-o="ronnie" onclick="setOwner('ronnie')">Ronnie</button>
+      <button class="owner-opt" data-o="bubu"   onclick="setOwner('bubu')">Bubu</button>
     </div>
 
     <div class="error-msg" id="albumError"></div>
@@ -381,11 +409,11 @@
 
 <!-- ===== TABS ===== -->
 <div class="tabs">
-  <button class="tab active" id="tabMe" onclick="switchTab('me')">
-    mine <span class="tab-count" id="countMe">0</span>
+  <button class="tab active" id="tabRonnie" onclick="switchTab('ronnie')">
+    Ronnie <span class="tab-count" id="countRonnie">0</span>
   </button>
-  <button class="tab" id="tabHer" onclick="switchTab('her')">
-    hers <span class="tab-count" id="countHer">0</span>
+  <button class="tab" id="tabBubu" onclick="switchTab('bubu')">
+    Bubu <span class="tab-count" id="countBubu">0</span>
   </button>
 </div>
 
@@ -393,7 +421,7 @@
 <div class="page">
   <div class="page-hero">
     <div class="page-title">album shelf 💿</div>
-    <div class="page-sub">our physical collection</div>
+    <div class="page-sub" id="pageSub">our physical collection</div>
   </div>
 
   <div class="album-grid" id="albumGrid"></div>
@@ -414,10 +442,10 @@ const ENC_KEY   = 'xoxo_enc_pat';
 let DATA       = { albums: [] };
 let editMode   = false;
 let unlocked   = false;
-let activeTab  = 'me';
+let activeTab  = 'ronnie';
 let editingIdx = -1;
-let ownerVal   = 'me';
-let pendingCoverFile = null; // { file, dataUrl }
+let ownerVal   = 'ronnie';
+let pendingCoverFile = null;
 
 // ===== DATA LOAD =====
 async function loadData() {
@@ -582,24 +610,6 @@ async function ghCall(url, method = 'GET', body = null) {
   return res.json();
 }
 
-async function uploadImageBlob(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = async () => {
-      try {
-        const b64 = reader.result.split(',')[1];
-        const ext = file.name.split('.').pop().toLowerCase();
-        const ts  = Date.now();
-        const path = `photos/albums/${ts}.${ext}`;
-        const blob = await ghCall('/git/blobs', 'POST', { content: b64, encoding: 'base64' });
-        resolve({ blobSha: blob.sha, path });
-      } catch(e) { reject(e); }
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
 async function saveToGitHub() {
   if (pat() === 'DEV_BYPASS') { showToast('Dev mode — save skipped', 'ok'); document.getElementById('saveBtn').style.display = 'none'; return; }
   setProgress(true, 'Saving…');
@@ -610,10 +620,9 @@ async function saveToGitHub() {
 
     const treeItems = [];
 
-    // Upload any pending cover image blobs
     for (const album of DATA.albums) {
       if (album._pendingFile) {
-        setProgress(true, `Uploading cover…`);
+        setProgress(true, 'Uploading cover…');
         const blob = await ghCall('/git/blobs', 'POST', { content: album._pendingFile, encoding: 'base64' });
         treeItems.push({ path: album._pendingPath, mode: '100644', type: 'blob', sha: blob.sha });
         delete album._pendingFile;
@@ -643,17 +652,16 @@ async function saveToGitHub() {
 // ===== TABS =====
 function switchTab(tab) {
   activeTab = tab;
-  document.getElementById('tabMe').classList.toggle('active', tab === 'me');
-  document.getElementById('tabHer').classList.toggle('active', tab === 'her');
+  document.getElementById('tabRonnie').classList.toggle('active', tab === 'ronnie');
+  document.getElementById('tabBubu').classList.toggle('active', tab === 'bubu');
+  document.body.classList.toggle('theme-bubu', tab === 'bubu');
   renderGrid();
 }
 
 // ===== RENDER =====
 function render() {
-  const mine = DATA.albums.filter(a => a.owner === 'me').length;
-  const hers = DATA.albums.filter(a => a.owner === 'her').length;
-  document.getElementById('countMe').textContent  = mine;
-  document.getElementById('countHer').textContent = hers;
+  document.getElementById('countRonnie').textContent = DATA.albums.filter(a => a.owner === 'ronnie').length;
+  document.getElementById('countBubu').textContent   = DATA.albums.filter(a => a.owner === 'bubu').length;
   renderGrid();
 }
 
@@ -672,7 +680,7 @@ function renderGrid() {
   const cards = albums.map(a => {
     const coverHtml = a.cover
       ? `<img class="album-cover" src="${a.cover}" alt="${a.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-      + `<div class="album-cover-placeholder" style="display:none">💿</div>`
+        + `<div class="album-cover-placeholder" style="display:none">💿</div>`
       : `<div class="album-cover-placeholder">💿</div>`;
     return `<div class="album-card">
       ${coverHtml}
@@ -771,15 +779,12 @@ function saveAlbum() {
     document.getElementById('albumError').textContent = 'Artist and title are required.';
     return;
   }
-  const cover = pendingCoverFile
-    ? `photos/albums/${pendingCoverFile.path.split('/').pop()}`
-    : document.getElementById('amCoverUrl').value.trim();
 
-  const album = { artist, title, cover, owner: ownerVal };
+  const album = { artist, title, owner: ownerVal,
+    cover: pendingCoverFile ? pendingCoverFile.path : document.getElementById('amCoverUrl').value.trim() };
   if (pendingCoverFile) {
     album._pendingFile = pendingCoverFile.b64;
     album._pendingPath = pendingCoverFile.path;
-    album.cover = pendingCoverFile.path;
   }
 
   if (editingIdx === -1) DATA.albums.push(album);
