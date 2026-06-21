@@ -83,6 +83,24 @@
       "group": "ILLIT",
       "note": "Too many good photocard to choose from",
       "photo": "photos/bubu/3.jpg"
+    },
+    {
+      "member": "Julie",
+      "group": "Kiss Of Life",
+      "note": "Cute Kitty",
+      "photo": "photos/bubu/4.jpeg"
+    },
+    {
+      "member": "Lily",
+      "group": "NMIXX",
+      "note": "Cutest 🐨",
+      "photo": "photos/bubu/5.jpeg"
+    },
+    {
+      "member": "Kim Chaewon",
+      "group": "Le Sserafim",
+      "note": "One of the longest bias",
+      "photo": "photos/bubu/6.webp"
     }
   ],
   "tier_labels": {},
