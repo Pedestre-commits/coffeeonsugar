@@ -315,6 +315,24 @@
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
     .toast.ok{background:#2e7d32;}
     .toast.err{background:var(--danger);}
+
+    /* ===== ITUNES SEARCH ===== */
+    .itunes-search-row{display:flex;gap:6px;margin-bottom:6px;}
+    .itunes-search-row .field-input{flex:1;}
+    #itunesResults{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:4px;min-height:0;}
+    .itunes-thumb{
+      aspect-ratio:1;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;
+      border:2px solid transparent;transition:border-color var(--t),transform var(--t);
+      background:var(--surface-2);
+    }
+    .itunes-thumb:hover{border-color:var(--primary);transform:scale(1.04);}
+    .itunes-thumb.selected{border-color:var(--primary);}
+    .itunes-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+    .itunes-msg{font-size:0.75rem;color:var(--text-faint);text-align:center;padding:8px 0;grid-column:1/-1;}
+    .field-divider{
+      font-size:0.7rem;color:var(--text-faint);text-align:center;
+      border-top:1px solid var(--divider);margin:10px 0 8px;padding-top:8px;
+    }
   </style>
 </head>
 <body>
@@ -355,7 +373,18 @@
 
     <img class="cover-preview" id="coverPreview" src="" alt="">
 
-    <div class="field-label">Cover</div>
+    <div class="field-label" style="display:flex;align-items:center;justify-content:space-between">
+      <span>Search cover art</span>
+      <span id="itunesStatus" style="font-size:0.7rem;color:var(--text-faint)"></span>
+    </div>
+    <div class="itunes-search-row">
+      <input class="field-input" id="amSearch" type="text" placeholder="Artist — Album…"
+        onkeydown="if(event.key==='Enter')searchItunesCovers()">
+      <button class="btn" onclick="searchItunesCovers()" style="padding:6px 10px">🔍</button>
+    </div>
+    <div id="itunesResults"></div>
+
+    <div class="field-divider">or paste URL / upload</div>
     <div class="cover-upload-row">
       <input class="field-input" id="amCoverUrl" type="url" placeholder="Paste image URL…"
         oninput="previewCoverUrl(this.value)">
@@ -717,6 +746,52 @@ function toggleEdit() {
 }
 function markDirty() { document.getElementById('saveBtn').style.display = ''; }
 
+// ===== ITUNES COVER SEARCH =====
+async function searchItunesCovers() {
+  let q = document.getElementById('amSearch').value.trim();
+  if (!q) {
+    const artist = document.getElementById('amArtist').value.trim();
+    const title  = document.getElementById('amTitle').value.trim();
+    q = [artist, title].filter(Boolean).join(' ');
+    if (q) document.getElementById('amSearch').value = q;
+  }
+  if (!q) return;
+  const status  = document.getElementById('itunesStatus');
+  const results = document.getElementById('itunesResults');
+  status.textContent = 'searching…';
+  results.innerHTML  = '';
+  try {
+    const res  = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=album&limit=9&media=music`);
+    const data = await res.json();
+    status.textContent = data.resultCount ? `${data.resultCount} results` : '';
+    if (!data.resultCount) {
+      results.innerHTML = '<div class="itunes-msg">No results — try a different search</div>';
+      return;
+    }
+    results.innerHTML = data.results.map((r,i) => {
+      const art600 = r.artworkUrl100.replace('100x100bb','600x600bb');
+      return `<button class="itunes-thumb" id="ithumb${i}"
+        onclick="selectItCover('${art600}','ithumb${i}')"
+        title="${r.artistName} — ${r.collectionName}">
+        <img src="${r.artworkUrl100}" alt="${r.collectionName}" loading="lazy">
+      </button>`;
+    }).join('');
+  } catch {
+    status.textContent = '';
+    results.innerHTML = '<div class="itunes-msg">Search failed — check connection</div>';
+  }
+}
+
+function selectItCover(url, thumbId) {
+  pendingCoverFile = null;
+  document.getElementById('coverFilePicker').value = '';
+  document.getElementById('amCoverUrl').value = url;
+  const prev = document.getElementById('coverPreview');
+  prev.src = url; prev.classList.add('visible');
+  document.querySelectorAll('.itunes-thumb').forEach(t => t.classList.remove('selected'));
+  document.getElementById(thumbId).classList.add('selected');
+}
+
 // ===== ALBUM MODAL =====
 function openAlbumModal(idx) {
   editingIdx = idx;
@@ -726,6 +801,9 @@ function openAlbumModal(idx) {
   document.getElementById('amArtist').value   = a.artist || '';
   document.getElementById('amTitle').value    = a.title  || '';
   document.getElementById('amCoverUrl').value = a.cover  || '';
+  document.getElementById('amSearch').value   = (a.artist && a.title) ? `${a.artist} ${a.title}` : (a.artist || '');
+  document.getElementById('itunesResults').innerHTML = '';
+  document.getElementById('itunesStatus').textContent = '';
   document.getElementById('albumError').textContent = '';
   document.getElementById('amDeleteBtn').style.display = idx === -1 ? 'none' : '';
   document.getElementById('coverFilePicker').value = '';
@@ -735,7 +813,7 @@ function openAlbumModal(idx) {
   if (a.cover) { prev.src = a.cover; prev.classList.add('visible'); }
   else { prev.src = ''; prev.classList.remove('visible'); }
   document.getElementById('albumModal').classList.add('open');
-  setTimeout(() => document.getElementById('amArtist').focus(), 50);
+  setTimeout(() => document.getElementById('amSearch').focus(), 50);
 }
 function closeAlbumModal() {
   document.getElementById('albumModal').classList.remove('open');
