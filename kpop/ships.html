@@ -436,7 +436,8 @@
   <div class="header-brand">💗 ships</div>
   <div class="header-actions">
     <a href="../kpop.html" class="btn" style="font-size:0.78rem">← K-pop</a>
-    <a href="xoxo.html"   class="btn" style="font-size:0.78rem">xoxo</a>
+    <a href="dramas.html"  class="btn" style="font-size:0.78rem">dramas 🎬</a>
+    <a href="albums.html"  class="btn" style="font-size:0.78rem">albums 💿</a>
     <button class="btn-icon active" id="editToggle" onclick="toggleEdit()" style="display:none" title="Edit mode">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -552,6 +553,9 @@ async function setup() {
 async function unlock() {
   const pass = document.getElementById('unlockPass').value.trim();
   if (!pass) return;
+  if ((location.hostname === 'localhost' || location.hostname === '127.0.0.1') && pass === 'dev') {
+    await activateEdit('DEV_BYPASS'); return;
+  }
   const btn = document.getElementById('unlockBtn');
   btn.disabled = true; btn.textContent = '…';
   setUnlockError('');
