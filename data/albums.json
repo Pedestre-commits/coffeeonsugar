@@ -2,9 +2,177 @@
   "albums": [
     {
       "artist": "Le Sserafim",
-      "title": "Pureflow Pt.1",
+      "title": "Pureflow Pt. 1",
       "owner": "bubu",
-      "cover": "photos/albums/1782055493662.jpeg"
+      "cover": "https://i.discogs.com/7J13nuJmlzl9GHC9P-erYxxxxxzpk2NRNAJE4fx9iHw/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM3NDQ0/NDI1LTE3ODE3MjY3/NTItMjA2Mi5wbmc.jpeg"
+    },
+    {
+      "artist": "aespa",
+      "title": "Drama",
+      "owner": "bubu",
+      "cover": "https://i.discogs.com/L3WmbUN2dqkjZxG5MOcQOh6aHr3wmrLzgywN2gU6kgI/rs:fit/g:sm/q:90/h:798/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5MTU0/Nzg3LTE3MDIxNDI3/MTYtMzk1MC5wbmc.jpeg"
+    },
+    {
+      "artist": "Le Sserafim",
+      "title": "Unforgiven",
+      "owner": "bubu",
+      "cover": "https://i.discogs.com/RzaZevy8S2QnALWE2CUNe6wAW2aFN9eWpW6Ja9s_PXA/rs:fit/g:sm/q:90/h:545/w:416/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI3NDA5/MzA4LTE3NDY2MTUw/OTUtNDkwNi5qcGVn.jpeg"
+    },
+    {
+      "artist": "aespa",
+      "title": "Armageddon",
+      "owner": "bubu",
+      "cover": "https://i.discogs.com/FfqulnlMhAp1cN2Wu_KQPbNU1TCuGU4dOGzG6vp8e7Y/rs:fit/g:sm/q:90/h:873/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMwNzk3/ODA1LTE3MjI0NTQy/MjEtNjIyMC5qcGVn.jpeg"
+    },
+    {
+      "artist": "Le Sserafim",
+      "title": "Hot",
+      "owner": "bubu",
+      "cover": "https://i.discogs.com/ou7k9J2Kmss--11bwbRMQajayO1Lu7hkJgAbqKpiEpE/rs:fit/g:sm/q:90/h:437/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMzNDU2/Njg5LTE3NDI0MDk0/NzctMTY3OS5qcGVn.jpeg"
+    },
+    {
+      "artist": "Yeonjun",
+      "title": "No Labels: Part 01",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/3TfHrtX36cIbIbnEaNgW583X6wqAM3BsQXujYIoaII8/rs:fit/g:sm/q:90/h:752/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM3MDI5/NzM4LTE3NzU4NDIx/NTQtNjUyMC5qcGVn.jpeg"
+    },
+    {
+      "artist": "TXT (5)",
+      "title": "7TH YEAR: A Moment of Stillness in the Thorns",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/nr5z937q9g9nUxcbRkP7oGgtc5ZV1YZ1ZGitkY-w0pc/rs:fit/g:sm/q:90/h:417/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM3MjMx/MDIwLTE3Nzc3MTc2/MzItNjczNS5qcGVn.jpeg"
+    },
+    {
+      "artist": "NCT (2)",
+      "title": "Golden Age",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/opDGAGJrog_MD5ut2lUAer_Q8Xq0lv4xuN0ZCPcZmCM/rs:fit/g:sm/q:90/h:816/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMwMDQy/MDU4LTE3Mzg4NjY1/MjUtNjc2Ny5qcGVn.jpeg"
+    },
+    {
+      "artist": "BOYNEXTDOOR",
+      "title": "HOME",
+      "owner": "ronnie",
+      "cover": "photos/albums/1782252399308.avif"
+    },
+    {
+      "artist": "SuperM",
+      "title": "SuperM",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/203xm6ilMrOu7SD0kEuAb0SXjfUo29M_63D9tiwHqI4/rs:fit/g:sm/q:90/h:500/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE0OTkw/NDYwLTE1ODUxODk5/NzUtMTAwOC5qcGVn.jpeg"
+    },
+    {
+      "artist": "NCT DREAM",
+      "title": "We Boom",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/YAZLrvkGI7Qpzv2LOeHhPE66rFaptBlODonXl-59ZY8/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI3MTA2/OTc0LTE2ODQzMzQ1/ODMtNzY4OC5qcGVn.jpeg"
+    },
+    {
+      "artist": "GOT7",
+      "title": "Flight Log: Arrival",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/KgPDwG5B6CSl3sTPONBLcnCimKIZOaDTl-cZ-XC4YBg/rs:fit/g:sm/q:90/h:810/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwMDU1/NjMzLTE0OTA4NDEz/NDktNTExOC5qcGVn.jpeg"
+    },
+    {
+      "artist": "GOT7",
+      "title": "Flight Log: Turbulence",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/2MV7VPwHRNBm91uQUyJgAVezSpNaAyhlnbBTREBij2I/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTkyNjUy/MjUtMTQ3NzYyNTI3/NS00MjMwLmpwZWc.jpeg"
+    },
+    {
+      "artist": "GOT7",
+      "title": "Present: You",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/rKdNna-C1RzU6HK1_vTupJlQa4t4WDaxQoGlGbssD2M/rs:fit/g:sm/q:90/h:825/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE0MTE4/MTI4LTE1NjgxNzcz/ODEtNjU0Ny5qcGVn.jpeg"
+    },
+    {
+      "artist": "GOT7",
+      "title": "< Present : You > & Me Miracle Edition",
+      "owner": "ronnie",
+      "cover": "photos/albums/1782252716214.webp"
+    },
+    {
+      "artist": "GOT7",
+      "title": "7 for 7 (Present Edition)",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/3Fg-0IKlKERuLcXnpMFy2VvdZRHF0n_hyn8YKoXP-T4/rs:fit/g:sm/q:90/h:496/w:350/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyNDI3/MDkyLTE1MzUwNzAz/NTUtMzQ3Ny5wbmc.jpeg"
+    },
+    {
+      "artist": "NCT (2)",
+      "title": "Resonance Pt. 1",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/evRv6YA1WuCDaRp2ctC8nSHMjRlm26d9w8fAMsCkTEk/rs:fit/g:sm/q:90/h:855/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4NTIx/ODkwLTE2MTk3NTA1/MjQtMzYzMy5qcGVn.jpeg"
+    },
+    {
+      "artist": "NCT (2)",
+      "title": "Resonance Pt. 1",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/MbPTFzvXhbISG2gbpfRLlqCiUgm8hmh82qvHoe2fYTs/rs:fit/g:sm/q:90/h:847/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4NTIx/ODEyLTE3NDIzMzcw/NTgtMzg4Mi5qcGVn.jpeg"
+    },
+    {
+      "artist": "NCT (2)",
+      "title": "Resonance Pt. 2",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/ow_RY4RHg7zTCVGNVMNQ3dyniATwOMjEhdZAUD_3uUI/rs:fit/g:sm/q:90/h:878/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE3NTY1/NDAwLTE2MTQxNzU5/NDQtNDkyNS53ZWJw.jpeg"
+    },
+    {
+      "artist": "NCT 127",
+      "title": "Favorite",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/y24HdzqqMGKSYXs1nQqMFsM0_382T674VaPgzMxcWOA/rs:fit/g:sm/q:90/h:765/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIxMjA1/Njc4LTE3NDE5NjU1/ODUtNTUyMC5qcGVn.jpeg"
+    },
+    {
+      "artist": "NCT 127",
+      "title": "Sticker",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/RiZ32PUMPdOPG7kA-P-BJO4WY0xhOdfTDaRoYaWRqSg/rs:fit/g:sm/q:90/h:849/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIwNDky/MTc2LTE2MzM1MjQ0/NzktOTI4NC5qcGVn.jpeg"
+    },
+    {
+      "artist": "NCT 127",
+      "title": "Sticker",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/dj3o01HsCfT49oC0UU7YiiagYzfGWnyAR4qxB_CUxh4/rs:fit/g:sm/q:90/h:600/w:594/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2MTIz/NDgzLTE2NzY1NzEx/OTktMjQwOS5wbmc.jpeg"
+    },
+    {
+      "artist": "NCT DREAM",
+      "title": "Hot Sauce",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/kI6qPG6yEO49vB9vdjl9SScBWVyZvMDU4gtqjPwVSvc/rs:fit/g:sm/q:90/h:636/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI4NTQ0/MjE1LTE2OTY4NjIy/MTQtNjgwNy5qcGVn.jpeg"
+    },
+    {
+      "artist": "NCT DREAM",
+      "title": "Hello Future",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/ig9qo7LSs-zjvUdEVgNR0hH7dbMx3fetRLmJI-UB1zI/rs:fit/g:sm/q:90/h:810/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE5ODYw/OTQwLTE2MzE3MDgw/MTktODAxMy5qcGVn.jpeg"
+    },
+    {
+      "artist": "NCT DREAM",
+      "title": "We Go Up",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/7FFb4IiftLE5JzEkF2Pxw6yI4Tm8Cx87aA3CqY6Qcm8/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI3MTA2/ODQ4LTE2ODQzMzM3/MTItMTQzNi5qcGVn.jpeg"
+    },
+    {
+      "artist": "NCT (2)",
+      "title": "Universe",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/c2j502VIyjyw6KQkmrmJBUyLWwRiW5eG2Q6MKGp9Ng8/rs:fit/g:sm/q:90/h:838/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIxNjU0/NzE4LTE2NDE2NTg0/MjAtMzg0OC5qcGVn.jpeg"
+    },
+    {
+      "artist": "NCT (2)",
+      "title": "Empathy",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/0EB4XVLwQG0Qyd_2203FgZ1b5KTOtuIfTDUYS0PL0Zg/rs:fit/g:sm/q:90/h:338/w:242/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyNTQ4/NjI4LTE1MzczOTc3/NzctNzU1Mi5wbmc.jpeg"
+    },
+    {
+      "artist": "Stray Kids",
+      "title": "Clé 1 : Miroh",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/KPF2GuO0bITKcwH_Gl_SW8ibAA_Ugd47Q6A3tfPFgy0/rs:fit/g:sm/q:90/h:657/w:467/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzNjcw/ODM3LTE2MTk3NDI2/NDUtMjkyOC5qcGVn.jpeg"
+    },
+    {
+      "artist": "GOT7",
+      "title": "Got Love",
+      "owner": "ronnie",
+      "cover": "https://i.discogs.com/CRHL3u6hiFykny0nl8XhgxwE065yFQD-WCnPXkAoAa4/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTc5OTY2/MjktMTQ1MzE0ODk1/NC04NzkyLmpwZWc.jpeg"
     }
   ]
 }
