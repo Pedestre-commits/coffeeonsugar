@@ -104,12 +104,22 @@
     .btn-icon.active{background:var(--primary);border-color:var(--primary);color:#fff;}
 
     /* ===== TABS ===== */
-    .tabs{
-      display:flex;gap:0;border-bottom:1.5px solid var(--border);
-      padding:0 24px;
+    .tabs-bar{
+      display:flex;align-items:stretch;justify-content:space-between;
+      border-bottom:1.5px solid var(--border);padding:0 24px;
       background:rgba(255,245,249,0.6);
       transition:background 300ms,border-color 300ms;
     }
+    body.theme-bubu .tabs-bar{background:rgba(240,249,255,0.6);}
+    .tabs{display:flex;gap:0;background:none;}
+    .sort-select{
+      align-self:center;font:inherit;font-size:0.78rem;
+      color:var(--text-muted);background:var(--surface);
+      border:1.5px solid var(--border);border-radius:var(--r-md);
+      padding:4px 8px;cursor:pointer;
+      transition:border-color var(--t),color var(--t);
+    }
+    .sort-select:hover{border-color:var(--primary);color:var(--primary);}
     body.theme-bubu .tabs{background:rgba(240,249,255,0.6);}
     .tab{
       padding:12px 20px;font-size:0.85rem;font-weight:600;
@@ -445,13 +455,20 @@
 </header>
 
 <!-- ===== TABS ===== -->
-<div class="tabs">
-  <button class="tab active" id="tabRonnie" onclick="switchTab('ronnie')">
-    Ronnie <span class="tab-count" id="countRonnie">0</span>
-  </button>
-  <button class="tab" id="tabBubu" onclick="switchTab('bubu')">
-    Bubu <span class="tab-count" id="countBubu">0</span>
-  </button>
+<div class="tabs-bar">
+  <div class="tabs">
+    <button class="tab active" id="tabRonnie" onclick="switchTab('ronnie')">
+      Ronnie <span class="tab-count" id="countRonnie">0</span>
+    </button>
+    <button class="tab" id="tabBubu" onclick="switchTab('bubu')">
+      Bubu <span class="tab-count" id="countBubu">0</span>
+    </button>
+  </div>
+  <select class="sort-select" onchange="setSort(this.value)">
+    <option value="default">added ↓</option>
+    <option value="artist">artist A–Z</option>
+    <option value="title">title A–Z</option>
+  </select>
 </div>
 
 <!-- ===== PAGE ===== -->
@@ -485,6 +502,7 @@ let editingIdx = -1;
 let ownerVal   = 'ronnie';
 let pendingCoverFile = null;
 let _itunesResults = [];
+let sortBy = 'default';
 
 // ===== DATA LOAD =====
 async function loadData() {
@@ -704,8 +722,12 @@ function render() {
   renderGrid();
 }
 
+function setSort(val) { sortBy = val; renderGrid(); }
+
 function renderGrid() {
-  const albums = DATA.albums.map((a,i) => ({...a,i})).filter(a => a.owner === activeTab);
+  let albums = DATA.albums.map((a,i) => ({...a,i})).filter(a => a.owner === activeTab);
+  if (sortBy === 'artist') albums.sort((a,b) => (a.artist||'').localeCompare(b.artist||''));
+  else if (sortBy === 'title') albums.sort((a,b) => (a.title||'').localeCompare(b.title||''));
   const grid = document.getElementById('albumGrid');
 
   if (!albums.length && !editMode) {
