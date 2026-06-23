@@ -160,7 +160,7 @@
     .album-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
 
     .album-cover{
-      aspect-ratio:1;width:100%;object-fit:cover;
+      aspect-ratio:1;width:100%;object-fit:contain;
       background:var(--surface-2);display:block;
     }
     .album-cover-placeholder{
@@ -261,7 +261,7 @@
 
     /* ===== COVER PREVIEW ===== */
     .cover-preview{
-      width:100%;aspect-ratio:1;object-fit:cover;
+      width:100%;aspect-ratio:1;object-fit:contain;
       border-radius:var(--r-md);border:1.5px solid var(--border);
       margin-bottom:4px;background:var(--surface-2);
       display:none;
@@ -770,7 +770,7 @@ async function searchDiscogsCovers() {
   results.innerHTML  = '';
   _itunesResults = [];
   try {
-    const res  = await fetch(`https://api.discogs.com/database/search?q=${encodeURIComponent(q)}&type=release&per_page=12`, {
+    const res  = await fetch(`https://api.discogs.com/database/search?q=${encodeURIComponent(q)}&type=release&per_page=25`, {
       headers: { 'Authorization': `Discogs token=${DISCOGS_TOKEN}` }
     });
     const data = await res.json();
