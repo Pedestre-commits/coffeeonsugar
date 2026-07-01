@@ -168,6 +168,14 @@
       position:relative;
     }
     .album-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+    .album-card.wishlist{opacity:0.45;filter:grayscale(0.4);}
+    .album-card.wishlist:hover{opacity:0.72;}
+    .wishlist-badge{
+      position:absolute;top:6px;left:6px;
+      font-size:0.58rem;font-weight:600;letter-spacing:0.03em;
+      background:rgba(14,165,233,0.82);color:#fff;
+      border-radius:99px;padding:2px 7px;pointer-events:none;
+    }
 
     .album-cover{
       aspect-ratio:1;width:100%;object-fit:contain;
@@ -418,6 +426,13 @@
     <div class="owner-opts">
       <button class="owner-opt" data-o="ronnie" onclick="setOwner('ronnie')">Ronnie</button>
       <button class="owner-opt" data-o="bubu"   onclick="setOwner('bubu')">Bubu</button>
+    </div>
+
+    <div id="wishlistRow" style="display:none;margin-top:10px">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+        <input type="checkbox" id="amWishlist">
+        <span style="font-size:0.82rem;color:var(--text-muted)">wishlist 💙</span>
+      </label>
     </div>
 
     <div class="error-msg" id="albumError"></div>
@@ -743,7 +758,8 @@ function renderGrid() {
       ? `<img class="album-cover" src="${a.cover}" alt="${a.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
         + `<div class="album-cover-placeholder" style="display:none">💿</div>`
       : `<div class="album-cover-placeholder">💿</div>`;
-    return `<div class="album-card">
+    return `<div class="album-card${a.wishlist ? ' wishlist' : ''}">
+      ${a.wishlist ? '<div class="wishlist-badge">wish</div>' : ''}
       ${coverHtml}
       <div class="album-info">
         <div class="album-title">${a.title}</div>
@@ -853,6 +869,8 @@ function openAlbumModal(idx) {
   document.getElementById('coverFilePicker').value = '';
   ownerVal = a.owner || activeTab;
   updateOwnerUI();
+  document.getElementById('amWishlist').checked = !!(a.wishlist);
+  document.getElementById('wishlistRow').style.display = ownerVal === 'bubu' ? '' : 'none';
   const prev = document.getElementById('coverPreview');
   if (a.cover) { prev.src = a.cover; prev.classList.add('visible'); }
   else { prev.src = ''; prev.classList.remove('visible'); }
@@ -864,7 +882,10 @@ function closeAlbumModal() {
   pendingCoverFile = null;
 }
 
-function setOwner(o) { ownerVal = o; updateOwnerUI(); }
+function setOwner(o) {
+  ownerVal = o; updateOwnerUI();
+  document.getElementById('wishlistRow').style.display = o === 'bubu' ? '' : 'none';
+}
 function updateOwnerUI() {
   document.querySelectorAll('.owner-opt').forEach(b => {
     b.className = 'owner-opt' + (b.dataset.o === ownerVal ? ` active-${ownerVal}` : '');
@@ -904,7 +925,8 @@ function saveAlbum() {
     return;
   }
 
-  const album = { artist, title, owner: ownerVal,
+  const wishlist = ownerVal === 'bubu' && document.getElementById('amWishlist').checked;
+  const album = { artist, title, owner: ownerVal, ...(wishlist && { wishlist: true }),
     cover: pendingCoverFile ? pendingCoverFile.path : document.getElementById('amCoverUrl').value.trim() };
   if (pendingCoverFile) {
     album._pendingFile = pendingCoverFile.b64;
