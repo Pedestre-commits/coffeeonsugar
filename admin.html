@@ -148,54 +148,48 @@
     }
     .pending-info.visible{display:block;}
 
-    /* ===== LOGIN OVERLAY ===== */
-    .login-overlay{
+    /* ===== UNLOCK MODAL ===== */
+    .modal-backdrop{
       position:fixed;inset:0;z-index:3000;
-      background:var(--bg);
-      display:flex;align-items:center;justify-content:center;
-      background-image:
-        radial-gradient(ellipse 900px 500px at 15% -10%,#1a2060 0%,transparent 60%),
-        radial-gradient(ellipse 600px 400px at 85% 90%,#0a1840 0%,transparent 55%);
+      background:rgba(4,6,18,0.82);backdrop-filter:blur(6px);
+      display:none;align-items:center;justify-content:center;
     }
-    .login-card{
+    .modal-backdrop.open{display:flex;}
+    .modal{
       background:var(--surface);border:1px solid var(--border);
-      border-radius:var(--r-xl);padding:36px 40px;width:100%;max-width:420px;
+      border-radius:var(--r-xl);padding:32px 36px;width:100%;max-width:380px;
       box-shadow:0 24px 60px rgba(0,0,0,0.5);
     }
-    .login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
-    .login-title{font-size:1.15rem;font-weight:700;}
-    .login-sub{font-size:0.8rem;color:var(--text-muted);margin-top:2px;}
-    .login-label{font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-faint);margin-bottom:6px;}
-    .token-wrap{position:relative;}
-    .token-input{
-      width:100%;padding:10px 40px 10px 12px;
-      background:var(--surface-2);border:1px solid var(--border);
+    .modal-title{font-size:1.05rem;font-weight:700;margin-bottom:20px;}
+    .modal-error{font-size:0.78rem;color:#f87171;margin-top:8px;min-height:1.2em;}
+    .unlock-input{
+      width:100%;padding:10px 14px;margin-bottom:4px;
+      background:var(--surface-2);border:1.5px solid var(--border);
       border-radius:var(--r-md);color:var(--text);font:inherit;
-      font-size:0.86rem;outline:none;font-family:monospace;
-      letter-spacing:0.04em;transition:border-color var(--t);
+      font-size:0.86rem;outline:none;
+      transition:border-color var(--t);
     }
-    .token-input:focus{border-color:var(--primary);}
-    .token-input::placeholder{font-family:var(--font);letter-spacing:0;}
-    .token-toggle{
-      position:absolute;right:10px;top:50%;transform:translateY(-50%);
-      background:none;border:none;color:var(--text-faint);cursor:pointer;font-size:0.75rem;
-      padding:2px 4px;
-    }
-    .btn-connect{
-      width:100%;padding:11px;margin-top:12px;border-radius:var(--r-md);border:none;
+    .unlock-input:focus{border-color:var(--primary);}
+    .unlock-input::placeholder{color:var(--text-faint);}
+    .btn-unlock{
+      width:100%;padding:10px;border-radius:var(--r-md);border:none;
       background:var(--blue-active);color:#fff;font:inherit;
-      font-size:0.9rem;font-weight:600;cursor:pointer;transition:background var(--t);
+      font-size:0.9rem;font-weight:600;cursor:pointer;
+      transition:background var(--t);margin-top:8px;
     }
-    .btn-connect:hover{background:#6aa0ff;}
-    .btn-connect:disabled{opacity:0.5;cursor:not-allowed;}
-    .login-error{
-      margin-top:10px;padding:8px 12px;background:rgba(248,113,113,0.1);
-      border:1px solid #f8717155;border-radius:var(--r-md);
-      font-size:0.8rem;color:#f87171;display:none;
+    .btn-unlock:hover{background:#6aa0ff;}
+    .btn-unlock:disabled{opacity:0.5;cursor:not-allowed;}
+    .setup-toggle{
+      display:block;margin:14px auto 0;
+      background:none;border:none;color:var(--text-faint);
+      font-size:0.76rem;cursor:pointer;padding:2px 6px;
+      transition:color var(--t);text-decoration:underline;
     }
-    .login-help{margin-top:20px;padding-top:16px;border-top:1px solid var(--divider);font-size:0.76rem;color:var(--text-faint);line-height:1.6;}
-    .login-help a{color:var(--primary);text-decoration:none;}
-    .login-help a:hover{text-decoration:underline;}
+    .setup-toggle:hover{color:var(--text-muted);}
+    .setup-section{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--divider);}
+    .setup-section.open{display:block;}
+    .setup-help{font-size:0.76rem;color:var(--text-faint);line-height:1.6;margin-bottom:10px;}
+    .setup-help a{color:var(--primary);}
 
     /* ===== PROGRESS OVERLAY ===== */
     .progress-overlay{
@@ -279,39 +273,26 @@
 </head>
 <body>
 
-<!-- ===== LOGIN OVERLAY ===== -->
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-card">
-    <div class="login-logo">
-      <svg class="header-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
-        <circle cx="16" cy="16" r="2" fill="currentColor"/>
-        <path d="M16 3v4M16 25v4M3 16h4M25 16h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-        <path d="M12 20 L16 10 L20 20 L16 17.5 Z" fill="currentColor" opacity="0.9"/>
-      </svg>
-      <div>
-        <div class="login-title">Travel Admin</div>
-        <div class="login-sub">Connect with GitHub to manage your trips</div>
+<!-- ===== UNLOCK MODAL ===== -->
+<div class="modal-backdrop" id="unlockModal">
+  <div class="modal">
+    <div class="modal-title">🔒 Travel Admin</div>
+    <input class="unlock-input" id="unlockPass" type="password"
+      placeholder="password" autocomplete="current-password"
+      onkeydown="if(event.key==='Enter')unlock()" />
+    <div class="modal-error" id="unlockError"></div>
+    <button class="btn-unlock" id="unlockBtn" onclick="unlock()">Unlock</button>
+    <button class="setup-toggle" onclick="toggleSetup()">add a login</button>
+    <div class="setup-section" id="setupSection">
+      <div class="setup-help">
+        First time setup. Generate a
+        <a href="https://github.com/settings/tokens?type=beta" target="_blank">fine-grained PAT</a>
+        with <strong>Contents: Read &amp; Write</strong> on the coffeeonsugar repo.
+        It gets encrypted with your password and saved to the repo.
       </div>
-    </div>
-
-    <div class="login-label">GitHub Personal Access Token</div>
-    <div class="token-wrap">
-      <input class="token-input" id="tokenInput" type="password"
-        placeholder="github_pat_…" autocomplete="off"
-        onkeydown="if(event.key==='Enter') connect()" />
-      <button class="token-toggle" onclick="toggleTokenVis()">show</button>
-    </div>
-    <div class="login-error" id="loginError"></div>
-    <button class="btn-connect" id="connectBtn" onclick="connect()">Connect</button>
-
-    <div class="login-help">
-      <strong style="color:var(--text-muted)">How to get a token:</strong><br>
-      GitHub → Settings → Developer settings →
-      <a href="https://github.com/settings/tokens?type=beta" target="_blank">Fine-grained tokens</a> →
-      New token → select this repo → grant <strong>Contents: Read &amp; Write</strong>.<br><br>
-      The token is stored in <code style="color:var(--primary)">sessionStorage</code>
-      and cleared when you close the tab.
+      <input class="unlock-input" id="patInput" type="password"
+        placeholder="github_pat_…" autocomplete="off" style="margin-bottom:8px" />
+      <button class="btn-unlock" onclick="setup()">Save Login</button>
     </div>
   </div>
 </div>
@@ -497,7 +478,7 @@ function getFileURL(file) {
 }
 
 // ===== GITHUB API =====
-function token() { return sessionStorage.getItem('gh_token'); }
+function token() { return sessionStorage.getItem('admin_pat'); }
 
 async function ghCall(url, method = 'GET', body = null) {
   const t = token();
@@ -520,60 +501,141 @@ async function ghCall(url, method = 'GET', body = null) {
   return res.json();
 }
 
-// ===== LOGIN =====
-function toggleTokenVis() {
-  const inp = document.getElementById('tokenInput');
-  const btn = inp.nextElementSibling;
-  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'hide'; }
-  else { inp.type = 'password'; btn.textContent = 'show'; }
+// ===== CRYPTO / UNLOCK =====
+async function deriveKey(pass, salt) {
+  const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt, iterations:200000, hash:'SHA-256' },
+    km, { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']
+  );
 }
 
-async function connect() {
-  const t = document.getElementById('tokenInput').value.trim();
-  if (!t) return;
-  const err = document.getElementById('loginError');
-  const btn = document.getElementById('connectBtn');
-  err.style.display = 'none';
-  btn.disabled = true;
-  btn.textContent = 'Connecting…';
+async function encryptPAT(pat, pass) {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv   = crypto.getRandomValues(new Uint8Array(12));
+  const key  = await deriveKey(pass, salt);
+  const enc  = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key, new TextEncoder().encode(pat));
+  const buf  = new Uint8Array(16 + 12 + enc.byteLength);
+  buf.set(salt,0); buf.set(iv,16); buf.set(new Uint8Array(enc),28);
+  return btoa(String.fromCharCode(...buf));
+}
 
+async function decryptPAT(enc, pass) {
+  const buf = Uint8Array.from(atob(enc), c => c.charCodeAt(0));
+  const key = await deriveKey(pass, buf.slice(0,16));
+  const dec = await crypto.subtle.decrypt({ name:'AES-GCM', iv:buf.slice(16,28) }, key, buf.slice(28));
+  return new TextDecoder().decode(dec);
+}
+
+function openUnlock() {
+  document.getElementById('unlockPass').value = '';
+  document.getElementById('unlockError').textContent = '';
+  document.getElementById('setupSection').classList.remove('open');
+  document.getElementById('unlockModal').classList.add('open');
+  setTimeout(() => document.getElementById('unlockPass').focus(), 60);
+}
+function closeUnlock() { document.getElementById('unlockModal').classList.remove('open'); }
+function toggleSetup() { document.getElementById('setupSection').classList.toggle('open'); }
+function setUnlockError(msg) { document.getElementById('unlockError').textContent = msg; }
+
+async function unlock() {
+  const pass = document.getElementById('unlockPass').value.trim();
+  if (!pass) return;
+  if ((location.hostname === 'localhost' || location.hostname === '127.0.0.1') && pass === 'dev') {
+    await activateEdit('DEV_BYPASS'); return;
+  }
+  const btn = document.getElementById('unlockBtn');
+  btn.disabled = true; btn.textContent = '…';
+  setUnlockError('');
+
+  let keys = [];
   try {
-    sessionStorage.setItem('gh_token', t);
-    // Validate token + get user info
-    const userRes = await fetch(`${GH_API}/user`, {
-      headers: { 'Authorization': `Bearer ${t}`, 'Accept': 'application/vnd.github+json' }
-    });
-    if (!userRes.ok) throw new Error('Invalid token — check it has Contents: Read & Write permission for this repo.');
-    const user = await userRes.json();
-    // Check repo access
-    await ghCall('');
-    sessionStorage.setItem('gh_user', JSON.stringify({ login: user.login, avatar_url: user.avatar_url }));
-    showAdmin();
-    await loadFromGitHub();
-  } catch(e) {
-    sessionStorage.removeItem('gh_token');
-    sessionStorage.removeItem('gh_user');
-    err.textContent = e.message;
-    err.style.display = 'block';
-    btn.disabled = false;
-    btn.textContent = 'Connect';
+    const res = await fetch(`data/admin-config.json?_=${Date.now()}`);
+    if (res.ok) {
+      const cfg = await res.json();
+      keys = Array.isArray(cfg.keys) ? cfg.keys : (cfg.enc ? [cfg.enc] : []);
+    }
+  } catch {}
+
+  if (!keys.length) {
+    setUnlockError('Not set up — use "add a login" below.');
+    btn.disabled = false; btn.textContent = 'Unlock'; return;
   }
+
+  let rawPat = null;
+  for (const enc of keys) {
+    try { rawPat = await decryptPAT(enc, pass); break; } catch {}
+  }
+
+  if (!rawPat) { setUnlockError('Wrong password'); btn.disabled = false; btn.textContent = 'Unlock'; return; }
+  await activateEdit(rawPat);
+  btn.disabled = false; btn.textContent = 'Unlock';
 }
 
-function showAdmin() {
-  document.getElementById('loginOverlay').style.display = 'none';
-  const u = JSON.parse(sessionStorage.getItem('gh_user') || '{}');
-  if (u.login) {
-    document.getElementById('ghAvatar').src = u.avatar_url;
-    document.getElementById('ghName').textContent = u.login;
-    document.getElementById('ghUserBadge').style.display = 'flex';
-    document.getElementById('disconnectBtn').style.display = '';
+async function setup() {
+  const rawPat = document.getElementById('patInput').value.trim();
+  const pass   = document.getElementById('unlockPass').value.trim();
+  if (!rawPat || !pass) { setUnlockError('Enter both a password and a PAT.'); return; }
+  try {
+    setUnlockError('Saving…');
+    const enc = await encryptPAT(rawPat, pass);
+    await saveConfigToRepo(enc, rawPat);
+    await activateEdit(rawPat);
+  } catch(e) { setUnlockError('Setup failed: ' + e.message); }
+}
+
+async function saveConfigToRepo(enc, rawPat) {
+  const CONFIG_PATH = 'data/admin-config.json';
+  const headers = {
+    'Authorization': `Bearer ${rawPat}`,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'Content-Type': 'application/json'
+  };
+  let sha, existingKeys = [];
+  const check = await fetch(`${REPO_BASE}/contents/${CONFIG_PATH}`, { headers });
+  if (check.ok) {
+    const data = await check.json();
+    sha = data.sha;
+    try { existingKeys = JSON.parse(atob(data.content.replace(/\n/g,''))).keys || []; } catch {}
   }
+  if (!existingKeys.includes(enc)) existingKeys.push(enc);
+  const res = await fetch(`${REPO_BASE}/contents/${CONFIG_PATH}`, {
+    method: 'PUT', headers,
+    body: JSON.stringify({
+      message: `Update admin access config (${existingKeys.length} login${existingKeys.length !== 1 ? 's' : ''})`,
+      content: btoa(JSON.stringify({ keys: existingKeys }, null, 2)),
+      branch: GH_BRANCH,
+      ...(sha ? { sha } : {})
+    })
+  });
+  if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'Save failed'); }
+}
+
+async function activateEdit(pat) {
+  sessionStorage.setItem('admin_pat', pat);
+  closeUnlock();
+  if (pat !== 'DEV_BYPASS') {
+    try {
+      const user = await fetch(`${GH_API}/user`, {
+        headers: { 'Authorization': `Bearer ${pat}`, 'Accept': 'application/vnd.github+json' }
+      }).then(r => r.json());
+      if (user.login) {
+        document.getElementById('ghAvatar').src = user.avatar_url;
+        document.getElementById('ghName').textContent = user.login;
+        document.getElementById('ghUserBadge').style.display = 'flex';
+      }
+    } catch {}
+  } else {
+    document.getElementById('ghName').textContent = 'dev bypass';
+    document.getElementById('ghUserBadge').style.display = 'flex';
+  }
+  document.getElementById('disconnectBtn').style.display = '';
+  await loadFromGitHub();
 }
 
 function disconnect() {
-  sessionStorage.removeItem('gh_token');
-  sessionStorage.removeItem('gh_user');
+  sessionStorage.removeItem('admin_pat');
   location.reload();
 }
 
@@ -1090,12 +1152,28 @@ async function init() {
         e.target.id !== 'locationSearch') hideDropdown();
   });
 
-  const t = sessionStorage.getItem('gh_token');
+  const t = sessionStorage.getItem('admin_pat');
   if (t) {
-    showAdmin();
+    if (t !== 'DEV_BYPASS') {
+      try {
+        const user = await fetch(`${GH_API}/user`, {
+          headers: { 'Authorization': `Bearer ${t}`, 'Accept': 'application/vnd.github+json' }
+        }).then(r => r.json());
+        if (user.login) {
+          document.getElementById('ghAvatar').src = user.avatar_url;
+          document.getElementById('ghName').textContent = user.login;
+          document.getElementById('ghUserBadge').style.display = 'flex';
+        }
+      } catch {}
+    } else {
+      document.getElementById('ghName').textContent = 'dev bypass';
+      document.getElementById('ghUserBadge').style.display = 'flex';
+    }
+    document.getElementById('disconnectBtn').style.display = '';
     await loadFromGitHub();
+  } else {
+    openUnlock();
   }
-  // else: login overlay stays visible
 }
 
 document.addEventListener('DOMContentLoaded', init);
