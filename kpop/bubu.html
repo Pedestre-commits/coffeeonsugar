@@ -165,6 +165,22 @@
     .edit-mode .chip-handle{display:inline;}
     .edit-mode .chip-edit{display:inline;}
 
+    /* ===== TRACKS PANEL ===== */
+    .group-chip{cursor:pointer;}
+    .group-chip.selected{border-color:var(--blue);background:rgba(14,165,233,0.1);box-shadow:0 2px 12px rgba(14,165,233,0.15);}
+    .tracks-tab{font-size:0.72rem;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:none;color:var(--text-faint);cursor:pointer;transition:background var(--t),color var(--t),border-color var(--t);}
+    .tracks-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+    .tracks-tabs{display:flex;gap:4px;}
+    .tracks-panel{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
+    .track-row{display:flex;align-items:center;gap:10px;padding:7px 16px;transition:background var(--t);}
+    .track-row:hover{background:var(--surface);}
+    .track-num{width:18px;text-align:right;font-size:0.7rem;color:var(--text-faint);flex-shrink:0;}
+    .track-name{flex:1;font-size:0.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .track-bar-wrap{width:72px;flex-shrink:0;}
+    .track-bar{height:3px;border-radius:99px;background:var(--blue);min-width:3px;}
+    .track-plays{width:52px;text-align:right;font-size:0.7rem;color:var(--text-faint);flex-shrink:0;}
+    .tracks-empty{padding:20px;text-align:center;color:var(--text-faint);font-size:0.82rem;}
+
     /* ===== BIAS WALL ===== */
     .bias-wall{
       display:grid;
@@ -544,6 +560,20 @@
       style="display:none;margin-top:12px;font-size:0.8rem">+ Add group</button>
   </section>
 
+  <section class="section" id="tracksSection" style="display:none">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <div class="section-title">tracks — <span id="tracksArtistLabel"></span></div>
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+      <div class="tracks-tabs" style="margin-left:4px">
+        <button class="tracks-tab active" data-tab="top" onclick="setTracksTab('top')">Popular</button>
+        <button class="tracks-tab" data-tab="mine" onclick="setTracksTab('mine')">My Plays 💙</button>
+      </div>
+    </div>
+    <div class="tracks-panel">
+      <div id="tracksList"></div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="section-header">
       <div class="section-title">bias wall</div>
@@ -562,6 +592,8 @@ const GH_BRANCH = 'main';
 const REPO_BASE = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}`;
 const DATA_PATH = 'data/bubu.json';
 const ENC_KEY   = 'xoxo_enc_pat';
+const LASTFM_KEY  = 'a2da9a9fed769e6e2bd4d45cbfd2365a';
+const LASTFM_USER = 'Pedestre95';
 
 // ===== STATE =====
 let DATA         = { profile:{ name:'bubu', bio:'Kpop McManly Man 💙❄️🌊' }, groups:[], bias_wall:[], tier_labels:{}, obsession:{} };
@@ -570,6 +602,8 @@ let unlocked     = false;
 let pendingFiles = {};
 let editingIdx   = -1;
 let pendingPhoto = null;
+let tracksMode   = 'top';
+let tracksArtist = null;
 
 const _urlCache = new Map();
 function cachedURL(file) {
@@ -882,9 +916,10 @@ function renderTierList() {
     const groups = (DATA.groups||[]).map((g,i)=>({...g,i})).filter(g=>g.tier===tier);
     const desc   = (DATA.tier_labels||{})[tier] || '';
     const chips  = groups.map(g=>`
-      <div class="group-chip" data-idx="${g.i}" draggable="${editMode}"
+      <div class="group-chip${tracksArtist===g.name?' selected':''}" data-idx="${g.i}" data-name="${g.name}" draggable="${editMode}"
         ondragstart="onChipDragStart(event,${g.i})"
-        ondragend="onChipDragEnd()">
+        ondragend="onChipDragEnd()"
+        onclick="if(!editMode)selectGroupForTracks(this)">
         ${editMode?`<span class="chip-handle">⠿</span>`:''}
         <span>${g.name}</span>
         ${g.bias?`<span class="chip-bias">↳ ${g.bias}</span>`:''}
@@ -1176,6 +1211,82 @@ function showToast(msg,type='') {
   t.className='toast show'+(type?' '+type:'');
   clearTimeout(t._tid);
   t._tid=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ===== LAST.FM TRACKS =====
+function selectGroupForTracks(chip) {
+  tracksArtist = chip.dataset.name;
+  document.querySelectorAll('.group-chip.selected').forEach(el => el.classList.remove('selected'));
+  chip.classList.add('selected');
+  const sec = document.getElementById('tracksSection');
+  sec.style.display = '';
+  document.getElementById('tracksArtistLabel').textContent = tracksArtist;
+  tracksMode = 'top';
+  document.querySelectorAll('.tracks-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === 'top'));
+  loadTracks();
+  sec.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function setTracksTab(mode) {
+  tracksMode = mode;
+  document.querySelectorAll('.tracks-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === mode));
+  loadTracks();
+}
+
+async function loadTracks() {
+  document.getElementById('tracksList').innerHTML = '<div class="tracks-empty">Loading…</div>';
+  try {
+    const tracks = tracksMode === 'top'
+      ? await fetchTopTracks(tracksArtist)
+      : await fetchMyPlays(tracksArtist);
+    renderTracks(tracks);
+  } catch(e) {
+    document.getElementById('tracksList').innerHTML = `<div class="tracks-empty">${e.message}</div>`;
+  }
+}
+
+function lfmEsc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+async function fetchTopTracks(artist) {
+  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getTopTracks&artist=${encodeURIComponent(artist)}&api_key=${LASTFM_KEY}&format=json&limit=15&autocorrect=1`;
+  const data = await fetch(url).then(r => r.json());
+  if (data.error) throw new Error(data.message || 'Artist not found on Last.fm');
+  return (data.toptracks?.track || []).map(t => ({ name: t.name, count: parseInt(t.playcount) || 0 }));
+}
+
+async function fetchMyPlays(artist) {
+  const top = await fetchTopTracks(artist);
+  const withPlays = await Promise.all(top.map(async t => {
+    try {
+      const url = `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&track=${encodeURIComponent(t.name)}&artist=${encodeURIComponent(artist)}&username=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json&autocorrect=1`;
+      const data = await fetch(url).then(r => r.json());
+      return { name: t.name, count: parseInt(data.track?.userplaycount) || 0 };
+    } catch { return { name: t.name, count: 0 }; }
+  }));
+  const played = withPlays.filter(t => t.count > 0).sort((a, b) => b.count - a.count);
+  if (!played.length) throw new Error('No scrobbles found for this artist yet 💙');
+  return played;
+}
+
+function renderTracks(tracks) {
+  if (!tracks.length) {
+    document.getElementById('tracksList').innerHTML = '<div class="tracks-empty">No tracks found.</div>';
+    return;
+  }
+  const max = tracks[0].count || 1;
+  document.getElementById('tracksList').innerHTML = tracks.map((t, i) => `
+    <div class="track-row">
+      <span class="track-num">${i + 1}</span>
+      <span class="track-name">${lfmEsc(t.name)}</span>
+      <div class="track-bar-wrap"><div class="track-bar" style="width:${Math.max(3, Math.round(t.count / max * 100))}%"></div></div>
+      <span class="track-plays">${fmtCount(t.count)}</span>
+    </div>`).join('');
+}
+
+function fmtCount(n) {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
+  if (n >= 1000) return Math.round(n / 1000) + 'K';
+  return String(n);
 }
 
 // ===== INIT =====
