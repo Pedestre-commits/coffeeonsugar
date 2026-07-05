@@ -1,10 +1,10 @@
 const DATA_URL = 'data/kpop.json?v=6';
 
-// Secret: type "xoxo" OR click the title 5 times
+// Secret: type "bubu" OR click the title 5 times
 (function() {
   const dest = '/kpop/bubu.html';
   // keyboard
-  const seq = 'xoxo'; let buf = '';
+  const seq = 'bubu'; let buf = '';
   document.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;
     buf = (buf + e.key.toLowerCase()).slice(-seq.length);
