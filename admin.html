@@ -550,7 +550,7 @@ async function unlock() {
 
   let keys = [];
   try {
-    const res = await fetch(`data/admin-config.json?_=${Date.now()}`);
+    const res = await fetch(`data/xoxo-config.json?_=${Date.now()}`);
     if (res.ok) {
       const cfg = await res.json();
       keys = Array.isArray(cfg.keys) ? cfg.keys : (cfg.enc ? [cfg.enc] : []);
@@ -585,7 +585,7 @@ async function setup() {
 }
 
 async function saveConfigToRepo(enc, rawPat) {
-  const CONFIG_PATH = 'data/admin-config.json';
+  const CONFIG_PATH = 'data/xoxo-config.json';
   const headers = {
     'Authorization': `Bearer ${rawPat}`,
     'Accept': 'application/vnd.github+json',
