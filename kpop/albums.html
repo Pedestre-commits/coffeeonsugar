@@ -472,10 +472,10 @@
 <!-- ===== TABS ===== -->
 <div class="tabs-bar">
   <div class="tabs">
-    <button class="tab active" id="tabRonnie" onclick="switchTab('ronnie')">
+    <button class="tab" id="tabRonnie" onclick="switchTab('ronnie')">
       Ronnie <span class="tab-count" id="countRonnie">0</span>
     </button>
-    <button class="tab" id="tabBubu" onclick="switchTab('bubu')">
+    <button class="tab active" id="tabBubu" onclick="switchTab('bubu')">
       Bubu <span class="tab-count" id="countBubu">0</span>
     </button>
   </div>
@@ -512,9 +512,9 @@ const ENC_KEY   = 'xoxo_enc_pat';
 let DATA       = { albums: [] };
 let editMode   = false;
 let unlocked   = false;
-let activeTab  = 'ronnie';
+let activeTab  = 'bubu';
 let editingIdx = -1;
-let ownerVal   = 'ronnie';
+let ownerVal   = 'bubu';
 let pendingCoverFile = null;
 let _itunesResults = [];
 let sortBy = 'default';

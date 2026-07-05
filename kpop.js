@@ -2,7 +2,7 @@ const DATA_URL = 'data/kpop.json?v=6';
 
 // Secret: type "xoxo" OR click the title 5 times
 (function() {
-  const dest = '/kpop/xoxo.html';
+  const dest = '/kpop/bubu.html';
   // keyboard
   const seq = 'xoxo'; let buf = '';
   document.addEventListener('keydown', e => {
