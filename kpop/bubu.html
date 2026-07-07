@@ -186,6 +186,29 @@
     .edit-mode .chip-handle{display:inline;}
     .edit-mode .chip-edit{display:inline;}
 
+    /* ===== GROUP INFO MODAL ===== */
+    .gim-modal{max-width:520px;width:92%;}
+    .gim-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+    .gim-name{font-family:var(--font-display);font-size:1.45rem;font-style:italic;color:var(--primary);margin:0;}
+    .gim-close{background:none;border:none;font-size:1.4rem;line-height:1;cursor:pointer;color:var(--text-faint);padding:2px 4px;}
+    .gim-close:hover{color:var(--text);}
+    .gim-section{margin-bottom:18px;}
+    .gim-lbl{font-size:0.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+    .gim-src{font-weight:400;letter-spacing:0;text-transform:none;opacity:.6;}
+    .gim-chips{display:flex;flex-wrap:wrap;gap:7px;}
+    .gim-chip{padding:4px 12px;border-radius:99px;font-size:0.82rem;font-weight:500;background:var(--surface-2);border:1.5px solid var(--border);color:var(--text);}
+    .gim-chip.bias{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:700;}
+    .gim-chip.wrecker{background:var(--primary-dim);border-color:var(--primary);color:var(--primary);}
+    .gim-track{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--divider);}
+    .gim-track:last-child{border-bottom:none;}
+    .gim-track-num{width:18px;text-align:right;color:var(--text-faint);font-size:.72rem;font-weight:700;flex-shrink:0;}
+    .gim-track-name{flex:1;font-size:.85rem;color:var(--text);}
+    .gim-track-bar-wrap{width:70px;height:4px;background:var(--surface-2);border-radius:2px;flex-shrink:0;}
+    .gim-track-bar{height:100%;background:var(--primary);border-radius:2px;}
+    .gim-track-plays{font-size:.7rem;color:var(--text-faint);flex-shrink:0;min-width:36px;text-align:right;}
+    .gim-empty{font-size:.82rem;color:var(--text-faint);font-style:italic;}
+    .gim-overrides{border-top:1px solid var(--divider);padding-top:14px;margin-top:6px;}
+
     /* ===== TRACKS PANEL ===== */
     .group-chip{cursor:pointer;}
     .group-chip.selected{border-color:var(--blue);background:rgba(14,165,233,0.1);box-shadow:0 2px 12px rgba(14,165,233,0.15);}
@@ -481,6 +504,33 @@
       <button class="btn btn-danger" id="mgDeleteBtn" onclick="deleteGroup()" style="margin-right:auto">Delete</button>
       <button class="btn" onclick="closeGroupModal()">Cancel</button>
       <button class="btn btn-primary" onclick="saveGroup()">Save 💙</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GROUP INFO MODAL ===== -->
+<div class="modal-backdrop" id="groupInfoModal" onclick="if(event.target===this)closeGroupInfoModal()">
+  <div class="modal gim-modal">
+    <div class="gim-header">
+      <h2 class="gim-name" id="gimName"></h2>
+      <button class="gim-close" onclick="closeGroupInfoModal()">×</button>
+    </div>
+    <div class="gim-section">
+      <div class="gim-lbl">Members</div>
+      <div class="gim-chips" id="gimMembers"></div>
+    </div>
+    <div class="gim-section">
+      <div class="gim-lbl">Favourite Songs <span class="gim-src">via Last.fm</span></div>
+      <div id="gimSongs"></div>
+    </div>
+    <div class="gim-overrides" id="gimOverrides" style="display:none">
+      <div class="gim-lbl" style="margin-bottom:6px">Override Members <small style="text-transform:none;letter-spacing:0;font-weight:400">(one per line, blank = auto)</small></div>
+      <textarea class="field-input" id="gimMembersTA" rows="4" placeholder="Karina&#10;Winter&#10;Giselle&#10;Ningning" style="font-family:var(--font);resize:vertical"></textarea>
+      <div class="gim-lbl" style="margin-top:12px;margin-bottom:6px">Override Songs <small style="text-transform:none;letter-spacing:0;font-weight:400">(one per line, blank = auto)</small></div>
+      <textarea class="field-input" id="gimSongsTA" rows="4" placeholder="Supernova&#10;Drama&#10;Whiplash" style="font-family:var(--font);resize:vertical"></textarea>
+      <div class="modal-actions" style="margin-top:10px">
+        <button class="btn btn-primary" onclick="saveGroupOverrides()">Save overrides 💙</button>
+      </div>
     </div>
   </div>
 </div>
@@ -948,13 +998,9 @@ function renderTierList() {
         ondragover="onChipOver(event)"
         ondragleave="onChipLeave(event)"
         ondrop="onChipDrop(event)"
-        onclick="if(!editMode)toggleBias(this)">
+        onclick="if(!editMode)openGroupInfo(${g.i})">
         ${editMode?`<span class="chip-handle">⠿</span>`:''}
         <span>${g.name}</span>
-        <span class="chip-biases">
-          ${g.bias?`<span class="chip-bias">↳ ${g.bias}</span>`:''}
-          ${wreckers.map(w=>`<span class="chip-bias">⚡ ${w}</span>`).join('')}
-        </span>
         ${editMode?`<button class="chip-edit" onclick="event.stopPropagation();openGroupModal(${g.i})" title="Edit">✎</button>`:''}
       </div>`;
     }).join('');
@@ -1421,6 +1467,135 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('editToggle').style.display = '';
   }
 });
+
+// ===== GROUP INFO MODAL =====
+const _gimCache = {};
+let _gimGroupIdx = null;
+
+function openGroupInfo(idx) {
+  _gimGroupIdx = idx;
+  const g = DATA.groups[idx];
+  document.getElementById('gimName').textContent = g.name;
+  document.getElementById('gimOverrides').style.display = editMode ? '' : 'none';
+  if (editMode) {
+    document.getElementById('gimMembersTA').value = (g.members_override || []).join('\n');
+    document.getElementById('gimSongsTA').value   = (g.songs_override   || []).join('\n');
+  }
+  document.getElementById('groupInfoModal').classList.add('open');
+  _renderGIM();
+  if (!_gimCache[g.name]) {
+    _gimCache[g.name] = { members: null, songs: null };
+    _fetchGIMMembers(g);
+    _fetchGIMSongs(g);
+  }
+}
+
+function closeGroupInfoModal() {
+  document.getElementById('groupInfoModal').classList.remove('open');
+  _gimGroupIdx = null;
+}
+
+function _renderGIM() {
+  if (_gimGroupIdx === null) return;
+  const g     = DATA.groups[_gimGroupIdx];
+  const cache = _gimCache[g.name] || {};
+  const bias  = (g.bias || '').toLowerCase().trim();
+  const wreck = (g.bias_wreckers || []).map(w => w.toLowerCase().trim());
+
+  // Members
+  const members = g.members_override?.length ? g.members_override : cache.members;
+  const mEl = document.getElementById('gimMembers');
+  if (members == null) {
+    mEl.innerHTML = '<span class="gim-empty">Loading…</span>';
+  } else if (!members.length) {
+    mEl.innerHTML = '<span class="gim-empty">Not found — add via Override below</span>';
+  } else {
+    mEl.innerHTML = members.map(m => {
+      const ml = m.toLowerCase().trim();
+      const cls = ml === bias ? ' bias' : wreck.includes(ml) ? ' wrecker' : '';
+      return `<span class="gim-chip${cls}">${m}</span>`;
+    }).join('');
+  }
+
+  // Songs
+  const rawSongs = g.songs_override?.length
+    ? g.songs_override.map(n => ({ name: n, count: 0 }))
+    : cache.songs;
+  const sEl = document.getElementById('gimSongs');
+  if (rawSongs == null) {
+    sEl.innerHTML = '<span class="gim-empty">Loading…</span>';
+  } else if (!rawSongs.length) {
+    sEl.innerHTML = '<span class="gim-empty">No scrobbles yet</span>';
+  } else {
+    const max = rawSongs[0]?.count || 1;
+    sEl.innerHTML = rawSongs.map((t, i) => `
+      <div class="gim-track">
+        <span class="gim-track-num">${i + 1}</span>
+        <span class="gim-track-name">${t.name}</span>
+        ${t.count ? `<div class="gim-track-bar-wrap"><div class="gim-track-bar" style="width:${Math.max(4,Math.round(t.count/max*100))}%"></div></div>
+        <span class="gim-track-plays">${fmtCount(t.count)}</span>` : ''}
+      </div>`).join('');
+  }
+}
+
+async function _fetchGIMMembers(g) {
+  if (g.members_override?.length) return;
+  try {
+    const sr = await fetch(
+      `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(g.name)}&language=en&type=item&limit=8&format=json&origin=*`
+    ).then(r => r.json());
+    const vals = (sr.search || []).map(c => `wd:${c.id}`).join(' ');
+    if (!vals) { _gimCache[g.name].members = []; _renderGIMIfCurrent(g.name); return; }
+    const sparql = `SELECT DISTINCT ?group ?memberLabel WHERE {
+      VALUES ?group { ${vals} }
+      { ?group wdt:P527 ?member . ?member wdt:P31 wd:Q5 . }
+      UNION { ?member wdt:P463 ?group . ?member wdt:P31 wd:Q5 . }
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+    } LIMIT 120`;
+    const mr = await fetch(
+      `https://query.wikidata.org/sparql?query=${encodeURIComponent(sparql)}&format=json`,
+      { headers: { 'Accept': 'application/sparql-results+json' } }
+    ).then(r => r.json());
+    const bindings = mr.results?.bindings || [];
+    const counts = {};
+    bindings.forEach(b => { counts[b.group.value] = (counts[b.group.value] || 0) + 1; });
+    const best = Object.keys(counts).sort((a,b) => counts[b]-counts[a])[0];
+    _gimCache[g.name].members = best
+      ? [...new Set(bindings.filter(b => b.group.value===best).map(b => b.memberLabel?.value).filter(v => v && !/^Q\d+$/.test(v)))].sort()
+      : [];
+  } catch { _gimCache[g.name].members = []; }
+  _renderGIMIfCurrent(g.name);
+}
+
+async function _fetchGIMSongs(g) {
+  if (g.songs_override?.length) return;
+  try {
+    const tracks = await fetchMyPlays(g.name);
+    _gimCache[g.name].songs = tracks.slice(0,10).map(t => ({ name: t.name, count: t.count }));
+  } catch { _gimCache[g.name].songs = []; }
+  _renderGIMIfCurrent(g.name);
+}
+
+function _renderGIMIfCurrent(name) {
+  if (_gimGroupIdx !== null && DATA.groups[_gimGroupIdx]?.name === name) _renderGIM();
+}
+
+function saveGroupOverrides() {
+  if (_gimGroupIdx === null) return;
+  const g  = DATA.groups[_gimGroupIdx];
+  const mo = document.getElementById('gimMembersTA').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const so = document.getElementById('gimSongsTA').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  g.members_override = mo.length ? mo : undefined;
+  g.songs_override   = so.length ? so : undefined;
+  delete _gimCache[g.name];
+  markDirty();
+  if (!g.members_override || !g.songs_override) {
+    _gimCache[g.name] = { members: null, songs: null };
+    if (!g.members_override) _fetchGIMMembers(g);
+    if (!g.songs_override)   _fetchGIMSongs(g);
+  }
+  _renderGIM();
+}
 </script>
 </body>
 </html>
