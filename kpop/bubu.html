@@ -127,9 +127,10 @@
       outline:1.5px dashed var(--primary);padding:2px 3px;
       background:var(--primary-dim);cursor:text;
     }
-    .tier-label-input{
-      background:none;border:none;font-weight:800;font-size:0.88rem;
-      width:32px;text-align:center;padding:0;outline:none;cursor:text;
+    .edit-mode .tier-label{width:auto;min-width:36px;padding:0 8px;height:auto;min-height:36px;}
+    .tier-label-editable{
+      outline:none;cursor:text;min-width:1ch;
+      border-bottom:1.5px dashed rgba(255,255,255,0.6);
     }
     .tier-del-btn{
       background:none;border:none;color:var(--text-faint);font-size:0.9rem;
@@ -956,9 +957,10 @@ function renderTierList() {
       <div class="tier-label-col">
         <div class="tier-label" style="background:${color};color:${labelColor}">
           ${editMode
-            ? `<input class="tier-label-input" value="${tier}" style="color:${labelColor}"
-                onchange="renameTier('${safeId}',this.value)"
-                onclick="event.stopPropagation()">`
+            ? `<span class="tier-label-editable" contenteditable="true"
+                onblur="renameTier('${safeId}',this.textContent)"
+                onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"
+                onclick="event.stopPropagation()">${tier}</span>`
             : tier}
         </div>
         <div class="tier-desc"
