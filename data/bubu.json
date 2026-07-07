@@ -25,6 +25,13 @@
       "note": ""
     },
     {
+      "name": "Le Sserafim",
+      "tier": "A",
+      "bias": "Kim Chaewon",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
       "name": "ILLIT",
       "tier": "A",
       "bias": "Wonhee",
@@ -44,23 +51,9 @@
       "note": ""
     },
     {
-      "name": "MEOVV",
-      "tier": "A",
-      "bias": "Narin",
-      "bias_wreckers": [],
-      "note": ""
-    },
-    {
       "name": "Kiss Of Life",
       "tier": "S",
       "bias": "Julie",
-      "bias_wreckers": [],
-      "note": ""
-    },
-    {
-      "name": "Le Sserafim",
-      "tier": "A",
-      "bias": "Kim Chaewon",
       "bias_wreckers": [],
       "note": ""
     },
@@ -95,11 +88,11 @@
       "note": ""
     },
     {
-      "name": "G-idle",
+      "name": "IZ*ONE",
       "tier": "C",
-      "bias": "Miyeon",
+      "bias": "Kim Chaewon",
       "bias_wreckers": [
-        "Yuqi"
+        "Jo Yu-ri"
       ],
       "note": ""
     },
@@ -118,19 +111,24 @@
       "note": ""
     },
     {
-      "name": "XG",
+      "name": "GFRIEND",
       "tier": "C",
-      "bias": "",
+      "bias": "Eunha",
       "bias_wreckers": [],
       "note": ""
     },
     {
-      "name": "IZ*ONE",
+      "name": "STAYC",
       "tier": "C",
-      "bias": "Kim Chaewon",
-      "bias_wreckers": [
-        "Jo Yu-ri"
-      ],
+      "bias": "Isa",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "CLC",
+      "tier": "C",
+      "bias": "Oh Seung-hee",
+      "bias_wreckers": [],
       "note": ""
     },
     {
@@ -194,23 +192,9 @@
       "note": ""
     },
     {
-      "name": "CLC",
-      "tier": "C",
-      "bias": "Oh Seung-hee",
-      "bias_wreckers": [],
-      "note": ""
-    },
-    {
       "name": "MAMAMOO",
       "tier": "C",
       "bias": "",
-      "bias_wreckers": [],
-      "note": ""
-    },
-    {
-      "name": "GFRIEND",
-      "tier": "C",
-      "bias": "Eunha",
       "bias_wreckers": [],
       "note": ""
     },
@@ -222,15 +206,31 @@
       "note": ""
     },
     {
-      "name": "STAYC",
+      "name": "G-idle",
       "tier": "C",
-      "bias": "Isa",
+      "bias": "Miyeon",
+      "bias_wreckers": [
+        "Yuqi"
+      ],
+      "note": ""
+    },
+    {
+      "name": "XG",
+      "tier": "C",
+      "bias": "",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "MEOVV",
+      "tier": "A",
+      "bias": "Narin",
       "bias_wreckers": [],
       "note": ""
     },
     {
       "name": "IVE",
-      "tier": "A",
+      "tier": "B",
       "bias": "Rei",
       "bias_wreckers": [],
       "note": ""
