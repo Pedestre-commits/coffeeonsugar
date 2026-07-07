@@ -117,10 +117,6 @@
       display:flex;align-items:center;justify-content:center;
       font-size:0.88rem;font-weight:800;color:#fff;
     }
-    .tier-s .tier-label{background:var(--tier-s);}
-    .tier-a .tier-label{background:var(--tier-a);}
-    .tier-b .tier-label{background:var(--tier-b);color:var(--text-muted);}
-    .tier-c .tier-label{background:var(--tier-c);color:var(--text-muted);}
     .tier-desc{
       font-size:0.6rem;text-align:center;color:var(--text-faint);
       line-height:1.3;word-break:break-word;border-radius:var(--r-sm);
@@ -131,6 +127,25 @@
       outline:1.5px dashed var(--primary);padding:2px 3px;
       background:var(--primary-dim);cursor:text;
     }
+    .tier-label-input{
+      background:none;border:none;font-weight:800;font-size:0.88rem;
+      width:32px;text-align:center;padding:0;outline:none;cursor:text;
+    }
+    .tier-del-btn{
+      background:none;border:none;color:var(--text-faint);font-size:0.9rem;
+      cursor:pointer;padding:0;line-height:1;display:none;margin-top:2px;
+      transition:color var(--t);
+    }
+    .tier-del-btn:hover{color:var(--danger);}
+    .edit-mode .tier-del-btn{display:block;}
+    .tier-add-btn{
+      display:none;width:100%;margin-top:6px;padding:7px;
+      border:1.5px dashed var(--border);border-radius:var(--r-lg);
+      background:none;color:var(--text-faint);font-size:0.82rem;cursor:pointer;
+      transition:border-color var(--t),color var(--t);
+    }
+    .tier-add-btn:hover{border-color:var(--primary);color:var(--primary);}
+    .edit-mode .tier-add-btn{display:block;}
     .tier-row{
       flex:1;display:flex;flex-wrap:wrap;gap:7px;align-items:center;
       min-height:44px;padding:7px 10px;
@@ -155,6 +170,8 @@
       font-size:0.72rem;font-weight:400;color:var(--text-muted);
       background:var(--primary-dim);border-radius:99px;padding:1px 7px;
     }
+    .chip-biases{display:none;align-items:center;flex-wrap:wrap;gap:5px;}
+    .group-chip.bias-open .chip-biases{display:inline-flex;}
     .chip-handle{cursor:grab;color:var(--text-faint);font-size:0.75rem;display:none;padding:0 1px;}
     .chip-edit{
       background:none;border:none;color:var(--text-faint);font-size:0.8rem;
@@ -814,7 +831,9 @@ async function saveToGitHub() {
 }
 
 // ===== RENDER =====
-const TIERS = ['S','A','B','C'];
+const TIERS_DEFAULT = ['S','A','B','C'];
+const TIER_COLORS   = ['#0ea5e9','#38bdf8','#7dd3fc','#bae6fd','#a78bfa','#f472b6','#34d399','#fb923c','#facc15','#94a3b8'];
+function getTiers() { return DATA.tier_order?.length ? DATA.tier_order : [...TIERS_DEFAULT]; }
 
 function render() {
   const p = DATA.profile || {};
@@ -909,40 +928,101 @@ function clearObsession() {
 }
 
 function renderTierList() {
-  document.getElementById('tierList').innerHTML = TIERS.map(tier => {
+  const tiers = getTiers();
+  const rows = tiers.map((tier, idx) => {
     const groups = (DATA.groups||[]).map((g,i)=>({...g,i})).filter(g=>g.tier===tier);
     const desc   = (DATA.tier_labels||{})[tier] || '';
-    const chips  = groups.map(g=>`
+    const color  = TIER_COLORS[idx % TIER_COLORS.length];
+    const light  = idx >= 2;
+    const labelColor = light ? 'var(--text-muted)' : '#fff';
+    const chips  = groups.map(g => {
+      const wreckers = g.bias_wreckers?.length ? g.bias_wreckers : (g.alt_bias ? [g.alt_bias] : []);
+      return `
       <div class="group-chip${tracksArtist===g.name?' selected':''}" data-idx="${g.i}" data-name="${g.name}" draggable="${editMode}"
         ondragstart="onChipDragStart(event,${g.i})"
         ondragend="onChipDragEnd()"
-        onclick="if(!editMode)selectGroupForTracks(this)">
+        onclick="if(!editMode)toggleBias(this)">
         ${editMode?`<span class="chip-handle">⠿</span>`:''}
         <span>${g.name}</span>
-        ${g.bias?`<span class="chip-bias">↳ ${g.bias}</span>`:''}
-        ${(g.bias_wreckers?.length?g.bias_wreckers:(g.alt_bias?[g.alt_bias]:[])).map(w=>`<span class="chip-bias">⚡ ${w}</span>`).join('')}
-        ${editMode?`<button class="chip-edit" onclick="openGroupModal(${g.i})" title="Edit">✎</button>`:''}
-      </div>`).join('');
-    return `<div class="tier-block tier-${tier.toLowerCase()}">
+        <span class="chip-biases">
+          ${g.bias?`<span class="chip-bias">↳ ${g.bias}</span>`:''}
+          ${wreckers.map(w=>`<span class="chip-bias">⚡ ${w}</span>`).join('')}
+        </span>
+        ${editMode?`<button class="chip-edit" onclick="event.stopPropagation();openGroupModal(${g.i})" title="Edit">✎</button>`:''}
+      </div>`;
+    }).join('');
+    const safeId = tier.replace(/'/g,"\\'");
+    return `<div class="tier-block">
       <div class="tier-label-col">
-        <div class="tier-label">${tier}</div>
+        <div class="tier-label" style="background:${color};color:${labelColor}">
+          ${editMode
+            ? `<input class="tier-label-input" value="${tier}" style="color:${labelColor}"
+                onchange="renameTier('${safeId}',this.value)"
+                onclick="event.stopPropagation()">`
+            : tier}
+        </div>
         <div class="tier-desc"
-          ${editMode?`contenteditable="true" oninput="onTierDescInput('${tier}',this)"`:''}
+          ${editMode?`contenteditable="true" oninput="onTierDescInput('${safeId}',this)"`:''}
         >${desc}</div>
+        <button class="tier-del-btn" onclick="deleteTier('${safeId}')" title="Delete tier">×</button>
       </div>
       <div class="tier-row" data-tier="${tier}"
         ondragover="onTierOver(event)"
-        ondrop="onTierDrop(event,'${tier}')">
+        ondrop="onTierDrop(event,'${safeId}')">
         ${chips||`<span class="tier-empty">—</span>`}
       </div>
     </div>`;
   }).join('');
+  document.getElementById('tierList').innerHTML =
+    rows + `<button class="tier-add-btn" onclick="addTier()">+ Add Tier</button>`;
 }
 
 function onTierDescInput(tier, el) {
   if (!DATA.tier_labels) DATA.tier_labels = {};
   DATA.tier_labels[tier] = el.textContent;
   markDirty();
+}
+
+function toggleBias(chip) {
+  chip.classList.toggle('bias-open');
+}
+
+function addTier() {
+  const name = prompt('New tier name (e.g. F, ★, Elite):');
+  if (!name || !name.trim()) return;
+  const id = name.trim();
+  if (!DATA.tier_order) DATA.tier_order = [...TIERS_DEFAULT];
+  if (DATA.tier_order.includes(id)) return;
+  DATA.tier_order.push(id);
+  markDirty();
+  renderTierList();
+}
+
+function renameTier(oldId, newId) {
+  newId = newId.trim();
+  if (!newId || newId === oldId) return;
+  if (!DATA.tier_order) DATA.tier_order = [...TIERS_DEFAULT];
+  const idx = DATA.tier_order.indexOf(oldId);
+  if (idx === -1) return;
+  if (DATA.tier_order.includes(newId)) { alert(`Tier "${newId}" already exists`); renderTierList(); return; }
+  DATA.tier_order[idx] = newId;
+  (DATA.groups||[]).forEach(g => { if (g.tier === oldId) g.tier = newId; });
+  if (DATA.tier_labels?.[oldId] !== undefined) {
+    DATA.tier_labels[newId] = DATA.tier_labels[oldId];
+    delete DATA.tier_labels[oldId];
+  }
+  markDirty();
+  renderTierList();
+}
+
+function deleteTier(id) {
+  const count = (DATA.groups||[]).filter(g => g.tier === id).length;
+  if (count && !confirm(`Delete tier "${id}"? ${count} group(s) will lose their tier.`)) return;
+  if (!DATA.tier_order) DATA.tier_order = [...TIERS_DEFAULT];
+  DATA.tier_order = DATA.tier_order.filter(t => t !== id);
+  if (DATA.tier_labels) delete DATA.tier_labels[id];
+  markDirty();
+  renderTierList();
 }
 
 function renderBiasWall() {
