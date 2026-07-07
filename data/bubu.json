@@ -26,7 +26,7 @@
     },
     {
       "name": "ILLIT",
-      "tier": "A",
+      "tier": "Very Good",
       "bias": "Wonhee",
       "bias_wreckers": [
         "Moka"
@@ -45,7 +45,7 @@
     },
     {
       "name": "MEOVV",
-      "tier": "A",
+      "tier": "Very Good",
       "bias": "Narin",
       "bias_wreckers": [],
       "note": ""
@@ -59,7 +59,7 @@
     },
     {
       "name": "Le Sserafim",
-      "tier": "A",
+      "tier": "Very Good",
       "bias": "Kim Chaewon",
       "bias_wreckers": [],
       "note": ""
@@ -73,7 +73,7 @@
     },
     {
       "name": "Everglow",
-      "tier": "A",
+      "tier": "Very Good",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
@@ -96,7 +96,7 @@
     },
     {
       "name": "G-idle",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "Miyeon",
       "bias_wreckers": [
         "Yuqi"
@@ -105,7 +105,7 @@
     },
     {
       "name": "Izna",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
@@ -119,7 +119,7 @@
     },
     {
       "name": "XG",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
@@ -135,7 +135,7 @@
     },
     {
       "name": "Dreamcatcher",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
@@ -149,21 +149,21 @@
     },
     {
       "name": "Chung Ha",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
     },
     {
       "name": "LOONA",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "Chuu",
       "bias_wreckers": [],
       "note": ""
     },
     {
       "name": "Fromis_9",
-      "tier": "A",
+      "tier": "Very Good",
       "bias": "Lee Chae-young",
       "bias_wreckers": [
         "Park Ji-won"
@@ -172,14 +172,14 @@
     },
     {
       "name": "SUNMI",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
     },
     {
       "name": "Weki Meki",
-      "tier": "A",
+      "tier": "Very Good",
       "bias": "Choi Yoo-jung",
       "bias_wreckers": [
         "Lua"
@@ -188,21 +188,21 @@
     },
     {
       "name": "Red Velvet",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "Joy",
       "bias_wreckers": [],
       "note": ""
     },
     {
       "name": "CLC",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "Oh Seung-hee",
       "bias_wreckers": [],
       "note": ""
     },
     {
       "name": "MAMAMOO",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
@@ -216,21 +216,21 @@
     },
     {
       "name": "IU",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
     },
     {
       "name": "STAYC",
-      "tier": "C",
+      "tier": "Oldies but Goodies",
       "bias": "Isa",
       "bias_wreckers": [],
       "note": ""
     },
     {
       "name": "IVE",
-      "tier": "A",
+      "tier": "Very Good",
       "bias": "Rei",
       "bias_wreckers": [],
       "note": ""
@@ -275,10 +275,10 @@
     }
   ],
   "tier_labels": {
-    "C": "Oldies",
-    "A": "Very Good",
     "B": "Good",
-    "GOAT": "G.O.A.T"
+    "GOAT": "G.O.A.T",
+    "Very Good": "Very Good",
+    "Oldies but Goodies": "Oldies"
   },
   "obsession": {
     "member": "Wonhee guinea",
@@ -288,8 +288,8 @@
   },
   "tier_order": [
     "GOAT",
-    "A",
+    "Very Good",
     "B",
-    "C"
+    "Oldies but Goodies"
   ]
 }
