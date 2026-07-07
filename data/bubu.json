@@ -73,7 +73,7 @@
     },
     {
       "name": "Everglow",
-      "tier": "B",
+      "tier": "A",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
@@ -82,6 +82,156 @@
       "name": "Blackpink",
       "tier": "B",
       "bias": "Rosé",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "Hearts2Hearts",
+      "tier": "B",
+      "bias": "Stella",
+      "bias_wreckers": [
+        "Ian"
+      ],
+      "note": ""
+    },
+    {
+      "name": "G-idle",
+      "tier": "C",
+      "bias": "Miyeon",
+      "bias_wreckers": [
+        "Yuqi"
+      ],
+      "note": ""
+    },
+    {
+      "name": "Izna",
+      "tier": "C",
+      "bias": "",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "KATSEYE",
+      "tier": "B",
+      "bias": "",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "XG",
+      "tier": "C",
+      "bias": "",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "IZ*ONE",
+      "tier": "B",
+      "bias": "Kim Chaewon",
+      "bias_wreckers": [
+        "Jo Yu-ri"
+      ],
+      "note": ""
+    },
+    {
+      "name": "Dreamcatcher",
+      "tier": "C",
+      "bias": "",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "Oh My Girl",
+      "tier": "B",
+      "bias": "Jiho",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "Chung Ha",
+      "tier": "C",
+      "bias": "",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "LOONA",
+      "tier": "C",
+      "bias": "Chuu",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "Fromis_9",
+      "tier": "A",
+      "bias": "Lee Chae-young",
+      "bias_wreckers": [
+        "Park Ji-won"
+      ],
+      "note": ""
+    },
+    {
+      "name": "SUNMI",
+      "tier": "C",
+      "bias": "",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "Weki Meki",
+      "tier": "A",
+      "bias": "Choi Yoo-jung",
+      "bias_wreckers": [
+        "Lua"
+      ],
+      "note": ""
+    },
+    {
+      "name": "Red Velvet",
+      "tier": "C",
+      "bias": "Joy",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "CLC",
+      "tier": "C",
+      "bias": "Oh Seung-hee",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "MAMAMOO",
+      "tier": "C",
+      "bias": "",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "GFRIEND",
+      "tier": "B",
+      "bias": "Eunha",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "IU",
+      "tier": "C",
+      "bias": "",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "STAYC",
+      "tier": "C",
+      "bias": "Isa",
+      "bias_wreckers": [],
+      "note": ""
+    },
+    {
+      "name": "IVE",
+      "tier": "A",
+      "bias": "Rei",
       "bias_wreckers": [],
       "note": ""
     }
@@ -124,6 +274,11 @@
       "photo": "photos/bubu/6.webp"
     }
   ],
-  "tier_labels": {},
+  "tier_labels": {
+    "C": "Oldies",
+    "S": "G.O.A.T",
+    "A": "Very Good",
+    "B": "Good"
+  },
   "obsession": {}
 }
