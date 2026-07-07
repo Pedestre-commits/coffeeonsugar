@@ -422,11 +422,6 @@
     <div class="field-label">Album title</div>
     <input class="field-input" id="amTitle" type="text" placeholder="e.g. Armageddon">
 
-    <div class="field-label">Owner</div>
-    <div class="owner-opts">
-      <button class="owner-opt" data-o="ronnie" onclick="setOwner('ronnie')">Ronnie</button>
-      <button class="owner-opt" data-o="bubu"   onclick="setOwner('bubu')">Bubu</button>
-    </div>
 
     <div id="wishlistRow" style="display:none;margin-top:10px">
       <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
@@ -448,10 +443,7 @@
 <header class="app-header">
   <div class="header-brand">💿 albums</div>
   <div class="header-actions">
-    <a href="xoxo.html"    class="btn" style="font-size:0.78rem;color:#e91e8c;border-color:#ffd6ec">xoxo 🎀</a>
     <a href="bubu.html"    class="btn" style="font-size:0.78rem;color:#0ea5e9;border-color:#bae6fd">bubu 💙</a>
-    <a href="ships.html"   class="btn" style="font-size:0.78rem">ships 💗</a>
-    <a href="dramas.html"  class="btn" style="font-size:0.78rem">dramas 🎬</a>
     <button class="btn-icon active" id="editToggle" onclick="toggleEdit()"
       title="Toggle edit mode" style="display:none">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -474,9 +466,6 @@
   <div class="tabs">
     <button class="tab active" id="tabBubu" onclick="switchTab('bubu')">
       Bubu <span class="tab-count" id="countBubu">0</span>
-    </button>
-    <button class="tab" id="tabRonnie" onclick="switchTab('ronnie')">
-      Ronnie <span class="tab-count" id="countRonnie">0</span>
     </button>
   </div>
   <select class="sort-select" onchange="setSort(this.value)">
@@ -732,8 +721,7 @@ function switchTab(tab) {
 
 // ===== RENDER =====
 function render() {
-  document.getElementById('countRonnie').textContent = DATA.albums.filter(a => a.owner === 'ronnie').length;
-  document.getElementById('countBubu').textContent   = DATA.albums.filter(a => a.owner === 'bubu').length;
+  document.getElementById('countBubu').textContent = DATA.albums.filter(a => a.owner === 'bubu').length;
   renderGrid();
 }
 
