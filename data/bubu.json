@@ -6,7 +6,7 @@
   "groups": [
     {
       "name": "Aespa",
-      "tier": "S",
+      "tier": "GOAT",
       "bias": "Ningning",
       "bias_wreckers": [
         "Winter",
@@ -16,7 +16,7 @@
     },
     {
       "name": "NMIXX",
-      "tier": "S",
+      "tier": "GOAT",
       "bias": "Lily",
       "bias_wreckers": [
         "Sullyoon",
@@ -35,7 +35,7 @@
     },
     {
       "name": "Babymonster",
-      "tier": "S",
+      "tier": "GOAT",
       "bias": "Asa",
       "bias_wreckers": [
         "Rora",
@@ -52,7 +52,7 @@
     },
     {
       "name": "Kiss Of Life",
-      "tier": "S",
+      "tier": "GOAT",
       "bias": "Julie",
       "bias_wreckers": [],
       "note": ""
@@ -276,14 +276,20 @@
   ],
   "tier_labels": {
     "C": "Oldies",
-    "S": "G.O.A.T",
     "A": "Very Good",
-    "B": "Good"
+    "B": "Good",
+    "GOAT": "G.O.A.T"
   },
   "obsession": {
     "member": "Wonhee guinea",
     "group": "ILLIT",
     "note": "^^",
     "photo": "photos/bubu/obs.png"
-  }
+  },
+  "tier_order": [
+    "GOAT",
+    "A",
+    "B",
+    "C"
+  ]
 }
