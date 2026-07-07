@@ -742,8 +742,9 @@ function renderGrid() {
   }
 
   const cards = albums.map(a => {
+    const coverSrc = a.cover && !a.cover.startsWith('http') ? ('../' + a.cover) : (a.cover || '');
     const coverHtml = a.cover
-      ? `<img class="album-cover" src="${a.cover}" alt="${a.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      ? `<img class="album-cover" src="${coverSrc}" alt="${a.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
         + `<div class="album-cover-placeholder" style="display:none">💿</div>`
       : `<div class="album-cover-placeholder">💿</div>`;
     return `<div class="album-card${a.wishlist ? ' wishlist' : ''}">
