@@ -80,7 +80,7 @@
     },
     {
       "name": "Hearts2Hearts",
-      "tier": "D",
+      "tier": "#",
       "bias": "Stella",
       "bias_wreckers": [
         "Ian"
@@ -98,14 +98,14 @@
     },
     {
       "name": "Izna",
-      "tier": "D",
+      "tier": "#",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
     },
     {
       "name": "KATSEYE",
-      "tier": "D",
+      "tier": "#",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
@@ -279,7 +279,7 @@
     "S": "G.O.A.T",
     "A": "Very Good",
     "C": "Oldies",
-    "D": "On trial"
+    "#": "On trial"
   },
   "obsession": {
     "member": "Wonhee guinea",
@@ -292,6 +292,6 @@
     "A",
     "B",
     "C",
-    "D"
+    "#"
   ]
 }
