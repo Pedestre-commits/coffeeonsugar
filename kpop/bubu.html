@@ -225,6 +225,11 @@
     .track-plays{width:52px;text-align:right;font-size:0.7rem;color:var(--text-faint);flex-shrink:0;}
     .tracks-empty{padding:20px;text-align:center;color:var(--text-faint);font-size:0.82rem;}
 
+    /* ===== IMAGE LIGHTBOX ===== */
+    #imgLightbox{display:flex;align-items:center;justify-content:center;}
+    #imgLightbox img{max-width:90vw;max-height:88vh;object-fit:contain;border-radius:10px;box-shadow:0 8px 48px rgba(0,0,0,.55);display:block;}
+    #imgLightbox .gim-close{position:fixed;top:18px;right:22px;font-size:2rem;color:#fff;background:rgba(0,0,0,.45);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;line-height:1;}
+
     /* ===== BIAS WALL ===== */
     .bias-wall{
       display:grid;
@@ -506,6 +511,12 @@
       <button class="btn btn-primary" onclick="saveGroup()">Save 💙</button>
     </div>
   </div>
+</div>
+
+<!-- ===== IMAGE LIGHTBOX ===== -->
+<div class="modal-backdrop" id="imgLightbox" onclick="closeLightbox()">
+  <button class="gim-close" onclick="closeLightbox()">×</button>
+  <img id="imgLightboxImg" src="" alt="">
 </div>
 
 <!-- ===== GROUP INFO MODAL ===== -->
@@ -910,7 +921,7 @@ function renderObsession() {
   el.innerHTML = `<div class="obsession-card" ${onclick}>
     <div class="obsession-photo">
       ${src
-        ? `<img src="${src}" alt="${obs.member||''}" loading="lazy">`
+        ? `<img src="${src}" alt="${obs.member||''}" loading="lazy" ${!editMode?`style="cursor:zoom-in" onclick="event.stopPropagation();openLightbox(this.src)"`:``}>`
         : `<div class="obsession-photo-empty">💙</div>`}
     </div>
     <div class="obsession-body">
@@ -1084,7 +1095,7 @@ function renderBiasWall() {
   const cards = wall.map((b,i)=>{
     const src = b.photo?(pendingFiles[b.photo]?cachedURL(pendingFiles[b.photo]):('../'+b.photo)):'';
     return `<div class="bias-card">
-      ${src?`<img src="${src}" alt="${b.member}" loading="lazy">`:`<div class="no-photo">no photo</div>`}
+      ${src?`<img src="${src}" alt="${b.member}" loading="lazy" style="cursor:zoom-in" onclick="openLightbox(this.src)">`:`<div class="no-photo">no photo</div>`}
       <div class="bias-info">
         <div class="bias-member">${b.member}</div>
         <div class="bias-group">${b.group}</div>
@@ -1467,6 +1478,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('editToggle').style.display = '';
   }
 });
+
+// ===== IMAGE LIGHTBOX =====
+function openLightbox(src) {
+  document.getElementById('imgLightboxImg').src = src;
+  document.getElementById('imgLightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('imgLightbox').classList.remove('open');
+}
 
 // ===== GROUP INFO MODAL =====
 const _gimCache = {};
