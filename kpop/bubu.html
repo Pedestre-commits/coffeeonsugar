@@ -156,6 +156,8 @@
     }
     .tier-row.drag-over{border-color:var(--primary);background:var(--primary-dim);}
     .tier-empty{font-size:0.78rem;color:var(--text-faint);padding:2px 4px;}
+    .group-chip.chip-drop-before{box-shadow:-3px 0 0 2px var(--primary);}
+    .group-chip.chip-drop-after {box-shadow: 3px 0 0 2px var(--primary);}
 
     /* ===== GROUP CHIP ===== */
     .group-chip{
@@ -943,6 +945,9 @@ function renderTierList() {
       <div class="group-chip${tracksArtist===g.name?' selected':''}" data-idx="${g.i}" data-name="${g.name}" draggable="${editMode}"
         ondragstart="onChipDragStart(event,${g.i})"
         ondragend="onChipDragEnd()"
+        ondragover="onChipOver(event)"
+        ondragleave="onChipLeave(event)"
+        ondrop="onChipDrop(event)"
         onclick="if(!editMode)toggleBias(this)">
         ${editMode?`<span class="chip-handle">⠿</span>`:''}
         <span>${g.name}</span>
@@ -1080,8 +1085,37 @@ function onChipDragStart(e, idx) {
 }
 function onChipDragEnd() {
   dragSrcIdx = null;
-  document.querySelectorAll('.group-chip').forEach(c=>c.classList.remove('dragging'));
+  document.querySelectorAll('.group-chip').forEach(c=>c.classList.remove('dragging','chip-drop-before','chip-drop-after'));
   document.querySelectorAll('.tier-row').forEach(r=>r.classList.remove('drag-over'));
+}
+function onChipOver(e) {
+  if (dragSrcIdx === null) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const chip = e.currentTarget;
+  const mid = chip.getBoundingClientRect().left + chip.getBoundingClientRect().width / 2;
+  chip.classList.toggle('chip-drop-before', e.clientX < mid);
+  chip.classList.toggle('chip-drop-after',  e.clientX >= mid);
+}
+function onChipLeave(e) {
+  e.currentTarget.classList.remove('chip-drop-before','chip-drop-after');
+}
+function onChipDrop(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const chip = e.currentTarget;
+  chip.classList.remove('chip-drop-before','chip-drop-after');
+  const targetIdx = parseInt(chip.dataset.idx);
+  if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+  const before = e.clientX < chip.getBoundingClientRect().left + chip.getBoundingClientRect().width / 2;
+  const moved = DATA.groups[dragSrcIdx];
+  moved.tier = DATA.groups[targetIdx].tier;
+  DATA.groups.splice(dragSrcIdx, 1);
+  const adj = dragSrcIdx < targetIdx ? targetIdx - 1 : targetIdx;
+  DATA.groups.splice(before ? adj : adj + 1, 0, moved);
+  dragSrcIdx = null;
+  markDirty();
+  renderTierList();
 }
 function onTierOver(e) {
   if (dragSrcIdx===null) return;
