@@ -87,7 +87,7 @@
     },
     {
       "name": "Hearts2Hearts",
-      "tier": "B",
+      "tier": "D",
       "bias": "Stella",
       "bias_wreckers": [
         "Ian"
@@ -105,14 +105,14 @@
     },
     {
       "name": "Izna",
-      "tier": "C",
+      "tier": "D",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
     },
     {
       "name": "KATSEYE",
-      "tier": "B",
+      "tier": "D",
       "bias": "",
       "bias_wreckers": [],
       "note": ""
@@ -126,7 +126,7 @@
     },
     {
       "name": "IZ*ONE",
-      "tier": "B",
+      "tier": "C",
       "bias": "Kim Chaewon",
       "bias_wreckers": [
         "Jo Yu-ri"
@@ -142,7 +142,7 @@
     },
     {
       "name": "Oh My Girl",
-      "tier": "B",
+      "tier": "C",
       "bias": "Jiho",
       "bias_wreckers": [],
       "note": ""
@@ -163,7 +163,7 @@
     },
     {
       "name": "Fromis_9",
-      "tier": "A",
+      "tier": "C",
       "bias": "Lee Chae-young",
       "bias_wreckers": [
         "Park Ji-won"
@@ -179,7 +179,7 @@
     },
     {
       "name": "Weki Meki",
-      "tier": "A",
+      "tier": "C",
       "bias": "Choi Yoo-jung",
       "bias_wreckers": [
         "Lua"
@@ -209,7 +209,7 @@
     },
     {
       "name": "GFRIEND",
-      "tier": "B",
+      "tier": "C",
       "bias": "Eunha",
       "bias_wreckers": [],
       "note": ""
@@ -278,7 +278,8 @@
     "B": "Good",
     "S": "G.O.A.T",
     "A": "Very Good",
-    "C": "Oldies"
+    "C": "Oldies",
+    "D": "On trial"
   },
   "obsession": {
     "member": "Wonhee guinea",
@@ -290,6 +291,7 @@
     "S",
     "A",
     "B",
-    "C"
+    "C",
+    "D"
   ]
 }
