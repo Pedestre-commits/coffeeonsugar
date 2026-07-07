@@ -280,5 +280,10 @@
     "A": "Very Good",
     "B": "Good"
   },
-  "obsession": {}
+  "obsession": {
+    "member": "Wonhee guinea",
+    "group": "ILLIT",
+    "note": "^^",
+    "photo": "photos/bubu/obs.png"
+  }
 }
