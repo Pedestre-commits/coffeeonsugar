@@ -584,6 +584,12 @@ body {
   font-size: 0.8rem;
   color: rgba(240,240,248,0.65);
 }
+.track-plays {
+  margin-left: auto;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
 .track-num {
   font-size: 0.65rem;
   color: var(--text-muted);

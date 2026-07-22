@@ -162,9 +162,19 @@ const artistTracksCache = {};
 
 async function fetchArtistTracks(artistName) {
   if (artistTracksCache[artistName]) return artistTracksCache[artistName];
-  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getTopTracks&artist=${encodeURIComponent(artistName)}&api_key=${LASTFM_KEY}&format=json&limit=5&autocorrect=1`;
+  // Fetch global top tracks as candidates, then enrich with user's personal play counts
+  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getTopTracks&artist=${encodeURIComponent(artistName)}&api_key=${LASTFM_KEY}&format=json&limit=15&autocorrect=1`;
   const data = await fetch(url).then(r => r.json());
-  const tracks = data.toptracks?.track || [];
+  const candidates = data.toptracks?.track || [];
+  const withPlays = await Promise.all(candidates.map(async t => {
+    try {
+      const info = await fetch(`https://ws.audioscrobbler.com/2.0/?method=track.getInfo&track=${encodeURIComponent(t.name)}&artist=${encodeURIComponent(artistName)}&username=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json&autocorrect=1`).then(r => r.json());
+      return { name: t.name, count: parseInt(info.track?.userplaycount) || 0 };
+    } catch { return { name: t.name, count: 0 }; }
+  }));
+  const played = withPlays.filter(t => t.count > 0).sort((a, b) => b.count - a.count).slice(0, 5);
+  // Fall back to global top 5 if no personal scrobbles
+  const tracks = played.length ? played : candidates.slice(0, 5).map(t => ({ name: t.name, count: 0 }));
   artistTracksCache[artistName] = tracks;
   return tracks;
 }
@@ -222,6 +232,7 @@ async function loadTopArtists(period = '7day') {
                 <div class="track-item">
                   <span class="track-num">${i + 1}</span>
                   <span>${t.name}</span>
+                  ${t.count ? `<span class="track-plays">${t.count.toLocaleString()} plays</span>` : ''}
                 </div>`).join('')
             : '<p class="track-loading">No tracks found.</p>';
         }
