@@ -8,6 +8,15 @@ This working directory only covers: the **Travel Map** and the **K-pop Tracker**
 
 If the user's request in this session is a new/unrelated idea (different tech stack, different purpose, no mention of the travel map, K-pop tracker, or this repo's files), **do not** write code, files, or notes into this repo — including this repo's own memory folder. Stop and ask the user to open a new session in a fresh sibling folder under `C:\Users\Bruno\source\repos\` (or `D:\Profiles\Documents\` on the desktop machine) instead. This has happened before by accident; treat "session opened in this folder" as a default that must be actively confirmed, not assumed.
 
+### ⚠️ This repo auto-pushes on every turn — never install anything with cwd inside it
+
+`.claude/settings.json` has a `Stop` hook that runs `git add -A && git commit && git push origin dev` after **every turn**, unfiltered. Anything that lands in the working tree — even a stray file from an unrelated tool — gets committed and pushed to the public GitHub remote automatically, often before anyone notices. (This already happened once: a global-scope skill installer defaulted to project scope and pushed ~40MB of unrelated files to `origin/dev` within one turn.)
+
+Consequences for any tool install, package manager command, or global config change requested in a coffeeonsugar session:
+- **Never run installers (`npm`, `npx`, `pip`, skill/plugin managers, etc.) with the working directory inside this repo**, even for something explicitly meant to be "global" — some installers default to project scope based on cwd regardless of flags. `cd` to `$env:USERPROFILE` or another directory outside the repo first.
+- `.gitignore` excludes common accidental-install paths (`node_modules/`, `.agents/`, `.claude/skills/`, `skills-lock.json`) as a second layer of defense, but don't rely on it alone — new tools may write elsewhere.
+- After anything unusual runs while cwd was in this repo, check `git status` immediately, before the turn ends.
+
 ---
 
 ## Sub-project 1: Travel Map (`/`)
