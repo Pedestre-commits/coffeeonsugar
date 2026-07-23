@@ -3,3 +3,18 @@
 .env
 .env.*
 *.local
+
+# Tool/package installer artifacts — this repo has no build step,
+# so anything here is accidental (e.g. skill/plugin installers
+# defaulting to project scope). The Stop hook runs `git add -A` and
+# auto-pushes to origin/dev, so these MUST stay ignored or they leak
+# straight to GitHub on the next turn.
+node_modules/
+package-lock.json
+skills-lock.json
+.agents/
+.claude/skills/
+.npm/
+*.tmp
+Thumbs.db
+.DS_Store
