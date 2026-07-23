@@ -2,6 +2,12 @@
 
 Two sub-projects sharing one GitHub Pages repo (`Pedestre-commits/coffeeonsugar`, domain in `CNAME`).
 
+## ⚠️ Scope guard — read this first
+
+This working directory only covers: the **Travel Map** and the **K-pop Tracker** described below.
+
+If the user's request in this session is a new/unrelated idea (different tech stack, different purpose, no mention of the travel map, K-pop tracker, or this repo's files), **do not** write code, files, or notes into this repo — including this repo's own memory folder. Stop and ask the user to open a new session in a fresh sibling folder under `C:\Users\Bruno\source\repos\` (or `D:\Profiles\Documents\` on the desktop machine) instead. This has happened before by accident; treat "session opened in this folder" as a default that must be actively confirmed, not assumed.
+
 ---
 
 ## Sub-project 1: Travel Map (`/`)
