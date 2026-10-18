@@ -162,42 +162,97 @@ const artistTracksCache = {};
 
 const myTracksPromises = {};
 
-function fetchAllMyTracks(period = 'overall') {
-  if (myTracksPromises[period]) return myTracksPromises[period];
+function fetchAllMyTracks(period = 'overall', range = null) {
+  const pkey = range ? 'w' + range.from : period;
+  if (myTracksPromises[pkey]) return myTracksPromises[pkey];
+  if (range) {
+    myTracksPromises[pkey] = fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=${LASTFM_USER}&from=${range.from}&to=${range.to}&api_key=${LASTFM_KEY}&format=json`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.error) throw new Error(d.message);
+        const raw = d.weeklytrackchart?.track || [];
+        return (Array.isArray(raw) ? raw : [raw]).map(t => ({ name: t.name, playcount: t.playcount, artist: { name: t.artist?.['#text'] || '' } }));
+      })
+      .catch(e => { delete myTracksPromises[pkey]; throw e; });
+    return myTracksPromises[pkey];
+  }
   const base = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USER}&period=${period}&limit=1000&api_key=${LASTFM_KEY}&format=json`;
-  myTracksPromises[period] = (async () => {
+  myTracksPromises[pkey] = (async () => {
     const first = await fetch(`${base}&page=1`).then(r => r.json());
     if (first.error) throw new Error(first.message);
     const pages = Math.min(parseInt(first.toptracks['@attr'].totalPages) || 1, 10);
     const rest = await Promise.all(Array.from({ length: pages - 1 }, (_, i) =>
       fetch(`${base}&page=${i + 2}`).then(r => r.json()).then(d => d.toptracks?.track || [])));
     return [first.toptracks.track || [], ...rest].flat();
-  })().catch(e => { delete myTracksPromises[period]; throw e; });
-  return myTracksPromises[period];
+  })().catch(e => { delete myTracksPromises[pkey]; throw e; });
+  return myTracksPromises[pkey];
 }
 
-async function fetchArtistTracks(artistName, period = 'overall') {
-  const cacheKey = period + '|' + artistName;
+async function fetchArtistTracks(artistName, period = 'overall', range = null) {
+  const cacheKey = (range ? 'w' + range.from : period) + '|' + artistName;
   if (artistTracksCache[cacheKey]) return artistTracksCache[cacheKey];
-  const all = await fetchAllMyTracks(period);
+  const all = await fetchAllMyTracks(period, range);
   const key = normalizeArtist(artistName);
   const tracks = all
     .filter(t => normalizeArtist(t.artist?.name || '') === key)
     .map(t => ({ name: t.name, count: parseInt(t.playcount) || 0 }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 5);
+    .sort((a, b) => b.count - a.count);
   artistTracksCache[cacheKey] = tracks;
   return tracks;
+}
+
+let weeksPromise = null;
+function fetchWeeks() {
+  if (!weeksPromise) {
+    weeksPromise = fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getweeklychartlist&user=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json`)
+      .then(r => r.json())
+      .then(d => (d.weeklychartlist?.chart || []).map(w => ({ from: w.from, to: w.to })))
+      .catch(e => { weeksPromise = null; throw e; });
+  }
+  return weeksPromise;
+}
+
+function weekLabel(w) {
+  const f = new Date(parseInt(w.from) * 1000), t = new Date(parseInt(w.to) * 1000 - 1);
+  const fmt = d => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  return `${fmt(f)} – ${fmt(t)} ${t.getFullYear()}`;
+}
+
+let weekOffset = 0;
+
+async function updateWeekNav(period) {
+  const nav = document.getElementById('week-nav');
+  if (period !== '7day') { nav.hidden = true; return; }
+  nav.hidden = false;
+  const weeks = await fetchWeeks().catch(() => []);
+  const w = weekOffset > 0 ? weeks[weeks.length - weekOffset] : null;
+  document.getElementById('week-label').textContent = w ? weekLabel(w) : 'Last 7 days';
+  document.getElementById('week-prev').disabled = weekOffset >= weeks.length;
+  document.getElementById('week-next').disabled = weekOffset === 0;
 }
 
 async function loadTopArtists(period = '7day') {
   const list = document.getElementById('top-artists-list');
   list.innerHTML = '<p class="empty-state">Loading…</p>';
   try {
-    const url = `https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json&limit=15&period=${period}`;
-    const data = await fetch(url).then(r => r.json());
-    if (data.error) throw new Error(`Last.fm: ${data.message}`);
-    const raw = data.topartists?.artist;
+    let range = null, raw;
+    if (period === '7day' && weekOffset > 0) {
+      const weeks = await fetchWeeks();
+      range = weeks[weeks.length - weekOffset];
+      if (!range) throw new Error('No data for that week');
+    }
+    updateWeekNav(period);
+    if (range) {
+      const data = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getweeklyartistchart&user=${LASTFM_USER}&from=${range.from}&to=${range.to}&api_key=${LASTFM_KEY}&format=json`).then(r => r.json());
+      if (data.error) throw new Error(`Last.fm: ${data.message}`);
+      raw = (data.weeklyartistchart?.artist || []);
+      raw = (Array.isArray(raw) ? raw : [raw]).slice(0, 15);
+    } else {
+      const url = `https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json&limit=15&period=${period}`;
+      const data = await fetch(url).then(r => r.json());
+      if (data.error) throw new Error(`Last.fm: ${data.message}`);
+      raw = data.topartists?.artist;
+    }
     if (!raw) throw new Error('No data returned');
     // Last.fm returns an object (not array) when there is only 1 result
     const artists = Array.isArray(raw) ? raw : [raw];
@@ -237,7 +292,7 @@ async function loadTopArtists(period = '7day') {
 
         if (!dropdown.innerHTML) {
           dropdown.innerHTML = '<p class="track-loading">Loading…</p>';
-          const tracks = await fetchArtistTracks(artistName, period);
+          const tracks = await fetchArtistTracks(artistName, period, range);
           dropdown.innerHTML = tracks.length
             ? tracks.map((t, i) => `
                 <div class="track-item">
@@ -259,9 +314,12 @@ document.querySelectorAll('.period-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    weekOffset = 0;
     loadTopArtists(btn.dataset.period);
   });
 });
+document.getElementById('week-prev').addEventListener('click', () => { weekOffset++; loadTopArtists('7day'); });
+document.getElementById('week-next').addEventListener('click', () => { if (weekOffset > 0) { weekOffset--; loadTopArtists('7day'); } });
 
 loadTopArtists('7day');
 
