@@ -325,7 +325,7 @@ function renderMarginLogos(groups, attendedArtists = new Set()) {
   // File naming: slugify(group.name) + '.png'
   // e.g. NMIXX → nmixx.png, KISS OF LIFE → kiss-of-life.png, (G)I-DLE → gi-dle.png
   const topGroups = groups
-    .filter(g => g.tier !== 3)
+    .filter(g => g.tier !== 3 || attendedArtists.has(normalizeArtist(g.name)))
     .sort((a, b) => b.songs - a.songs)
     .slice(0, slots.length);
 
