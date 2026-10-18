@@ -6,7 +6,7 @@ Two sub-projects sharing one GitHub Pages repo (`Pedestre-commits/coffeeonsugar`
 
 This working directory only covers: the **Travel Map** and the **K-pop Tracker** described below.
 
-If the user's request in this session is a new/unrelated idea (different tech stack, different purpose, no mention of the travel map, K-pop tracker, or this repo's files), **do not** write code, files, or notes into this repo — including this repo's own memory folder. Stop and ask the user to open a new session in a fresh sibling folder under `C:\Users\Bruno\source\repos\` (or `D:\Profiles\Documents\` on the desktop machine) instead. This has happened before by accident; treat "session opened in this folder" as a default that must be actively confirmed, not assumed.
+If the user's request in this session is a new/unrelated idea (different tech stack, different purpose, no mention of the travel map, K-pop tracker, or this repo's files), **do not** write code, files, or notes into this repo — including this repo's own memory folder. Stop and ask the user to open a new session in a fresh sibling folder under `C:\Users\Bruno\source\repos\` (or `D:\Profiles\Documents\Claude\` on the desktop machine) instead. This has happened before by accident; treat "session opened in this folder" as a default that must be actively confirmed, not assumed.
 
 ### ⚠️ This repo auto-pushes on every turn — never install anything with cwd inside it
 
@@ -88,7 +88,7 @@ The app fetches `data/places.json` at runtime. If you're testing admin saves loc
 ## Machine paths
 | Machine | Project path |
 |---------|-------------|
-| Desktop | `D:\Profiles\Documents\coffeeonsugar` |
+| Desktop | `D:\Profiles\Documents\Claude\coffeeonsugar` |
 | Laptop  | `C:\Users\Bruno\source\repos\coffeeonsugar` |
 
 Both use IIS Express on port 3000 for local dev.
