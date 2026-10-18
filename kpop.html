@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>K-Pop Concerts — coffeeonsugar</title>
-  <link rel="stylesheet" href="kpop.css?v=2">
+  <link rel="stylesheet" href="kpop.css?v=4">
 </head>
 <body>
 
@@ -70,6 +70,11 @@
           <button class="period-btn" data-period="overall">All Time</button>
         </div>
       </div>
+      <div class="week-nav" id="week-nav">
+        <button class="week-btn" id="week-prev" aria-label="Previous week">‹</button>
+        <span class="week-label" id="week-label">Last 7 days</span>
+        <button class="week-btn" id="week-next" aria-label="Next week" disabled>›</button>
+      </div>
       <div id="top-artists-list" class="artists-list"></div>
       <p class="lastfm-credit">via <a href="https://www.last.fm/user/Pedestre95" target="_blank">Last.fm</a></p>
     </section>
@@ -80,6 +85,6 @@
     <img id="lightbox-img" src="" alt="">
   </div>
 
-  <script src="kpop.js?v=9"></script>
+  <script src="kpop.js?v=11"></script>
 </body>
 </html>
