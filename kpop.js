@@ -160,21 +160,31 @@ document.getElementById('lightbox').addEventListener('click', e => {
 // ── LAST.FM TOP ARTISTS ──
 const artistTracksCache = {};
 
+let myTracksPromise = null;
+
+function fetchAllMyTracks() {
+  if (myTracksPromise) return myTracksPromise;
+  const base = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USER}&period=overall&limit=1000&api_key=${LASTFM_KEY}&format=json`;
+  myTracksPromise = (async () => {
+    const first = await fetch(`${base}&page=1`).then(r => r.json());
+    if (first.error) throw new Error(first.message);
+    const pages = Math.min(parseInt(first.toptracks['@attr'].totalPages) || 1, 10);
+    const rest = await Promise.all(Array.from({ length: pages - 1 }, (_, i) =>
+      fetch(`${base}&page=${i + 2}`).then(r => r.json()).then(d => d.toptracks?.track || [])));
+    return [first.toptracks.track || [], ...rest].flat();
+  })().catch(e => { myTracksPromise = null; throw e; });
+  return myTracksPromise;
+}
+
 async function fetchArtistTracks(artistName) {
   if (artistTracksCache[artistName]) return artistTracksCache[artistName];
-  // Fetch global top tracks as candidates, then enrich with user's personal play counts
-  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getTopTracks&artist=${encodeURIComponent(artistName)}&api_key=${LASTFM_KEY}&format=json&limit=15&autocorrect=1`;
-  const data = await fetch(url).then(r => r.json());
-  const candidates = data.toptracks?.track || [];
-  const withPlays = await Promise.all(candidates.map(async t => {
-    try {
-      const info = await fetch(`https://ws.audioscrobbler.com/2.0/?method=track.getInfo&track=${encodeURIComponent(t.name)}&artist=${encodeURIComponent(artistName)}&username=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json&autocorrect=1`).then(r => r.json());
-      return { name: t.name, count: parseInt(info.track?.userplaycount) || 0 };
-    } catch { return { name: t.name, count: 0 }; }
-  }));
-  const played = withPlays.filter(t => t.count > 0).sort((a, b) => b.count - a.count).slice(0, 5);
-  // Fall back to global top 5 if no personal scrobbles
-  const tracks = played.length ? played : candidates.slice(0, 5).map(t => ({ name: t.name, count: 0 }));
+  const all = await fetchAllMyTracks();
+  const key = normalizeArtist(artistName);
+  const tracks = all
+    .filter(t => normalizeArtist(t.artist?.name || '') === key)
+    .map(t => ({ name: t.name, count: parseInt(t.playcount) || 0 }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
   artistTracksCache[artistName] = tracks;
   return tracks;
 }
