@@ -160,32 +160,33 @@ document.getElementById('lightbox').addEventListener('click', e => {
 // ── LAST.FM TOP ARTISTS ──
 const artistTracksCache = {};
 
-let myTracksPromise = null;
+const myTracksPromises = {};
 
-function fetchAllMyTracks() {
-  if (myTracksPromise) return myTracksPromise;
-  const base = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USER}&period=overall&limit=1000&api_key=${LASTFM_KEY}&format=json`;
-  myTracksPromise = (async () => {
+function fetchAllMyTracks(period = 'overall') {
+  if (myTracksPromises[period]) return myTracksPromises[period];
+  const base = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USER}&period=${period}&limit=1000&api_key=${LASTFM_KEY}&format=json`;
+  myTracksPromises[period] = (async () => {
     const first = await fetch(`${base}&page=1`).then(r => r.json());
     if (first.error) throw new Error(first.message);
     const pages = Math.min(parseInt(first.toptracks['@attr'].totalPages) || 1, 10);
     const rest = await Promise.all(Array.from({ length: pages - 1 }, (_, i) =>
       fetch(`${base}&page=${i + 2}`).then(r => r.json()).then(d => d.toptracks?.track || [])));
     return [first.toptracks.track || [], ...rest].flat();
-  })().catch(e => { myTracksPromise = null; throw e; });
-  return myTracksPromise;
+  })().catch(e => { delete myTracksPromises[period]; throw e; });
+  return myTracksPromises[period];
 }
 
-async function fetchArtistTracks(artistName) {
-  if (artistTracksCache[artistName]) return artistTracksCache[artistName];
-  const all = await fetchAllMyTracks();
+async function fetchArtistTracks(artistName, period = 'overall') {
+  const cacheKey = period + '|' + artistName;
+  if (artistTracksCache[cacheKey]) return artistTracksCache[cacheKey];
+  const all = await fetchAllMyTracks(period);
   const key = normalizeArtist(artistName);
   const tracks = all
     .filter(t => normalizeArtist(t.artist?.name || '') === key)
     .map(t => ({ name: t.name, count: parseInt(t.playcount) || 0 }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 5);
-  artistTracksCache[artistName] = tracks;
+  artistTracksCache[cacheKey] = tracks;
   return tracks;
 }
 
@@ -236,7 +237,7 @@ async function loadTopArtists(period = '7day') {
 
         if (!dropdown.innerHTML) {
           dropdown.innerHTML = '<p class="track-loading">Loading…</p>';
-          const tracks = await fetchArtistTracks(artistName);
+          const tracks = await fetchArtistTracks(artistName, period);
           dropdown.innerHTML = tracks.length
             ? tracks.map((t, i) => `
                 <div class="track-item">
