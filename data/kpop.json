@@ -170,7 +170,7 @@
       "venue": "The O2",
       "city": "London, UK",
       "went_with": [],
-      "rating": 5,
+      "rating": null,
       "setlist": [
         "CELEBRATION",
         "Creatures",
