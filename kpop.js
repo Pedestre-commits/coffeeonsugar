@@ -1,4 +1,4 @@
-const DATA_URL = 'data/kpop.json?v=8';
+const DATA_URL = 'data/kpop.json?v=9';
 
 // Secret: type "bubu" OR click the title 5 times
 (function() {
