@@ -1,4 +1,4 @@
-const DATA_URL = 'data/kpop.json?v=7';
+const DATA_URL = 'data/kpop.json?v=8';
 
 // Secret: type "bubu" OR click the title 5 times
 (function() {
@@ -274,15 +274,11 @@ function renderGroups(groups) {
 
   countEl.textContent = groups.length;
 
-  // sqrt scale: 0.65rem (min) → 1.45rem (max)
-  const maxSongs = Math.max(...mainGroups.map(g => g.songs || 1));
-  function chipSize(songs) {
-    const s = Math.max(0, ((songs || 1) - 1) / (maxSongs - 1));
-    return (0.65 + Math.sqrt(s) * 0.80).toFixed(3) + 'rem';
-  }
+  const BIG = new Set(['NMIXX', 'aespa', 'BABYMONSTER']);
+  const chipSize = name => BIG.has(name) ? '1.2rem' : '0.95rem';
 
   grid.innerHTML = mainGroups.map(g =>
-    `<span class="group-chip" style="--chip-size:${chipSize(g.songs)}" title="${g.songs} songs in the mix">` +
+    `<span class="group-chip" style="--chip-size:${chipSize(g.name)}" title="${g.songs} songs in the mix">` +
     `<span>${g.name}</span></span>`
   ).join('');
 
