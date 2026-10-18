@@ -9,7 +9,8 @@
   --card-border: #1e3050;
   --text: #f0f0f8;
   --text-muted: #7f93b0;
-  --grad: linear-gradient(135deg, var(--pink), var(--purple), var(--cyan));
+  --grad: linear-gradient(120deg, #e0f2fe 0%, #38bdf8 45%, #6366f1 100%);
+  --gold: #fbbf24;
 }
 
 html { scroll-behavior: smooth; overflow-x: hidden; }
@@ -18,9 +19,10 @@ body { overflow-x: hidden; }
 body {
   background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse at 15% 60%, rgba(14,165,233,0.12) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 15%, rgba(56,189,248,0.12) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 100%, rgba(14,165,233,0.08) 0%, transparent 50%);
+    radial-gradient(ellipse 60% 45% at 85% 5%, rgba(99,102,241,0.30) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 50% at 5% 55%, rgba(14,165,233,0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 40% at 50% 105%, rgba(56,189,248,0.18) 0%, transparent 70%);
+  background-attachment: fixed;
   color: var(--text);
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
@@ -72,6 +74,7 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 8px;
+  filter: drop-shadow(0 0 28px rgba(56,189,248,0.35));
 }
 
 .hero-sub {
@@ -87,8 +90,8 @@ body {
   border: 1px solid var(--card-border);
   border-radius: 12px;
   overflow: hidden;
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
+  background: linear-gradient(160deg, #15233b, #0f1a2e);
+  box-shadow: 0 10px 40px rgba(14,165,233,0.12);
 }
 
 .stat {
@@ -102,7 +105,7 @@ body {
 .stat:last-child { border-right: none; }
 
 .stat-num {
-  font-size: 2rem;
+  font-size: 2.4rem;
   font-weight: 800;
   background: var(--grad);
   -webkit-background-clip: text;
@@ -136,8 +139,10 @@ body {
   font-size: 0.7rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  font-weight: 600;
+  color: #bae6fd;
+  font-weight: 700;
+  padding-left: 14px;
+  border-left: 3px solid #38bdf8;
 }
 
 .section-line {
@@ -168,7 +173,7 @@ body {
 
 /* ── CARD ── */
 .concert-card {
-  background: var(--card-bg);
+  background: linear-gradient(160deg, #15233b 0%, #0f1a2e 100%);
   border: 1px solid var(--card-border);
   border-radius: 16px;
   overflow: hidden;
@@ -238,9 +243,9 @@ body {
 }
 
 .badge-attended {
-  background: rgba(14,165,233,0.12);
-  color: var(--purple);
-  border: 1px solid rgba(14,165,233,0.25);
+  background: rgba(251,191,36,0.12);
+  color: var(--gold);
+  border: 1px solid rgba(251,191,36,0.35);
 }
 
 .concert-date {

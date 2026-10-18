@@ -1,4 +1,4 @@
-const DATA_URL = 'data/kpop.json?v=6';
+const DATA_URL = 'data/kpop.json?v=9';
 
 // Secret: type "bubu" OR click the title 5 times
 (function() {
@@ -274,15 +274,11 @@ function renderGroups(groups) {
 
   countEl.textContent = groups.length;
 
-  // sqrt scale: 0.65rem (min) → 1.45rem (max)
-  const maxSongs = Math.max(...mainGroups.map(g => g.songs || 1));
-  function chipSize(songs) {
-    const s = Math.max(0, ((songs || 1) - 1) / (maxSongs - 1));
-    return (0.65 + Math.sqrt(s) * 0.80).toFixed(3) + 'rem';
-  }
+  const BIG = new Set(['NMIXX', 'aespa', 'BABYMONSTER']);
+  const chipSize = name => BIG.has(name) ? '1.2rem' : '0.95rem';
 
   grid.innerHTML = mainGroups.map(g =>
-    `<span class="group-chip" style="--chip-size:${chipSize(g.songs)}" title="${g.songs} songs in the mix">` +
+    `<span class="group-chip" style="--chip-size:${chipSize(g.name)}" title="${g.songs} songs in the mix">` +
     `<span>${g.name}</span></span>`
   ).join('');
 
@@ -308,6 +304,8 @@ function normalizeArtist(name) {
   return name.toLowerCase().replace(/æ/g, 'ae').replace(/[^a-z0-9]/g, '');
 }
 
+const NO_MARGIN_LOGO = new Set(['BLACKPINK']);
+
 function renderMarginLogos(groups, attendedArtists = new Set()) {
   // 12 fixed viewport slots — 6 per side, staggered vertically
   const slots = [
@@ -329,7 +327,7 @@ function renderMarginLogos(groups, attendedArtists = new Set()) {
   // File naming: slugify(group.name) + '.png'
   // e.g. NMIXX → nmixx.png, KISS OF LIFE → kiss-of-life.png, (G)I-DLE → gi-dle.png
   const topGroups = groups
-    .filter(g => g.tier !== 3)
+    .filter(g => !NO_MARGIN_LOGO.has(g.name) && (g.tier !== 3 || attendedArtists.has(normalizeArtist(g.name))))
     .sort((a, b) => b.songs - a.songs)
     .slice(0, slots.length);
 

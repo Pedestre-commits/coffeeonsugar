@@ -246,7 +246,7 @@
     },
     {
       "name": "(G)I-DLE",
-      "tier": 1,
+      "tier": 3,
       "songs": 17
     },
     {
@@ -256,7 +256,7 @@
     },
     {
       "name": "TWICE",
-      "tier": 1,
+      "tier": 3,
       "songs": 16
     },
     {
@@ -266,12 +266,12 @@
     },
     {
       "name": "LOONA",
-      "tier": 1,
+      "tier": 3,
       "songs": 14
     },
     {
       "name": "Dreamcatcher",
-      "tier": 1,
+      "tier": 3,
       "songs": 12
     },
     {
@@ -281,7 +281,7 @@
     },
     {
       "name": "OH MY GIRL",
-      "tier": 1,
+      "tier": 3,
       "songs": 12
     },
     {
@@ -291,7 +291,7 @@
     },
     {
       "name": "izna",
-      "tier": 1,
+      "tier": 3,
       "songs": 10
     },
     {
@@ -301,47 +301,47 @@
     },
     {
       "name": "GFRIEND",
-      "tier": 1,
+      "tier": 3,
       "songs": 9
     },
     {
       "name": "IZ*ONE",
-      "tier": 1,
+      "tier": 3,
       "songs": 9
     },
     {
       "name": "CHUNG HA",
-      "tier": 1,
+      "tier": 3,
       "songs": 8
     },
     {
       "name": "CLC",
-      "tier": 1,
+      "tier": 3,
       "songs": 8
     },
     {
       "name": "MAMAMOO",
-      "tier": 1,
+      "tier": 3,
       "songs": 8
     },
     {
       "name": "SUNMI",
-      "tier": 1,
+      "tier": 3,
       "songs": 8
     },
     {
       "name": "IVE",
-      "tier": 1,
+      "tier": 3,
       "songs": 7
     },
     {
       "name": "Weki Meki",
-      "tier": 1,
+      "tier": 3,
       "songs": 7
     },
     {
       "name": "fromis_9",
-      "tier": 1,
+      "tier": 3,
       "songs": 7
     },
     {
@@ -351,88 +351,33 @@
     },
     {
       "name": "Red Velvet",
-      "tier": 1,
+      "tier": 3,
       "songs": 5
     },
     {
       "name": "NewJeans",
-      "tier": 1,
+      "tier": 3,
       "songs": 4
     },
     {
       "name": "STAYC",
-      "tier": 1,
+      "tier": 3,
       "songs": 4
     },
     {
       "name": "WJSN",
-      "tier": 1,
+      "tier": 3,
       "songs": 4
     },
     {
       "name": "Apink",
-      "tier": 1,
+      "tier": 3,
       "songs": 2
     },
     {
       "name": "IU",
-      "tier": 1,
-      "songs": 2
-    },
-    {
-      "name": "4Minute",
       "tier": 3,
       "songs": 2
-    },
-    {
-      "name": "ALLDAY PROJECT",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "APRIL",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "BIBI",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "Brave Girls",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "BTS",
-      "tier": 3,
-      "songs": 4
-    },
-    {
-      "name": "Cherry Bullet",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "cignature",
-      "tier": 3,
-      "songs": 3
-    },
-    {
-      "name": "EXO",
-      "tier": 3,
-      "songs": 4
-    },
-    {
-      "name": "EXID",
-      "tier": 3,
-      "songs": 2
-    },
-    {
-      "name": "FIFTY FIFTY",
-      "tier": 3,
-      "songs": 1
     },
     {
       "name": "Girl's Day",
@@ -440,29 +385,9 @@
       "songs": 3
     },
     {
-      "name": "GIRLSET",
-      "tier": 3,
-      "songs": 2
-    },
-    {
-      "name": "Girls' Generation",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "HWASA",
-      "tier": 3,
-      "songs": 1
-    },
-    {
       "name": "I.O.I",
       "tier": 3,
       "songs": 2
-    },
-    {
-      "name": "ITZY",
-      "tier": 3,
-      "songs": 0
     },
     {
       "name": "JEON SOMI",
@@ -470,64 +395,14 @@
       "songs": 2
     },
     {
-      "name": "JO YURI",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "Jung Kook",
-      "tier": 3,
-      "songs": 2
-    },
-    {
-      "name": "Kep1er",
-      "tier": 3,
-      "songs": 1
-    },
-    {
       "name": "KiiiKiii",
-      "tier": 3,
+      "tier": 1,
       "songs": 2
-    },
-    {
-      "name": "LEEHI",
-      "tier": 3,
-      "songs": 2
-    },
-    {
-      "name": "MIYEON",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "Moon Byul",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "NATURE",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "NAYEON",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "NCT 127",
-      "tier": 3,
-      "songs": 1
     },
     {
       "name": "PIXY",
       "tier": 3,
       "songs": 3
-    },
-    {
-      "name": "PRISTIN V",
-      "tier": 3,
-      "songs": 1
     },
     {
       "name": "PURPLE KISS",
@@ -545,22 +420,7 @@
       "songs": 4
     },
     {
-      "name": "SEULGI",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "TAEMIN",
-      "tier": 3,
-      "songs": 1
-    },
-    {
       "name": "TAEYEON",
-      "tier": 3,
-      "songs": 1
-    },
-    {
-      "name": "tripleS",
       "tier": 3,
       "songs": 1
     },
