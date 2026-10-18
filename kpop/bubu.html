@@ -1425,16 +1425,31 @@ async function fetchTopTracks(artist) {
   return (data.toptracks?.track || []).map(t => ({ name: t.name, count: parseInt(t.playcount) || 0 }));
 }
 
+let _myTracksPromise = null;
+function fetchAllMyTracks() {
+  if (_myTracksPromise) return _myTracksPromise;
+  const base = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USER}&period=overall&limit=1000&api_key=${LASTFM_KEY}&format=json`;
+  _myTracksPromise = (async () => {
+    const first = await fetch(`${base}&page=1`).then(r => r.json());
+    if (first.error) throw new Error(first.message);
+    const pages = Math.min(parseInt(first.toptracks['@attr'].totalPages) || 1, 10);
+    const rest = await Promise.all(Array.from({ length: pages - 1 }, (_, i) =>
+      fetch(`${base}&page=${i + 2}`).then(r => r.json()).then(d => d.toptracks?.track || [])));
+    return [first.toptracks.track || [], ...rest].flat();
+  })().catch(e => { _myTracksPromise = null; throw e; });
+  return _myTracksPromise;
+}
+
 async function fetchMyPlays(artist) {
-  const top = await fetchTopTracks(artist);
-  const withPlays = await Promise.all(top.map(async t => {
-    try {
-      const url = `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&track=${encodeURIComponent(t.name)}&artist=${encodeURIComponent(artist)}&username=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json&autocorrect=1`;
-      const data = await fetch(url).then(r => r.json());
-      return { name: t.name, count: parseInt(data.track?.userplaycount) || 0 };
-    } catch { return { name: t.name, count: 0 }; }
-  }));
-  const played = withPlays.filter(t => t.count > 0).sort((a, b) => b.count - a.count);
+  const norm = n => n.toLowerCase().replace(/æ/g, 'ae').replace(/[^a-z0-9]/g, '');
+  const all = await fetchAllMyTracks();
+  const key = norm(artist);
+  const played = all
+    .filter(t => norm(t.artist?.name || '') === key)
+    .map(t => ({ name: t.name, count: parseInt(t.playcount) || 0 }))
+    .filter(t => t.count > 0)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 15);
   if (!played.length) throw new Error('No scrobbles found for this artist yet 💙');
   return played;
 }
