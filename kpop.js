@@ -304,6 +304,8 @@ function normalizeArtist(name) {
   return name.toLowerCase().replace(/æ/g, 'ae').replace(/[^a-z0-9]/g, '');
 }
 
+const NO_MARGIN_LOGO = new Set(['BLACKPINK']);
+
 function renderMarginLogos(groups, attendedArtists = new Set()) {
   // 12 fixed viewport slots — 6 per side, staggered vertically
   const slots = [
@@ -325,7 +327,7 @@ function renderMarginLogos(groups, attendedArtists = new Set()) {
   // File naming: slugify(group.name) + '.png'
   // e.g. NMIXX → nmixx.png, KISS OF LIFE → kiss-of-life.png, (G)I-DLE → gi-dle.png
   const topGroups = groups
-    .filter(g => g.tier !== 3 || attendedArtists.has(normalizeArtist(g.name)))
+    .filter(g => !NO_MARGIN_LOGO.has(g.name) && (g.tier !== 3 || attendedArtists.has(normalizeArtist(g.name))))
     .sort((a, b) => b.songs - a.songs)
     .slice(0, slots.length);
 
