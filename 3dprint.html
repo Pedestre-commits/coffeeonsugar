@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Projects — coffeeonsugar</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b1220;
+      --text: #f0f0f8;
+      --text-muted: #7f93b0;
+      --accent: #38bdf8;
+      --accent2: #6366f1;
+      --orange: #fb923c;
+      --orange-dim: rgba(251,146,60,0.15);
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 60% 50% at 80% 10%, rgba(99,102,241,0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 45% at 10% 60%, rgba(14,165,233,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 40% at 50% 110%, rgba(251,146,60,0.12) 0%, transparent 70%);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 24px;
+    }
+
+    /* ── Back link ── */
+    .back-link {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+      z-index: 10;
+    }
+    .back-link:hover { color: var(--text); }
+
+    /* ── Printer visual ── */
+    .printer-wrap {
+      position: relative;
+      width: 120px;
+      height: 140px;
+      margin: 0 auto 48px;
+    }
+
+    /* Print bed */
+    .bed {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 6px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      border-radius: 3px;
+      box-shadow: 0 0 16px rgba(56,189,248,0.4);
+    }
+
+    /* The object being printed — layers stack upward */
+    .object {
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 52px;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 2px;
+      overflow: hidden;
+    }
+
+    .layer {
+      height: 4px;
+      border-radius: 1px;
+      animation: deposit 0.3s ease-out both;
+    }
+
+    /* Orange filament layers */
+    .layer:nth-child(odd)  { background: var(--orange); box-shadow: 0 0 6px rgba(251,146,60,0.5); }
+    .layer:nth-child(even) { background: #f97316; box-shadow: 0 0 6px rgba(251,146,60,0.4); }
+
+    @keyframes deposit {
+      from { transform: scaleX(0); opacity: 0; }
+      to   { transform: scaleX(1); opacity: 1; }
+    }
+
+    /* Nozzle moving back and forth */
+    .nozzle-arm {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 20px;
+      background: var(--text-muted);
+      animation: arm-slide 1.2s ease-in-out infinite alternate;
+      transform-origin: top center;
+    }
+
+    .nozzle {
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent), 0 0 4px rgba(56,189,248,0.8);
+    }
+
+    .nozzle::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 6px;
+      background: var(--orange);
+      box-shadow: 0 0 6px var(--orange);
+      border-radius: 0 0 2px 2px;
+    }
+
+    @keyframes arm-slide {
+      from { left: 20%; }
+      to   { left: 80%; }
+    }
+
+    /* ── Text ── */
+    .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      background: linear-gradient(120deg, #fff 0%, var(--orange) 55%, #fb923c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+
+    .sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 340px;
+      line-height: 1.6;
+      margin: 0 auto 40px;
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      width: min(280px, 90vw);
+      margin: 0 auto;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--orange), var(--accent));
+      border-radius: 2px;
+      box-shadow: 0 0 10px rgba(251,146,60,0.5);
+      animation: fill-bar 8s ease-out forwards;
+    }
+
+    @keyframes fill-bar {
+      0%   { width: 0%; }
+      60%  { width: 71%; }
+      80%  { width: 74%; }
+      95%  { width: 76%; }
+      100% { width: 76%; }
+    }
+
+    .progress-hint {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 10px;
+      opacity: 0;
+      animation: fadein 1s 9s forwards;
+      font-style: italic;
+    }
+
+    @keyframes fadein {
+      to { opacity: 0.7; }
+    }
+
+    /* ── Scan line overlay ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.04) 3px,
+        rgba(0,0,0,0.04) 4px
+      );
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="back-link">← coffeeonsugar</a>
+
+  <div class="printer-wrap">
+    <div class="nozzle-arm">
+      <div class="nozzle"></div>
+    </div>
+    <div class="object" id="object"></div>
+    <div class="bed"></div>
+  </div>
+
+  <p class="eyebrow">Bruno's</p>
+  <h1 class="title">3D Projects</h1>
+  <p class="sub">Something is being built.<br>Layer by layer. In secret.</p>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Print progress</span>
+      <span id="pct">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="fill"></div>
+    </div>
+    <p class="progress-hint">estimated completion: unknown</p>
+  </div>
+
+  <script>
+    // Add layers to the object one by one
+    const obj = document.getElementById('object');
+    const LAYERS = 14;
+    const INTERVAL = 600;
+
+    for (let i = 0; i < LAYERS; i++) {
+      setTimeout(() => {
+        const l = document.createElement('div');
+        l.className = 'layer';
+        obj.appendChild(l);
+      }, i * INTERVAL);
+    }
+
+    // Tick the percentage counter to match the CSS animation
+    const pctEl = document.getElementById('pct');
+    const target = 76;
+    const duration = 8000;
+    const start = performance.now();
+
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.round(eased * target);
+      pctEl.textContent = val + '%';
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>
