@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Projects — coffeeonsugar</title>
+  <title>Bruno's Workshop — coffeeonsugar</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -13,21 +13,16 @@
       --text-muted: #7f93b0;
       --accent: #38bdf8;
       --accent2: #6366f1;
-      --orange: #fb923c;
-      --orange-dim: rgba(251,146,60,0.15);
     }
 
-    html, body {
-      height: 100%;
-      overflow: hidden;
-    }
+    html, body { height: 100%; overflow: hidden; }
 
     body {
       background-color: var(--bg);
       background-image:
-        radial-gradient(ellipse 60% 50% at 80% 10%, rgba(99,102,241,0.25) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 45% at 10% 60%, rgba(14,165,233,0.18) 0%, transparent 70%),
-        radial-gradient(ellipse 70% 40% at 50% 110%, rgba(251,146,60,0.12) 0%, transparent 70%);
+        radial-gradient(ellipse 60% 50% at 80% 10%, rgba(99,102,241,0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 45% at 10% 60%, rgba(14,165,233,0.16) 0%, transparent 70%);
+      background-attachment: fixed;
       color: var(--text);
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       display: flex;
@@ -39,7 +34,6 @@
       padding: 24px;
     }
 
-    /* ── Back link ── */
     .back-link {
       position: fixed;
       top: 24px;
@@ -53,97 +47,30 @@
     }
     .back-link:hover { color: var(--text); }
 
-    /* ── Printer visual ── */
-    .printer-wrap {
-      position: relative;
-      width: 120px;
-      height: 140px;
+    /* ── Gears ── */
+    svg.gears {
+      display: block;
       margin: 0 auto 48px;
+      overflow: visible;
     }
 
-    /* Print bed */
-    .bed {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 6px;
-      background: linear-gradient(90deg, var(--accent2), var(--accent));
-      border-radius: 3px;
-      box-shadow: 0 0 16px rgba(56,189,248,0.4);
+    .gear-large {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: spin-cw 9s linear infinite;
+    }
+    .gear-small {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: spin-ccw 6s linear infinite;
     }
 
-    /* The object being printed — layers stack upward */
-    .object {
-      position: absolute;
-      bottom: 6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 52px;
-      display: flex;
-      flex-direction: column-reverse;
-      gap: 2px;
-      overflow: hidden;
-    }
+    @keyframes spin-cw  { to { transform: rotate(360deg); } }
+    @keyframes spin-ccw { to { transform: rotate(-360deg); } }
 
-    .layer {
-      height: 4px;
-      border-radius: 1px;
-      animation: deposit 0.3s ease-out both;
-    }
-
-    /* Orange filament layers */
-    .layer:nth-child(odd)  { background: var(--orange); box-shadow: 0 0 6px rgba(251,146,60,0.5); }
-    .layer:nth-child(even) { background: #f97316; box-shadow: 0 0 6px rgba(251,146,60,0.4); }
-
-    @keyframes deposit {
-      from { transform: scaleX(0); opacity: 0; }
-      to   { transform: scaleX(1); opacity: 1; }
-    }
-
-    /* Nozzle moving back and forth */
-    .nozzle-arm {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 20px;
-      background: var(--text-muted);
-      animation: arm-slide 1.2s ease-in-out infinite alternate;
-      transform-origin: top center;
-    }
-
-    .nozzle {
-      position: absolute;
-      bottom: -6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 8px;
-      height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      box-shadow: 0 0 12px var(--accent), 0 0 4px rgba(56,189,248,0.8);
-    }
-
-    .nozzle::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 6px;
-      background: var(--orange);
-      box-shadow: 0 0 6px var(--orange);
-      border-radius: 0 0 2px 2px;
-    }
-
-    @keyframes arm-slide {
-      from { left: 20%; }
-      to   { left: 80%; }
-    }
+    .gear-face   { fill: #2d4060; stroke: rgba(56,189,248,0.35); stroke-width: 1.5; }
+    .gear-spoke  { stroke: #3d5880; stroke-width: 2; stroke-linecap: round; }
+    .gear-axle   { fill: #0b1220; stroke: rgba(56,189,248,0.5); stroke-width: 1.5; }
 
     /* ── Text ── */
     .eyebrow {
@@ -151,34 +78,29 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-muted);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .title {
-      font-size: clamp(2rem, 8vw, 3.5rem);
+      font-size: clamp(2rem, 8vw, 3.2rem);
       font-weight: 800;
       letter-spacing: -0.02em;
-      line-height: 1.05;
-      background: linear-gradient(120deg, #fff 0%, var(--orange) 55%, #fb923c 100%);
+      background: linear-gradient(120deg, #e0f2fe 0%, var(--accent) 55%, #818cf8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .sub {
       font-size: 1rem;
       color: var(--text-muted);
-      max-width: 340px;
       line-height: 1.6;
-      margin: 0 auto 40px;
+      margin-bottom: 44px;
     }
 
-    /* ── Progress bar ── */
-    .progress-wrap {
-      width: min(280px, 90vw);
-      margin: 0 auto;
-    }
+    /* ── Progress ── */
+    .progress-wrap { width: min(280px, 90vw); margin: 0 auto; }
 
     .progress-label {
       display: flex;
@@ -200,105 +122,128 @@
     .progress-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, var(--orange), var(--accent));
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
       border-radius: 2px;
-      box-shadow: 0 0 10px rgba(251,146,60,0.5);
-      animation: fill-bar 8s ease-out forwards;
+      animation: fill 10s ease-out forwards;
     }
 
-    @keyframes fill-bar {
+    @keyframes fill {
       0%   { width: 0%; }
-      60%  { width: 71%; }
-      80%  { width: 74%; }
-      95%  { width: 76%; }
-      100% { width: 76%; }
+      65%  { width: 69%; }
+      80%  { width: 70%; }
+      100% { width: 70%; }
     }
 
-    .progress-hint {
+    .hint {
       font-size: 0.68rem;
       color: var(--text-muted);
       margin-top: 10px;
-      opacity: 0;
-      animation: fadein 1s 9s forwards;
       font-style: italic;
+      opacity: 0;
+      animation: fadein 1s 11s forwards;
     }
 
-    @keyframes fadein {
-      to { opacity: 0.7; }
-    }
-
-    /* ── Scan line overlay ── */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 3px,
-        rgba(0,0,0,0.04) 3px,
-        rgba(0,0,0,0.04) 4px
-      );
-      pointer-events: none;
-    }
+    @keyframes fadein { to { opacity: 0.6; } }
   </style>
 </head>
 <body>
 
   <a href="/" class="back-link">← coffeeonsugar</a>
 
-  <div class="printer-wrap">
-    <div class="nozzle-arm">
-      <div class="nozzle"></div>
-    </div>
-    <div class="object" id="object"></div>
-    <div class="bed"></div>
-  </div>
+  <svg class="gears" id="g" width="220" height="130" viewBox="0 0 220 130"></svg>
 
   <p class="eyebrow">Bruno's</p>
-  <h1 class="title">3D Projects</h1>
-  <p class="sub">Something is being built.<br>Layer by layer. In secret.</p>
+  <h1 class="title">Workshop</h1>
+  <p class="sub">Something is being made.<br>You'll see it when it's ready.</p>
 
   <div class="progress-wrap">
     <div class="progress-label">
-      <span>Print progress</span>
+      <span>Work in progress</span>
       <span id="pct">0%</span>
     </div>
     <div class="progress-bar">
-      <div class="progress-fill" id="fill"></div>
+      <div class="progress-fill"></div>
     </div>
-    <p class="progress-hint">estimated completion: unknown</p>
+    <p class="hint">eta: classified</p>
   </div>
 
   <script>
-    // Add layers to the object one by one
-    const obj = document.getElementById('object');
-    const LAYERS = 14;
-    const INTERVAL = 600;
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.getElementById('g');
 
-    for (let i = 0; i < LAYERS; i++) {
-      setTimeout(() => {
-        const l = document.createElement('div');
-        l.className = 'layer';
-        obj.appendChild(l);
-      }, i * INTERVAL);
+    function f(n) { return n.toFixed(2); }
+
+    /* Generate a gear path with evenodd hub hole */
+    function gearPath(cx, cy, R, r, N, hubR) {
+      const step = (2 * Math.PI) / N;
+      const frac = 0.42;
+      let d = '';
+
+      for (let i = 0; i < N; i++) {
+        const a0 = i * step - Math.PI / 2;
+        const a1 = a0 + step * (1 - frac) / 2;
+        const a2 = a1 + step * frac;
+        if (i === 0) d += `M ${f(cx + r * Math.cos(a0))},${f(cy + r * Math.sin(a0))}`;
+        d += ` A ${r},${r} 0 0,1 ${f(cx + r * Math.cos(a1))},${f(cy + r * Math.sin(a1))}`;
+        d += ` L ${f(cx + R * Math.cos(a1))},${f(cy + R * Math.sin(a1))}`;
+        d += ` A ${R},${R} 0 0,1 ${f(cx + R * Math.cos(a2))},${f(cy + R * Math.sin(a2))}`;
+        d += ` L ${f(cx + r * Math.cos(a2))},${f(cy + r * Math.sin(a2))}`;
+      }
+      d += ' Z';
+      /* Hub hole — opposite winding (CW) so evenodd punches it out */
+      d += ` M ${f(cx + hubR)},${f(cy)} A ${hubR},${hubR} 0 1,0 ${f(cx - hubR)},${f(cy)} A ${hubR},${hubR} 0 1,0 ${f(cx + hubR)},${f(cy)} Z`;
+      return d;
     }
 
-    // Tick the percentage counter to match the CSS animation
+    function addSpokes(parent, cx, cy, hubR, bodyR, count) {
+      for (let i = 0; i < count; i++) {
+        const a = (i / count) * Math.PI * 2;
+        const ln = document.createElementNS(ns, 'line');
+        ln.setAttribute('x1', f(cx + hubR * Math.cos(a)));
+        ln.setAttribute('y1', f(cy + hubR * Math.sin(a)));
+        ln.setAttribute('x2', f(cx + bodyR * Math.cos(a)));
+        ln.setAttribute('y2', f(cy + bodyR * Math.sin(a)));
+        ln.setAttribute('class', 'gear-spoke');
+        parent.appendChild(ln);
+      }
+    }
+
+    function makeGear(cx, cy, R, r, N, hubR, spokeR, spokes, cls) {
+      const g = document.createElementNS(ns, 'g');
+      g.setAttribute('class', cls);
+
+      const path = document.createElementNS(ns, 'path');
+      path.setAttribute('d', gearPath(cx, cy, R, r, N, hubR));
+      path.setAttribute('fill-rule', 'evenodd');
+      path.setAttribute('class', 'gear-face');
+      g.appendChild(path);
+
+      addSpokes(g, cx, cy, hubR, spokeR, spokes);
+
+      const axle = document.createElementNS(ns, 'circle');
+      axle.setAttribute('cx', cx);
+      axle.setAttribute('cy', cy);
+      axle.setAttribute('r', hubR);
+      axle.setAttribute('class', 'gear-axle');
+      g.appendChild(axle);
+
+      svg.appendChild(g);
+    }
+
+    /* Large gear: 12 teeth, cx=80 cy=65 */
+    makeGear(80, 65, 52, 40, 12, 11, 36, 4, 'gear-large');
+    /* Small gear: 8 teeth, cx=162 cy=65 — teeth just interlocking */
+    makeGear(162, 65, 34, 26, 8,  8, 19, 3, 'gear-small');
+
+    /* Percent counter */
     const pctEl = document.getElementById('pct');
-    const target = 76;
-    const duration = 8000;
-    const start = performance.now();
-
-    function tick(now) {
-      const t = Math.min((now - start) / duration, 1);
-      // ease-out cubic
-      const eased = 1 - Math.pow(1 - t, 3);
-      const val = Math.round(eased * target);
-      pctEl.textContent = val + '%';
-      if (t < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
+    const target = 70, dur = 10000, t0 = performance.now();
+    (function tick(now) {
+      const p = Math.min((now - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      pctEl.textContent = Math.round(e * target) + '%';
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
   </script>
 </body>
 </html>
