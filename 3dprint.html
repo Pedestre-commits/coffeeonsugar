@@ -36,8 +36,7 @@
 
     .back-link {
       position: fixed;
-      top: 24px;
-      left: 24px;
+      top: 24px; left: 24px;
       color: var(--text-muted);
       text-decoration: none;
       font-size: 0.85rem;
@@ -47,30 +46,105 @@
     }
     .back-link:hover { color: var(--text); }
 
-    /* ── Gears ── */
-    svg.gears {
-      display: block;
-      margin: 0 auto 48px;
+    /* ── Scene container ── */
+    .scene {
+      position: relative;
+      width: min(320px, 95vw);
+      height: 210px;
+      margin: 0 auto 40px;
       overflow: visible;
     }
 
-    .gear-large {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: spin-cw 9s linear infinite;
+    /* ── Gears ── */
+    svg.gears {
+      position: absolute;
+      left: 50%; top: 0;
+      transform: translateX(-50%);
+      overflow: visible;
     }
-    .gear-small {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: spin-ccw 6s linear infinite;
-    }
-
+    .gear-large { transform-box: fill-box; transform-origin: center; animation: spin-cw 9s linear infinite; }
+    .gear-small { transform-box: fill-box; transform-origin: center; animation: spin-ccw 6s linear infinite; }
     @keyframes spin-cw  { to { transform: rotate(360deg); } }
     @keyframes spin-ccw { to { transform: rotate(-360deg); } }
+    .gear-face  { fill: #2d4060; stroke: rgba(56,189,248,0.35); stroke-width: 1.5; }
+    .gear-spoke { stroke: #3d5880; stroke-width: 2; stroke-linecap: round; }
+    .gear-axle  { fill: #0b1220; stroke: rgba(56,189,248,0.5); stroke-width: 1.5; }
 
-    .gear-face   { fill: #2d4060; stroke: rgba(56,189,248,0.35); stroke-width: 1.5; }
-    .gear-spoke  { stroke: #3d5880; stroke-width: 2; stroke-linecap: round; }
-    .gear-axle   { fill: #0b1220; stroke: rgba(56,189,248,0.5); stroke-width: 1.5; }
+    /* ── Spark glow at contact point ── */
+    .contact-glow {
+      position: absolute;
+      left: 173px; top: 58px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #fbbf24;
+      box-shadow: 0 0 14px 8px rgba(251,191,36,0.35);
+      animation: glow-pulse 0.7s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes glow-pulse {
+      from { opacity: 0.25; transform: scale(0.7); }
+      to   { opacity: 0.85; transform: scale(1.5); }
+    }
+
+    /* ── Sparks ── */
+    .spark {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: spark-fly var(--st) ease-out forwards;
+    }
+    @keyframes spark-fly {
+      0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--sx), var(--sy)) scale(0); opacity: 0; }
+    }
+
+    /* ── Smoke ── */
+    .smoke {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(160,170,190,0.55) 0%, rgba(100,110,130,0.15) 70%, transparent 100%);
+      pointer-events: none;
+      animation: smoke-rise var(--dur) ease-out var(--del) infinite;
+    }
+    @keyframes smoke-rise {
+      0%   { transform: translateY(0) translateX(0) scale(0.4); opacity: 0.65; }
+      50%  { opacity: 0.35; }
+      100% { transform: translateY(-90px) translateX(var(--dx)) scale(3); opacity: 0; }
+    }
+
+    /* ── Scientist ── */
+    .runner-shell  { position: absolute; bottom: 4px; will-change: transform; }
+    .runner-bounce { animation: run-bob 0.2s ease-in-out infinite alternate; }
+    @keyframes run-bob {
+      from { transform: translateY(0)   rotate(-5deg); }
+      to   { transform: translateY(-7px) rotate(4deg); }
+    }
+    /* Leg swing */
+    .leg-l {
+      transform-box: fill-box;
+      transform-origin: 100% 0%;
+      animation: leg-a 0.2s ease-in-out infinite alternate;
+    }
+    .leg-r {
+      transform-box: fill-box;
+      transform-origin: 0% 0%;
+      animation: leg-b 0.2s ease-in-out infinite alternate;
+    }
+    @keyframes leg-a { from { transform: rotate(-22deg); } to { transform: rotate(22deg); } }
+    @keyframes leg-b { from { transform: rotate(22deg);  } to { transform: rotate(-22deg); } }
+    /* Arm swing */
+    .arm-l {
+      transform-box: fill-box;
+      transform-origin: 100% 0%;
+      animation: arm-a 0.2s ease-in-out infinite alternate;
+    }
+    .arm-r {
+      transform-box: fill-box;
+      transform-origin: 0% 0%;
+      animation: arm-b 0.2s ease-in-out infinite alternate;
+    }
+    @keyframes arm-a { from { transform: rotate(-35deg); } to { transform: rotate(35deg); } }
+    @keyframes arm-b { from { transform: rotate(35deg);  } to { transform: rotate(-35deg); } }
 
     /* ── Text ── */
     .eyebrow {
@@ -80,7 +154,6 @@
       color: var(--text-muted);
       margin-bottom: 14px;
     }
-
     .title {
       font-size: clamp(2rem, 8vw, 3.2rem);
       font-weight: 800;
@@ -91,58 +164,38 @@
       background-clip: text;
       margin-bottom: 16px;
     }
-
-    .sub {
-      font-size: 1rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 44px;
-    }
+    .sub { font-size: 1rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 44px; }
 
     /* ── Progress ── */
     .progress-wrap { width: min(280px, 90vw); margin: 0 auto; }
-
     .progress-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 8px;
+      display: flex; justify-content: space-between;
+      font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 8px;
     }
-
     .progress-bar {
       height: 4px;
       background: rgba(255,255,255,0.07);
       border-radius: 2px;
       overflow: hidden;
     }
-
     .progress-fill {
-      height: 100%;
-      width: 0%;
+      height: 100%; width: 0%;
       background: linear-gradient(90deg, var(--accent2), var(--accent));
       border-radius: 2px;
       animation: fill 10s ease-out forwards;
     }
-
     @keyframes fill {
       0%   { width: 0%; }
       65%  { width: 69%; }
       80%  { width: 70%; }
       100% { width: 70%; }
     }
-
     .hint {
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      margin-top: 10px;
-      font-style: italic;
-      opacity: 0;
-      animation: fadein 1s 11s forwards;
+      font-size: 0.68rem; color: var(--text-muted);
+      margin-top: 10px; font-style: italic;
+      opacity: 0; animation: fadein 1s 11s forwards;
     }
-
     @keyframes fadein { to { opacity: 0.6; } }
   </style>
 </head>
@@ -150,7 +203,92 @@
 
   <a href="/" class="back-link">← coffeeonsugar</a>
 
-  <svg class="gears" id="g" width="220" height="130" viewBox="0 0 220 130"></svg>
+  <div class="scene">
+
+    <!-- Smoke puffs near gear contact + below gears -->
+    <div class="smoke" style="left:148px;top:78px;width:14px;height:14px;--dur:2.4s;--del:0s;   --dx:10px;"></div>
+    <div class="smoke" style="left:160px;top:82px;width:10px;height:10px;--dur:2.8s;--del:0.6s; --dx:-8px;"></div>
+    <div class="smoke" style="left:170px;top:72px;width:16px;height:16px;--dur:3.1s;--del:1.2s; --dx:14px;"></div>
+    <div class="smoke" style="left:108px;top:108px;width:11px;height:11px;--dur:2.6s;--del:0.4s; --dx:-12px;"></div>
+    <div class="smoke" style="left:195px;top:88px;width:13px;height:13px;--dur:2.2s;--del:0.9s; --dx:6px;"></div>
+    <div class="smoke" style="left:140px;top:100px;width:9px;height:9px;--dur:3.4s;--del:1.8s; --dx:-5px;"></div>
+
+    <!-- Spark glow at contact point -->
+    <div class="contact-glow"></div>
+
+    <!-- Gears -->
+    <svg class="gears" id="g" width="220" height="130" viewBox="0 0 220 130"></svg>
+
+    <!-- Spark particles container (at contact point) -->
+    <div id="sparks" style="position:absolute;left:178px;top:65px;width:0;height:0;pointer-events:none;"></div>
+
+    <!-- Running scientist -->
+    <div class="runner-shell" id="runner">
+      <div class="runner-bounce">
+        <svg id="sci" viewBox="-8 -14 44 60" width="36" height="46" xmlns="http://www.w3.org/2000/svg">
+          <!-- Wild frazzled hair -->
+          <g stroke="#3a1e00" stroke-width="2.4" stroke-linecap="round">
+            <line x1="14" y1="3" x2="10" y2="-7"/>
+            <line x1="14" y1="3" x2="17" y2="-8"/>
+            <line x1="14" y1="3" x2="7"  y2="-3"/>
+            <line x1="14" y1="3" x2="22" y2="-1"/>
+            <line x1="14" y1="3" x2="5"  y2="2"/>
+            <line x1="14" y1="3" x2="23" y2="5"/>
+            <line x1="14" y1="3" x2="11" y2="-9"/>
+            <line x1="14" y1="3" x2="20" y2="-5"/>
+          </g>
+          <!-- Head -->
+          <circle cx="14" cy="10" r="8.5" fill="#f5c491" stroke="#d4a070" stroke-width="0.8"/>
+          <!-- Soot smears on face -->
+          <ellipse cx="10" cy="9"  rx="3.2" ry="2.2" fill="rgba(0,0,0,0.38)" transform="rotate(-18 10 9)"/>
+          <ellipse cx="19" cy="12" rx="2.5" ry="1.8" fill="rgba(0,0,0,0.30)" transform="rotate(12 19 12)"/>
+          <circle  cx="15" cy="6"  r="1.4"            fill="rgba(0,0,0,0.22)"/>
+          <!-- X eyes -->
+          <g stroke="#1a1a1a" stroke-width="1.7" stroke-linecap="round">
+            <line x1="10"   y1="8"    x2="12.5" y2="10.5"/>
+            <line x1="12.5" y1="8"    x2="10"   y2="10.5"/>
+            <line x1="15.5" y1="8"    x2="18"   y2="10.5"/>
+            <line x1="18"   y1="8"    x2="15.5" y2="10.5"/>
+          </g>
+          <!-- Shocked open mouth -->
+          <ellipse cx="14" cy="15"   rx="2.5" ry="2"   fill="#7a2515"/>
+          <ellipse cx="14" cy="14.5" rx="2"   ry="1.4" fill="#cc7060" opacity="0.6"/>
+          <!-- Neck -->
+          <rect x="12" y="18" width="4" height="3" fill="#e8b882"/>
+          <!-- Lab coat body -->
+          <rect x="8" y="21" width="12" height="15" rx="2" fill="#dde0ee" stroke="#b0b4cc" stroke-width="0.8"/>
+          <!-- Coat lapels -->
+          <line x1="14" y1="21" x2="11" y2="25" stroke="#c0c4dd" stroke-width="1.3"/>
+          <line x1="14" y1="21" x2="17" y2="25" stroke="#c0c4dd" stroke-width="1.3"/>
+          <!-- Soot on coat -->
+          <ellipse cx="10"  cy="28" rx="2.8" ry="2"   fill="rgba(0,0,0,0.33)"/>
+          <circle  cx="17"  cy="23" r="1.6"            fill="rgba(0,0,0,0.26)"/>
+          <ellipse cx="14"  cy="32" rx="3.2" ry="1.6"  fill="rgba(0,0,0,0.30)"/>
+          <circle  cx="10"  cy="22" r="1.1"             fill="rgba(0,0,0,0.20)"/>
+          <circle  cx="18"  cy="29" r="0.9"             fill="rgba(0,0,0,0.22)"/>
+          <!-- Arms (animated swing) -->
+          <g class="arm-l">
+            <line x1="8"  y1="23" x2="1"  y2="15" stroke="#f5c491" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="0.5" cy="14" r="2.2" fill="#f5c491"/>
+          </g>
+          <g class="arm-r">
+            <line x1="20" y1="23" x2="27" y2="15" stroke="#f5c491" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="27.5" cy="14" r="2.2" fill="#f5c491"/>
+          </g>
+          <!-- Legs (animated stride) -->
+          <g class="leg-l">
+            <line x1="11" y1="36" x2="6"  y2="46" stroke="#3a3a58" stroke-width="3.5" stroke-linecap="round"/>
+            <ellipse cx="5"    cy="47" rx="4.5" ry="2"   fill="#22224a"/>
+          </g>
+          <g class="leg-r">
+            <line x1="13" y1="36" x2="20" y2="45" stroke="#3a3a58" stroke-width="3.5" stroke-linecap="round"/>
+            <ellipse cx="21"   cy="46" rx="4"   ry="2"   fill="#22224a"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+  </div>
 
   <p class="eyebrow">Bruno's</p>
   <h1 class="title">Workshop</h1>
@@ -170,78 +308,115 @@
   <script>
     const ns = 'http://www.w3.org/2000/svg';
     const svg = document.getElementById('g');
+    const f = n => n.toFixed(2);
 
-    function f(n) { return n.toFixed(2); }
-
-    /* Generate a gear path with evenodd hub hole */
+    /* ── Gear path (evenodd hub hole) ── */
     function gearPath(cx, cy, R, r, N, hubR) {
-      const step = (2 * Math.PI) / N;
-      const frac = 0.42;
+      const step = (2 * Math.PI) / N, frac = 0.42;
       let d = '';
-
       for (let i = 0; i < N; i++) {
         const a0 = i * step - Math.PI / 2;
         const a1 = a0 + step * (1 - frac) / 2;
         const a2 = a1 + step * frac;
-        if (i === 0) d += `M ${f(cx + r * Math.cos(a0))},${f(cy + r * Math.sin(a0))}`;
-        d += ` A ${r},${r} 0 0,1 ${f(cx + r * Math.cos(a1))},${f(cy + r * Math.sin(a1))}`;
-        d += ` L ${f(cx + R * Math.cos(a1))},${f(cy + R * Math.sin(a1))}`;
-        d += ` A ${R},${R} 0 0,1 ${f(cx + R * Math.cos(a2))},${f(cy + R * Math.sin(a2))}`;
-        d += ` L ${f(cx + r * Math.cos(a2))},${f(cy + r * Math.sin(a2))}`;
+        if (i === 0) d += `M ${f(cx + r*Math.cos(a0))},${f(cy + r*Math.sin(a0))}`;
+        d += ` A ${r},${r} 0 0,1 ${f(cx + r*Math.cos(a1))},${f(cy + r*Math.sin(a1))}`;
+        d += ` L ${f(cx + R*Math.cos(a1))},${f(cy + R*Math.sin(a1))}`;
+        d += ` A ${R},${R} 0 0,1 ${f(cx + R*Math.cos(a2))},${f(cy + R*Math.sin(a2))}`;
+        d += ` L ${f(cx + r*Math.cos(a2))},${f(cy + r*Math.sin(a2))}`;
       }
       d += ' Z';
-      /* Hub hole — opposite winding (CW) so evenodd punches it out */
-      d += ` M ${f(cx + hubR)},${f(cy)} A ${hubR},${hubR} 0 1,0 ${f(cx - hubR)},${f(cy)} A ${hubR},${hubR} 0 1,0 ${f(cx + hubR)},${f(cy)} Z`;
+      d += ` M ${f(cx+hubR)},${f(cy)} A ${hubR},${hubR} 0 1,0 ${f(cx-hubR)},${f(cy)} A ${hubR},${hubR} 0 1,0 ${f(cx+hubR)},${f(cy)} Z`;
       return d;
     }
 
-    function addSpokes(parent, cx, cy, hubR, bodyR, count) {
-      for (let i = 0; i < count; i++) {
-        const a = (i / count) * Math.PI * 2;
+    function addSpokes(g, cx, cy, hubR, outerR, n) {
+      for (let i = 0; i < n; i++) {
+        const a = (i / n) * Math.PI * 2;
         const ln = document.createElementNS(ns, 'line');
-        ln.setAttribute('x1', f(cx + hubR * Math.cos(a)));
-        ln.setAttribute('y1', f(cy + hubR * Math.sin(a)));
-        ln.setAttribute('x2', f(cx + bodyR * Math.cos(a)));
-        ln.setAttribute('y2', f(cy + bodyR * Math.sin(a)));
+        ['x1','y1','x2','y2'].forEach((k,j) => {
+          const r = j < 2 ? hubR : outerR, ang = a;
+          ln.setAttribute(k, f(j%2===0 ? cx + r*Math.cos(ang) : cy + r*Math.sin(ang)));
+        });
         ln.setAttribute('class', 'gear-spoke');
-        parent.appendChild(ln);
+        g.appendChild(ln);
       }
     }
 
     function makeGear(cx, cy, R, r, N, hubR, spokeR, spokes, cls) {
       const g = document.createElementNS(ns, 'g');
       g.setAttribute('class', cls);
-
-      const path = document.createElementNS(ns, 'path');
-      path.setAttribute('d', gearPath(cx, cy, R, r, N, hubR));
-      path.setAttribute('fill-rule', 'evenodd');
-      path.setAttribute('class', 'gear-face');
-      g.appendChild(path);
-
+      const p = document.createElementNS(ns, 'path');
+      p.setAttribute('d', gearPath(cx, cy, R, r, N, hubR));
+      p.setAttribute('fill-rule', 'evenodd');
+      p.setAttribute('class', 'gear-face');
+      g.appendChild(p);
       addSpokes(g, cx, cy, hubR, spokeR, spokes);
-
-      const axle = document.createElementNS(ns, 'circle');
-      axle.setAttribute('cx', cx);
-      axle.setAttribute('cy', cy);
-      axle.setAttribute('r', hubR);
-      axle.setAttribute('class', 'gear-axle');
-      g.appendChild(axle);
-
+      const ax = document.createElementNS(ns, 'circle');
+      ax.setAttribute('cx', cx); ax.setAttribute('cy', cy); ax.setAttribute('r', hubR);
+      ax.setAttribute('class', 'gear-axle');
+      g.appendChild(ax);
       svg.appendChild(g);
     }
 
-    /* Large gear: 12 teeth, cx=80 cy=65 */
-    makeGear(80, 65, 52, 40, 12, 11, 36, 4, 'gear-large');
-    /* Small gear: 8 teeth, cx=162 cy=65 — teeth just interlocking */
-    makeGear(162, 65, 34, 26, 8,  8, 19, 3, 'gear-small');
+    makeGear(80,  65, 52, 40, 12, 11, 36, 4, 'gear-large');
+    makeGear(162, 65, 34, 26,  8,  8, 19, 3, 'gear-small');
 
-    /* Percent counter */
+    /* ── Sparks ── */
+    const sparkWrap  = document.getElementById('sparks');
+    const sparkColors = ['#fbbf24','#f97316','#fef08a','#fff','#fb923c','#fde68a'];
+
+    function spawnSparks() {
+      const n = 6 + Math.floor(Math.random() * 7);
+      for (let i = 0; i < n; i++) {
+        const el = document.createElement('div');
+        el.className = 'spark';
+        const angle = Math.random() * Math.PI * 2;
+        const dist  = 20 + Math.random() * 45;
+        const size  = 2 + Math.random() * 3;
+        el.style.cssText = [
+          `background:${sparkColors[Math.floor(Math.random()*sparkColors.length)]}`,
+          `--sx:${(Math.cos(angle)*dist).toFixed(1)}px`,
+          `--sy:${(Math.sin(angle)*dist - 8).toFixed(1)}px`,
+          `--st:${(0.25 + Math.random()*0.5).toFixed(2)}s`,
+          `left:${(Math.random()*8-4).toFixed(1)}px`,
+          `top:${(Math.random()*8-4).toFixed(1)}px`,
+          `width:${size.toFixed(1)}px`,
+          `height:${size.toFixed(1)}px`
+        ].join(';');
+        sparkWrap.appendChild(el);
+        el.addEventListener('animationend', () => el.remove(), { once: true });
+      }
+      setTimeout(spawnSparks, 900 + Math.random() * 900);
+    }
+    setTimeout(spawnSparks, 600);
+
+    /* ── Scientist runner ── */
+    const runner = document.getElementById('runner');
+    const sci    = document.getElementById('sci');
+    const W = 320, charW = 36;
+    let x = -charW, dir = 1, speed = 1.7, pause = 0;
+
+    function step() {
+      if (pause > 0) { pause--; }
+      else {
+        x += speed * dir;
+        if (dir === 1 && x > W + charW) {
+          dir = -1; sci.setAttribute('transform', 'scale(-1,1) translate(-28,0)'); pause = 25;
+        } else if (dir === -1 && x < -(charW * 2)) {
+          dir = 1; sci.removeAttribute('transform'); pause = 25;
+        }
+        runner.style.left = x + 'px';
+      }
+      requestAnimationFrame(step);
+    }
+    step();
+
+    /* ── Progress counter ── */
     const pctEl = document.getElementById('pct');
     const target = 70, dur = 10000, t0 = performance.now();
     (function tick(now) {
       const p = Math.min((now - t0) / dur, 1);
-      const e = 1 - Math.pow(1 - p, 3);
-      pctEl.textContent = Math.round(e * target) + '%';
+      pctEl.textContent = Math.round((1 - Math.pow(1-p, 3)) * target) + '%';
       if (p < 1) requestAnimationFrame(tick);
     })(t0);
   </script>
