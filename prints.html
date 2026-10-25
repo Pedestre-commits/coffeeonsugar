@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop — coffeeonsugar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>⚙️</text></svg>">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080d16;
+      --surface: #0f1824;
+      --surface-2: #141c29;
+      --surface-3: #1a2438;
+      --border: rgba(255,255,255,0.07);
+      --text: #eef0f6;
+      --text-muted: #5e6d85;
+      --text-dim: #384455;
+      --accent: #38bdf8;
+      --accent-dim: rgba(56,189,248,0.15);
+
+      --cat-functional: #38bdf8;
+      --cat-functional-bg: rgba(56,189,248,0.10);
+      --cat-decorative: #c084fc;
+      --cat-decorative-bg: rgba(192,132,252,0.10);
+      --cat-miniature: #34d399;
+      --cat-miniature-bg: rgba(52,211,153,0.10);
+      --cat-tool: #fb923c;
+      --cat-tool-bg: rgba(251,146,60,0.10);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 60% 40% at 85% 0%,  rgba(56,189,248,0.09)  0%, transparent 70%),
+        radial-gradient(ellipse 45% 35% at 5%  75%,  rgba(99,102,241,0.07)  0%, transparent 70%);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Back link ── */
+    .back-link {
+      position: fixed;
+      top: 1.1rem;
+      left: 1.1rem;
+      z-index: 20;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      background: rgba(8,13,22,0.75);
+      backdrop-filter: blur(8px);
+      padding: 0.38rem 0.85rem;
+      border-radius: 2rem;
+      border: 1px solid var(--border);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .back-link:hover { color: var(--text); border-color: rgba(255,255,255,0.18); }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 5.5rem 1.5rem 3.5rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.7rem;
+    }
+    .hero-title {
+      font-size: clamp(2.6rem, 8vw, 4.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(120deg, #e0f2fe 0%, var(--accent) 55%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.05;
+      margin-bottom: 0.85rem;
+    }
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 0.93rem;
+      line-height: 1.6;
+      margin-bottom: 2.75rem;
+      max-width: 36rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── Stats ── */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      display: block;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-label {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.5rem 5rem;
+    }
+
+    /* ── Filters ── */
+    .filters {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      padding-bottom: 1.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .filter-btn {
+      padding: 0.38rem 1rem;
+      border-radius: 2rem;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font: 500 0.78rem/1 'Inter', sans-serif;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .filter-btn:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,0.2);
+    }
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #080d16;
+      font-weight: 700;
+    }
+    .filter-count {
+      opacity: 0.55;
+      font-weight: 400;
+      margin-left: 0.25rem;
+    }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+    @media (max-width: 820px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px)  {
+      .grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 4rem; }
+      .stats { gap: 2rem; }
+    }
+
+    /* ── Card ── */
+    .print-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      outline: none;
+    }
+    .print-card:focus-visible {
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .print-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56,189,248,0.4);
+      box-shadow: 0 14px 44px rgba(56,189,248,0.10);
+    }
+
+    /* Card media */
+    .card-media {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      position: relative;
+      overflow: hidden;
+      background: var(--surface-2);
+    }
+    .card-media::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 22px 22px;
+      pointer-events: none;
+    }
+    .card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+      display: block;
+    }
+    .card-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      color: var(--text-dim);
+    }
+
+    /* WIP badge */
+    .badge-wip {
+      position: absolute;
+      top: 0.55rem;
+      right: 0.55rem;
+      z-index: 2;
+      padding: 0.2rem 0.55rem;
+      border-radius: 2rem;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(251,191,36,0.12);
+      border: 1px solid rgba(251,191,36,0.35);
+      color: #fbbf24;
+    }
+
+    /* Card body */
+    .card-body {
+      padding: 0.85rem 1rem 0.95rem;
+    }
+    .card-cat-row {
+      margin-bottom: 0.4rem;
+    }
+    .cat-chip {
+      display: inline-block;
+      padding: 0.17rem 0.55rem;
+      border-radius: 2rem;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .cat--functional { background: var(--cat-functional-bg); color: var(--cat-functional); }
+    .cat--decorative  { background: var(--cat-decorative-bg);  color: var(--cat-decorative);  }
+    .cat--miniature   { background: var(--cat-miniature-bg);   color: var(--cat-miniature);   }
+    .cat--tool        { background: var(--cat-tool-bg);        color: var(--cat-tool);        }
+
+    .card-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 0.28rem;
+    }
+    .card-meta {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    /* ── Modal overlay ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,14,0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    .overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── Modal box ── */
+    .modal {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 1.25rem;
+      width: 100%;
+      max-width: 580px;
+      max-height: 88vh;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(18px) scale(0.97);
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .modal::-webkit-scrollbar { width: 4px; }
+    .modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .overlay.open .modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 0.85rem;
+      right: 0.85rem;
+      z-index: 10;
+      width: 1.9rem;
+      height: 1.9rem;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(15,24,36,0.9);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      line-height: 1;
+      transition: background 0.18s, color 0.18s;
+    }
+    .modal-close:hover {
+      background: var(--surface-3);
+      color: var(--text);
+    }
+
+    /* Modal media */
+    .modal-media {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      position: relative;
+      overflow: hidden;
+      background: var(--surface-2);
+      border-radius: 1.25rem 1.25rem 0 0;
+      flex-shrink: 0;
+    }
+    .modal-media::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+    .modal-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+    .modal-media-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      z-index: 1;
+    }
+
+    /* Modal content */
+    .modal-body {
+      padding: 1.4rem 1.5rem 1.5rem;
+    }
+    .modal-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .modal-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .modal-desc {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Specs grid */
+    .specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+      margin-bottom: 1.25rem;
+    }
+    .spec {
+      background: var(--surface-2);
+      border-radius: 0.6rem;
+      padding: 0.6rem 0.8rem;
+    }
+    .spec-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.22rem;
+    }
+    .spec-value {
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* STL link */
+    .modal-footer {
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .btn-stl {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: 0.55rem;
+      border: 1px solid rgba(56,189,248,0.35);
+      background: rgba(56,189,248,0.07);
+      color: var(--accent);
+      font: 500 0.8rem/1 'Inter', sans-serif;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.18s, border-color 0.18s;
+    }
+    .btn-stl:hover {
+      background: rgba(56,189,248,0.16);
+      border-color: rgba(56,189,248,0.55);
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="back-link">← coffeeonsugar</a>
+
+  <header class="hero">
+    <p class="hero-eyebrow">Bruno's</p>
+    <h1 class="hero-title">Workshop</h1>
+    <p class="hero-sub">Things made with resin, filament, and questionable amounts of patience.</p>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num" id="stat-total">–</span>
+        <span class="stat-label">Prints</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-done">–</span>
+        <span class="stat-label">Completed</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-filament">–</span>
+        <span class="stat-label">g filament</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="filters" id="filters"></div>
+    <div class="grid"    id="grid"></div>
+  </main>
+
+  <!-- Modal -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Print detail">
+    <div class="modal" id="modal-box">
+      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+      <div class="modal-media" id="modal-media"></div>
+      <div class="modal-body"  id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ── Constants ── */
+    const CAT = {
+      functional: { label: 'Functional', color: '#38bdf8' },
+      decorative:  { label: 'Decorative',  color: '#c084fc' },
+      miniature:   { label: 'Miniature',   color: '#34d399' },
+      tool:        { label: 'Tool',         color: '#fb923c' },
+    };
+
+    const CUBE_SVG = (size) => `
+      <svg width="${size}" height="${size}" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="26,7 45,18 45,36 26,47 7,36 7,18" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+        <line x1="26" y1="7"  x2="26" y2="27.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="7"  y1="18" x2="26" y2="27.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="45" y1="18" x2="26" y2="27.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>`;
+
+    /* ── State ── */
+    let prints = [];
+    let activeFilter = 'all';
+
+    /* ── Helpers ── */
+    function catChip(cat) {
+      const info = CAT[cat];
+      if (!info) return '';
+      return `<span class="cat-chip cat--${cat}">${info.label}</span>`;
+    }
+
+    function fmtDate(dateStr, full = false) {
+      if (!dateStr) return '—';
+      const d = new Date(dateStr + 'T00:00:00');
+      return full
+        ? d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+        : d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+    }
+
+    /* ── Card ── */
+    function cardHTML(p) {
+      const hasPhoto = p.photos && p.photos.length > 0;
+      const meta = [p.material, p.print_time].filter(Boolean).join(' · ');
+      const date = fmtDate(p.date);
+
+      return `
+        <div class="print-card" data-id="${p.id}" role="button" tabindex="0" aria-label="Open details for ${p.name}">
+          <div class="card-media">
+            ${hasPhoto
+              ? `<img src="${p.photos[0]}" alt="${p.name}" loading="lazy">`
+              : `<div class="card-placeholder">${CUBE_SVG(44)}</div>`
+            }
+            ${p.status === 'wip' ? '<div class="badge-wip">WIP</div>' : ''}
+          </div>
+          <div class="card-body">
+            <div class="card-cat-row">${catChip(p.category)}</div>
+            <div class="card-name">${p.name}</div>
+            <div class="card-meta">${[meta, date].filter(Boolean).join(' · ')}</div>
+          </div>
+        </div>`;
+    }
+
+    /* ── Grid ── */
+    function renderGrid(data) {
+      const grid = document.getElementById('grid');
+      if (!data.length) {
+        grid.innerHTML = '<div class="empty-state">No prints in this category yet.</div>';
+        return;
+      }
+      grid.innerHTML = data.map(cardHTML).join('');
+      grid.querySelectorAll('.print-card').forEach(el => {
+        el.addEventListener('click',   () => openModal(el.dataset.id));
+        el.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(el.dataset.id); }
+        });
+      });
+    }
+
+    /* ── Filters ── */
+    function renderFilters(data) {
+      const cats = [...new Set(data.map(p => p.category))];
+      const all  = [{ key: 'all', label: 'All', count: data.length }];
+      const rest = cats.map(c => ({ key: c, label: CAT[c]?.label || c, count: data.filter(p => p.category === c).length }));
+
+      document.getElementById('filters').innerHTML = [...all, ...rest].map(f =>
+        `<button class="filter-btn${f.key === 'all' ? ' active' : ''}" data-cat="${f.key}">
+           ${f.label}<span class="filter-count">${f.count}</span>
+         </button>`
+      ).join('');
+
+      document.getElementById('filters').querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeFilter = btn.dataset.cat;
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === activeFilter));
+          renderGrid(activeFilter === 'all' ? prints : prints.filter(p => p.category === activeFilter));
+        });
+      });
+    }
+
+    /* ── Stats ── */
+    function renderStats(data) {
+      const done     = data.filter(p => p.status === 'done').length;
+      const filament = data.reduce((acc, p) => acc + (p.filament_g || 0), 0);
+      document.getElementById('stat-total').textContent    = data.length;
+      document.getElementById('stat-done').textContent     = done;
+      document.getElementById('stat-filament').textContent = filament > 0 ? filament : '–';
+    }
+
+    /* ── Modal ── */
+    function openModal(id) {
+      const p = prints.find(x => x.id === id);
+      if (!p) return;
+
+      const hasPhoto = p.photos && p.photos.length > 0;
+
+      document.getElementById('modal-media').innerHTML = hasPhoto
+        ? `<img src="${p.photos[0]}" alt="${p.name}">`
+        : `<div class="modal-media-icon">${CUBE_SVG(68)}</div>`;
+
+      const specs = [
+        { label: 'Material',   value: p.material    || '—' },
+        { label: 'Colour',     value: p.color        || '—' },
+        { label: 'Print time', value: p.print_time   || '—' },
+        { label: 'Filament',   value: p.filament_g ? `${p.filament_g}g` : '—' },
+        { label: 'Date made',  value: fmtDate(p.date, true) },
+        { label: 'Status',     value: p.status === 'wip' ? '🔧 In progress' : '✓ Completed' },
+      ];
+
+      document.getElementById('modal-body').innerHTML = `
+        <div class="modal-title-row">
+          <h2 class="modal-title">${p.name}</h2>
+          ${catChip(p.category)}
+        </div>
+        ${p.description ? `<p class="modal-desc">${p.description}</p>` : ''}
+        <div class="specs">
+          ${specs.map(s => `<div class="spec"><div class="spec-label">${s.label}</div><div class="spec-value">${s.value}</div></div>`).join('')}
+        </div>
+        ${p.stl_url ? `<div class="modal-footer"><a href="${p.stl_url}" target="_blank" rel="noopener" class="btn-stl">View STL ↗</a></div>` : ''}
+      `;
+
+      document.getElementById('overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ── Load data ── */
+    fetch('data/prints.json')
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(data => {
+        prints = (data.prints || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        renderStats(prints);
+        renderFilters(prints);
+        renderGrid(prints);
+      })
+      .catch(() => {
+        document.getElementById('grid').innerHTML = '<div class="empty-state">Could not load prints data.</div>';
+      });
+  </script>
+</body>
+</html>
