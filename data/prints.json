@@ -1,3 +1,46 @@
 {
-  "prints": []
+  "prints": [
+    {
+      "id": "fridge-coin-bruno",
+      "name": "Fridge Coin “BRUNO”",
+      "category": "decorative",
+      "description": "Ø40 × 4.8 mm fridge magnet with a hidden 10×2 mm magnet sealed inside. Name embossed on top. Pause at 2.8 mm to drop the magnet in before the lid layer closes. Claude-designed.",
+      "date": "2026-10-25",
+      "material": "PLA",
+      "color": "Black",
+      "print_time": "12m total / 5m printing",
+      "filament_g": 3.72,
+      "status": "done",
+      "photos": ["photos/coin/1.jpg"],
+      "stl_url": null
+    },
+    {
+      "id": "sleeping-umbreon",
+      "name": "Sleeping Umbreon",
+      "category": "decorative",
+      "description": "Sleeping Umbreon figure, converted from an 8h 58m multicolour print down to a quick single-colour version with hand-painted details.",
+      "date": "2026-10-24",
+      "material": "PLA",
+      "color": "Black + paint",
+      "print_time": "1h 10m total / 1h 3m printing",
+      "filament_g": 17.11,
+      "status": "done",
+      "photos": ["photos/umbreon/1.jpg", "photos/umbreon/2.jpg"],
+      "stl_url": null
+    },
+    {
+      "id": "benchy",
+      "name": "3DBenchy",
+      "category": "decorative",
+      "description": "First print on the P2S. Minor stringing from a damp black filament roll — classic first print.",
+      "date": "2026-10-01",
+      "material": "PLA",
+      "color": "Black",
+      "print_time": "45m total / 39m printing",
+      "filament_g": 11.58,
+      "status": "done",
+      "photos": ["photos/benchy/1.jpg"],
+      "stl_url": null
+    }
+  ]
 }
