@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Where I've Been</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>&#x2708;</text></svg>" />
+</head>
+<body>
+
+  <header class="app-header">
+    <a href="index.html" class="header-brand" style="text-decoration:none;color:inherit;" title="coffeeonsugar home">
+      <svg class="header-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Where I've Been">
+        <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+        <circle cx="16" cy="16" r="2" fill="currentColor"/>
+        <path d="M16 3v4M16 25v4M3 16h4M25 16h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+        <path d="M12 20 L16 10 L20 20 L16 17.5 Z" fill="currentColor" opacity="0.9"/>
+      </svg>
+      <div>
+        <div class="header-title">Where I've Been</div>
+        <div class="header-sub">My travel map</div>
+      </div>
+    </a>
+    <div class="header-stats">
+      <div class="stat-pill">
+        <span class="val" id="hdrCountries">—</span>
+        <span class="lbl">Countries</span>
+      </div>
+      <div class="stat-pill">
+        <span class="val" id="hdrStops">—</span>
+        <span class="lbl">Stops</span>
+      </div>
+    </div>
+    <a href="admin.html" class="header-admin-btn" title="Admin Panel">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </a>
+  </header>
+
+  <div class="main-layout">
+
+    <div class="map-panel">
+      <div id="map"></div>
+    </div>
+
+    <aside class="sidebar">
+
+      <div class="card">
+        <div class="card-title">Trips</div>
+        <div class="year-row" id="yearRow"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">This trip</div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="s-val" id="statStops">—</div>
+            <div class="s-lbl">Stops</div>
+          </div>
+          <div class="stat-box">
+            <div class="s-val" id="statDist">—</div>
+            <div class="s-lbl">Distance</div>
+          </div>
+          <div class="stat-box" style="grid-column:span 2">
+            <div class="s-val" id="statCtry">—</div>
+            <div class="s-lbl">Countries visited</div>
+          </div>
+        </div>
+        <div class="countries-row" id="countriesRow"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Stops</div>
+        <div class="places-list" id="placesList"></div>
+      </div>
+
+
+    </aside>
+  </div>
+
+  <div id="toast"></div>
+
+  <div id="galleryModal" class="gallery-overlay">
+    <div class="gallery-header">
+      <div class="gallery-title">
+        <img id="galleryFlag" class="gallery-flag-img" src="" alt="" />
+        <span id="galleryLocation"></span>
+      </div>
+      <div class="gallery-meta">
+        <span id="galleryCounter" class="gallery-counter"></span>
+        <button class="gallery-close" onclick="closeGallery()">&#x2715;</button>
+      </div>
+    </div>
+    <div class="gallery-body">
+      <button class="gallery-arrow gallery-prev" onclick="galleryNav(-1)">&#8249;</button>
+      <img id="galleryImg" class="gallery-img" src="" alt="" />
+      <button class="gallery-arrow gallery-next" onclick="galleryNav(1)">&#8250;</button>
+    </div>
+    <div class="gallery-thumbs" id="galleryThumbs"></div>
+  </div>
+
+  <div id="countryModal" class="modal-overlay" onclick="closeCountryModal(event)">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeCountryModal()">&#x2715;</button>
+      <img id="modalFlag" src="" alt="" class="modal-flag" />
+      <div id="modalName" class="modal-name"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
