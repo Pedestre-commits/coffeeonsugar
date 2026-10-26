@@ -1,6 +1,48 @@
 {
   "prints": [
     {
+      "id": "monitor-shelf-mk2",
+      "name": "Monitor Shelf MK2",
+      "category": "functional",
+      "description": "Hex-grid monitor riser (medium size) by Giskard Reventlov. Sits under the monitor to free up desk space.",
+      "date": "2026-10-26",
+      "material": "PLA",
+      "color": "Black",
+      "print_time": "2h 18m total / 2h 11m printing",
+      "filament_g": 55.39,
+      "status": "done",
+      "photos": ["photos/monitor-shelf/1.jpg"],
+      "stl_url": null
+    },
+    {
+      "id": "dumpster-deckbox",
+      "name": "Dumpster DeckBox",
+      "category": "functional",
+      "description": "Two-colour card deck box shaped like a dumpster. Printed in two parts: main can in green, lids in black.",
+      "date": "2026-10-25",
+      "material": "PLA",
+      "color": "Green + Black",
+      "print_time": "4h 2m total (can 2h 58m + lids 1h 4m)",
+      "filament_g": 178.74,
+      "status": "done",
+      "photos": ["photos/dumpster/1.jpg", "photos/dumpster/2.jpg", "photos/dumpster/3.jpg"],
+      "stl_url": null
+    },
+    {
+      "id": "pikachu",
+      "name": "Pokémon Pikachu",
+      "category": "decorative",
+      "description": "Single-colour Pikachu figure in yellow PLA.",
+      "date": "2026-10-25",
+      "material": "PLA",
+      "color": "Yellow",
+      "print_time": "58m",
+      "filament_g": 9,
+      "status": "done",
+      "photos": ["photos/pikachu/1.jpg"],
+      "stl_url": null
+    },
+    {
       "id": "fridge-coin-bruno",
       "name": "Fridge Coin “BRUNO”",
       "category": "decorative",
