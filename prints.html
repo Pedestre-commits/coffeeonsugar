@@ -481,19 +481,14 @@
   <header class="hero">
     <p class="hero-eyebrow">Bruno's</p>
     <h1 class="hero-title">Workshop</h1>
-    <p class="hero-sub">Things made with resin, filament, and questionable amounts of patience.</p>
     <div class="stats">
       <div class="stat">
         <span class="stat-num" id="stat-total">–</span>
         <span class="stat-label">Prints</span>
       </div>
       <div class="stat">
-        <span class="stat-num" id="stat-done">–</span>
-        <span class="stat-label">Completed</span>
-      </div>
-      <div class="stat">
         <span class="stat-num" id="stat-filament">–</span>
-        <span class="stat-label">g filament</span>
+        <span class="stat-label">Filament</span>
       </div>
     </div>
   </header>
@@ -610,11 +605,9 @@
 
     /* ── Stats ── */
     function renderStats(data) {
-      const done     = data.filter(p => p.status === 'done').length;
       const filament = data.reduce((acc, p) => acc + (p.filament_g || 0), 0);
       document.getElementById('stat-total').textContent    = data.length;
-      document.getElementById('stat-done').textContent     = done;
-      document.getElementById('stat-filament').textContent = filament > 0 ? filament : '–';
+      document.getElementById('stat-filament').textContent = filament > 0 ? parseFloat(filament.toFixed(2)) + 'g' : '–';
     }
 
     /* ── Modal ── */
