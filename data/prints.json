@@ -15,6 +15,20 @@
       "stl_url": null
     },
     {
+      "id": "sanding-tools",
+      "name": "Sanding Tool Set",
+      "category": "tool",
+      "description": "Three adjustable sanding holders — flat, angled, and pointed — with knurled clamp screws.",
+      "date": "2026-10-27",
+      "material": "PLA",
+      "color": "Green",
+      "print_time": "3h 30m",
+      "filament_g": 99,
+      "status": "done",
+      "photos": ["photos/sanding-tools/1.jpg"],
+      "stl_url": null
+    },
+    {
       "id": "jolteon",
       "name": "Pokémon Jolteon",
       "category": "decorative",
@@ -54,6 +68,20 @@
       "filament_g": 17,
       "status": "done",
       "photos": ["photos/phone-stand/1.jpg"],
+      "stl_url": null
+    },
+    {
+      "id": "dice-box-v1",
+      "name": "Dice Box",
+      "category": "functional",
+      "description": "Magnetic-lid box for an RPG dice set.",
+      "date": "2026-10-26",
+      "material": "PLA",
+      "color": "Black",
+      "print_time": "1h 54m",
+      "filament_g": 62,
+      "status": "done",
+      "photos": ["photos/dicebox/1.jpg"],
       "stl_url": null
     },
     {
